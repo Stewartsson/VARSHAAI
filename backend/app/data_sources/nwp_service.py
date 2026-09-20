@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from typing import Any
+import time
 
 import requests
 
 
 OPEN_METEO_GFS_URL = "https://api.open-meteo.com/v1/gfs"
+OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
 
 CHENNAI_LAT = 13.0827
 CHENNAI_LON = 80.2707
@@ -28,7 +30,7 @@ HOURLY_VARIABLES = ",".join(
 )
 
 
-def _fetch_gfs() -> dict[str, Any]:
+def _request_weather(url: str) -> dict[str, Any]:
     params = {
         "latitude": CHENNAI_LAT,
         "longitude": CHENNAI_LON,
@@ -39,17 +41,54 @@ def _fetch_gfs() -> dict[str, Any]:
         "precipitation_unit": "mm",
     }
 
-    response = requests.get(
-        OPEN_METEO_GFS_URL,
-        params=params,
-        timeout=30,
-        headers={
-            "User-Agent": "VARSHAAI/1.0",
-            "Accept": "application/json",
-        },
-    )
-    response.raise_for_status()
-    return response.json()
+    headers = {
+        "User-Agent": "VARSHAAI/1.0 (+https://varshaai-4js6.onrender.com)",
+        "Accept": "application/json",
+    }
+
+    last_error = None
+
+    for attempt in range(3):
+        try:
+            response = requests.get(
+                url,
+                params=params,
+                timeout=30,
+                headers=headers,
+            )
+
+            if response.status_code == 429:
+                last_error = requests.HTTPError(
+                    "429 Too Many Requests",
+                    response=response,
+                )
+
+                if attempt < 2:
+                    time.sleep(2 * (attempt + 1))
+                    continue
+
+            response.raise_for_status()
+            return response.json()
+
+        except requests.RequestException as exc:
+            last_error = exc
+
+            if attempt < 2:
+                time.sleep(2 * (attempt + 1))
+            else:
+                raise
+
+    raise last_error or RuntimeError("Weather request failed")
+
+
+def _fetch_gfs() -> tuple[dict[str, Any], str]:
+    try:
+        return _request_weather(OPEN_METEO_GFS_URL), "NOAA GFS"
+    except requests.HTTPError:
+        # GFS can return HTTP 429 from Open-Meteo.
+        # Fall back to the standard Open-Meteo forecast model.
+        payload = _request_weather(OPEN_METEO_FORECAST_URL)
+        return payload, "Open-Meteo Forecast"
 
 
 def _value(values: list[Any], index: int) -> float | None:
@@ -115,14 +154,14 @@ def fetch_chennai_gfs() -> dict[str, Any]:
     checked_at = datetime.now(timezone.utc).isoformat()
 
     try:
-        payload = _fetch_gfs()
+        payload, provider_name = _fetch_gfs()
         observations = _build_observations(payload)
 
         return {
             "status": "connected",
-            "source": "NOAA GFS",
-            "provider": "Open-Meteo GFS API",
-            "model": "GFS",
+            "source": provider_name,
+            "provider": "Open-Meteo API",
+            "model": "GFS" if provider_name == "NOAA GFS" else "Open-Meteo Forecast",
             "region": "Chennai District, Tamil Nadu",
             "latitude": CHENNAI_LAT,
             "longitude": CHENNAI_LON,
@@ -131,17 +170,17 @@ def fetch_chennai_gfs() -> dict[str, Any]:
             "observation_count": len(observations),
             "observations": observations,
             "model_metadata": {
-                "spatial_resolution": "approximately 0.11° (~13 km) for GFS global data",
-                "native_forecast": "hourly up to 120 hours; longer lead times may be 3-hourly",
-                "update_frequency": "approximately every 6 hours",
+                "spatial_resolution": "Open-Meteo model grid",
+                "native_forecast": "hourly forecast",
+                "update_frequency": "model dependent",
             },
             "postprocessing": {
                 "bias_correction": "ready_for_integration",
                 "trained_ml_inference": False,
                 "note": (
-                    "Raw GFS forecast is connected. "
-                    "ML bias correction must only be applied after "
-                    "feature schema and trained-model validation."
+                    "Forecast data connected. "
+                    "The ML post-processing layer can consume "
+                    "the returned observations."
                 ),
             },
         }
@@ -156,7 +195,7 @@ def fetch_chennai_gfs() -> dict[str, Any]:
         return {
             "status": "unavailable",
             "source": "NOAA GFS",
-            "provider": "Open-Meteo GFS API",
+            "provider": "Open-Meteo API",
             "model": "GFS",
             "region": "Chennai District, Tamil Nadu",
             "checked_at_utc": checked_at,
@@ -171,7 +210,7 @@ def fetch_chennai_gfs() -> dict[str, Any]:
         return {
             "status": "unavailable",
             "source": "NOAA GFS",
-            "provider": "Open-Meteo GFS API",
+            "provider": "Open-Meteo API",
             "model": "GFS",
             "region": "Chennai District, Tamil Nadu",
             "checked_at_utc": checked_at,
