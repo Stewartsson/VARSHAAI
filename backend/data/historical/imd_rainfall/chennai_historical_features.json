@@ -1,0 +1,3298 @@
+{
+  "status": "available",
+  "source": "IMD",
+  "dataset": "RF25_ind2015_rfp25.nc",
+  "region": "Chennai-area IMD grid cell",
+  "latitude": 13.25,
+  "longitude": 80.25,
+  "year": 2015,
+  "total_days": 365,
+  "complete_feature_days": 359,
+  "observations": [
+    {
+      "date": "2015-01-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": NaN,
+      "rolling_7_day_rainfall_mm": NaN
+    },
+    {
+      "date": "2015-01-02",
+      "rainfall_mm": 0.5263221263885498,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.5263221263885498,
+      "rolling_3_day_rainfall_mm": NaN,
+      "rolling_7_day_rainfall_mm": NaN
+    },
+    {
+      "date": "2015-01-03",
+      "rainfall_mm": 0.9193282127380371,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.9193282127380371,
+      "rolling_3_day_rainfall_mm": 1.445650339126587,
+      "rolling_7_day_rainfall_mm": NaN
+    },
+    {
+      "date": "2015-01-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.445650339126587,
+      "rolling_7_day_rainfall_mm": NaN
+    },
+    {
+      "date": "2015-01-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.9193282127380371,
+      "rolling_7_day_rainfall_mm": NaN
+    },
+    {
+      "date": "2015-01-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": NaN
+    },
+    {
+      "date": "2015-01-07",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 1.445650339126587
+    },
+    {
+      "date": "2015-01-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 1.445650339126587
+    },
+    {
+      "date": "2015-01-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.9193282127380371
+    },
+    {
+      "date": "2015-01-10",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-14",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-15",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-16",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-24",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-01-25",
+      "rainfall_mm": 0.6842187643051147,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.6842187643051147,
+      "rolling_3_day_rainfall_mm": 0.6842187643051147,
+      "rolling_7_day_rainfall_mm": 0.6842187643051147
+    },
+    {
+      "date": "2015-01-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.6842187643051147,
+      "rolling_7_day_rainfall_mm": 0.6842187643051147
+    },
+    {
+      "date": "2015-01-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.6842187643051147,
+      "rolling_7_day_rainfall_mm": 0.6842187643051147
+    },
+    {
+      "date": "2015-01-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.6842187643051147
+    },
+    {
+      "date": "2015-01-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.6842187643051147
+    },
+    {
+      "date": "2015-01-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.6842187643051147
+    },
+    {
+      "date": "2015-01-31",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.6842187643051147
+    },
+    {
+      "date": "2015-02-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-02",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-03",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-07",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-10",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-14",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-15",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-16",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-24",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-02-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-02",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-03",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-07",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-10",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-14",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-15",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-16",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-24",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-03-31",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-02",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-03",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-07",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-10",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-14",
+      "rainfall_mm": 10.948004722595215,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 10.948004722595215,
+      "rolling_3_day_rainfall_mm": 10.948004722595215,
+      "rolling_7_day_rainfall_mm": 10.948004722595215
+    },
+    {
+      "date": "2015-04-15",
+      "rainfall_mm": 2.8766345977783203,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.8766345977783203,
+      "rolling_3_day_rainfall_mm": 13.824639320373535,
+      "rolling_7_day_rainfall_mm": 13.824639320373535
+    },
+    {
+      "date": "2015-04-16",
+      "rainfall_mm": 17.395164489746094,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 17.395164489746094,
+      "rolling_3_day_rainfall_mm": 31.21980381011963,
+      "rolling_7_day_rainfall_mm": 31.21980381011963
+    },
+    {
+      "date": "2015-04-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 20.271799087524414,
+      "rolling_7_day_rainfall_mm": 31.21980381011963
+    },
+    {
+      "date": "2015-04-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 17.395164489746094,
+      "rolling_7_day_rainfall_mm": 31.21980381011963
+    },
+    {
+      "date": "2015-04-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 31.21980381011963
+    },
+    {
+      "date": "2015-04-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 31.21980381011963
+    },
+    {
+      "date": "2015-04-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 20.271799087524414
+    },
+    {
+      "date": "2015-04-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 17.395164489746094
+    },
+    {
+      "date": "2015-04-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-24",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-04-25",
+      "rainfall_mm": 15.901795387268066,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 15.901795387268066,
+      "rolling_3_day_rainfall_mm": 15.901795387268066,
+      "rolling_7_day_rainfall_mm": 15.901795387268066
+    },
+    {
+      "date": "2015-04-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 15.901795387268066,
+      "rolling_7_day_rainfall_mm": 15.901795387268066
+    },
+    {
+      "date": "2015-04-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 15.901795387268066,
+      "rolling_7_day_rainfall_mm": 15.901795387268066
+    },
+    {
+      "date": "2015-04-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 15.901795387268066
+    },
+    {
+      "date": "2015-04-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 15.901795387268066
+    },
+    {
+      "date": "2015-04-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 15.901795387268066
+    },
+    {
+      "date": "2015-05-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 15.901795387268066
+    },
+    {
+      "date": "2015-05-02",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-03",
+      "rainfall_mm": 1.4856841564178467,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.4856841564178467,
+      "rolling_3_day_rainfall_mm": 1.4856841564178467,
+      "rolling_7_day_rainfall_mm": 1.4856841564178467
+    },
+    {
+      "date": "2015-05-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.4856841564178467,
+      "rolling_7_day_rainfall_mm": 1.4856841564178467
+    },
+    {
+      "date": "2015-05-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.4856841564178467,
+      "rolling_7_day_rainfall_mm": 1.4856841564178467
+    },
+    {
+      "date": "2015-05-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 1.4856841564178467
+    },
+    {
+      "date": "2015-05-07",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 1.4856841564178467
+    },
+    {
+      "date": "2015-05-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 1.4856841564178467
+    },
+    {
+      "date": "2015-05-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 1.4856841564178467
+    },
+    {
+      "date": "2015-05-10",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-14",
+      "rainfall_mm": 2.9412851333618164,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.9412851333618164,
+      "rolling_3_day_rainfall_mm": 2.9412851333618164,
+      "rolling_7_day_rainfall_mm": 2.9412851333618164
+    },
+    {
+      "date": "2015-05-15",
+      "rainfall_mm": 1.6829912662506104,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.6829912662506104,
+      "rolling_3_day_rainfall_mm": 4.624276399612427,
+      "rolling_7_day_rainfall_mm": 4.624276399612427
+    },
+    {
+      "date": "2015-05-16",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 4.624276399612427,
+      "rolling_7_day_rainfall_mm": 4.624276399612427
+    },
+    {
+      "date": "2015-05-17",
+      "rainfall_mm": 31.942272186279297,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 31.942272186279297,
+      "rolling_3_day_rainfall_mm": 33.62526345252991,
+      "rolling_7_day_rainfall_mm": 36.566548585891724
+    },
+    {
+      "date": "2015-05-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 31.942272186279297,
+      "rolling_7_day_rainfall_mm": 36.566548585891724
+    },
+    {
+      "date": "2015-05-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 31.942272186279297,
+      "rolling_7_day_rainfall_mm": 36.566548585891724
+    },
+    {
+      "date": "2015-05-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 36.566548585891724
+    },
+    {
+      "date": "2015-05-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 33.62526345252991
+    },
+    {
+      "date": "2015-05-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 31.942272186279297
+    },
+    {
+      "date": "2015-05-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 31.942272186279297
+    },
+    {
+      "date": "2015-05-24",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-05-31",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-06-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-06-02",
+      "rainfall_mm": 0.2368449717760086,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.2368449717760086,
+      "rolling_3_day_rainfall_mm": 0.2368449717760086,
+      "rolling_7_day_rainfall_mm": 0.2368449717760086
+    },
+    {
+      "date": "2015-06-03",
+      "rainfall_mm": 2.5178074836730957,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.5178074836730957,
+      "rolling_3_day_rainfall_mm": 2.7546524554491043,
+      "rolling_7_day_rainfall_mm": 2.7546524554491043
+    },
+    {
+      "date": "2015-06-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 2.7546524554491043,
+      "rolling_7_day_rainfall_mm": 2.7546524554491043
+    },
+    {
+      "date": "2015-06-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 2.5178074836730957,
+      "rolling_7_day_rainfall_mm": 2.7546524554491043
+    },
+    {
+      "date": "2015-06-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 2.7546524554491043
+    },
+    {
+      "date": "2015-06-07",
+      "rainfall_mm": 8.759273529052734,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 8.759273529052734,
+      "rolling_3_day_rainfall_mm": 8.759273529052734,
+      "rolling_7_day_rainfall_mm": 11.513925984501839
+    },
+    {
+      "date": "2015-06-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 8.759273529052734,
+      "rolling_7_day_rainfall_mm": 11.513925984501839
+    },
+    {
+      "date": "2015-06-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 8.759273529052734,
+      "rolling_7_day_rainfall_mm": 11.27708101272583
+    },
+    {
+      "date": "2015-06-10",
+      "rainfall_mm": 5.982001781463623,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 5.982001781463623,
+      "rolling_3_day_rainfall_mm": 5.982001781463623,
+      "rolling_7_day_rainfall_mm": 14.741275310516357
+    },
+    {
+      "date": "2015-06-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 5.982001781463623,
+      "rolling_7_day_rainfall_mm": 14.741275310516357
+    },
+    {
+      "date": "2015-06-12",
+      "rainfall_mm": 1.578966498374939,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.578966498374939,
+      "rolling_3_day_rainfall_mm": 7.560968279838562,
+      "rolling_7_day_rainfall_mm": 16.320241808891296
+    },
+    {
+      "date": "2015-06-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.578966498374939,
+      "rolling_7_day_rainfall_mm": 16.320241808891296
+    },
+    {
+      "date": "2015-06-14",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.578966498374939,
+      "rolling_7_day_rainfall_mm": 7.560968279838562
+    },
+    {
+      "date": "2015-06-15",
+      "rainfall_mm": 6.271324634552002,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 6.271324634552002,
+      "rolling_3_day_rainfall_mm": 6.271324634552002,
+      "rolling_7_day_rainfall_mm": 13.832292914390564
+    },
+    {
+      "date": "2015-06-16",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 6.271324634552002,
+      "rolling_7_day_rainfall_mm": 13.832292914390564
+    },
+    {
+      "date": "2015-06-17",
+      "rainfall_mm": 7.938756942749023,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 7.938756942749023,
+      "rolling_3_day_rainfall_mm": 14.210081577301025,
+      "rolling_7_day_rainfall_mm": 15.789048075675964
+    },
+    {
+      "date": "2015-06-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 7.938756942749023,
+      "rolling_7_day_rainfall_mm": 15.789048075675964
+    },
+    {
+      "date": "2015-06-19",
+      "rainfall_mm": 1.1603243350982666,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.1603243350982666,
+      "rolling_3_day_rainfall_mm": 9.09908127784729,
+      "rolling_7_day_rainfall_mm": 15.370405912399292
+    },
+    {
+      "date": "2015-06-20",
+      "rainfall_mm": 0.5120200514793396,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.5120200514793396,
+      "rolling_3_day_rainfall_mm": 1.6723443865776062,
+      "rolling_7_day_rainfall_mm": 15.882425963878632
+    },
+    {
+      "date": "2015-06-21",
+      "rainfall_mm": 3.046356678009033,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 3.046356678009033,
+      "rolling_3_day_rainfall_mm": 4.718701064586639,
+      "rolling_7_day_rainfall_mm": 18.928782641887665
+    },
+    {
+      "date": "2015-06-22",
+      "rainfall_mm": 1.4984419345855713,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.4984419345855713,
+      "rolling_3_day_rainfall_mm": 5.056818664073944,
+      "rolling_7_day_rainfall_mm": 14.155899941921234
+    },
+    {
+      "date": "2015-06-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 4.5447986125946045,
+      "rolling_7_day_rainfall_mm": 14.155899941921234
+    },
+    {
+      "date": "2015-06-24",
+      "rainfall_mm": 0.31579330563545227,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.31579330563545227,
+      "rolling_3_day_rainfall_mm": 1.8142352402210236,
+      "rolling_7_day_rainfall_mm": 6.532936304807663
+    },
+    {
+      "date": "2015-06-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.31579330563545227,
+      "rolling_7_day_rainfall_mm": 6.532936304807663
+    },
+    {
+      "date": "2015-06-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.31579330563545227,
+      "rolling_7_day_rainfall_mm": 5.372611969709396
+    },
+    {
+      "date": "2015-06-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 4.860591918230057
+    },
+    {
+      "date": "2015-06-28",
+      "rainfall_mm": 1.051404595375061,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.051404595375061,
+      "rolling_3_day_rainfall_mm": 1.051404595375061,
+      "rolling_7_day_rainfall_mm": 2.8656398355960846
+    },
+    {
+      "date": "2015-06-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.051404595375061,
+      "rolling_7_day_rainfall_mm": 1.3671979010105133
+    },
+    {
+      "date": "2015-06-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.051404595375061,
+      "rolling_7_day_rainfall_mm": 1.3671979010105133
+    },
+    {
+      "date": "2015-07-01",
+      "rainfall_mm": 1.5681283473968506,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.5681283473968506,
+      "rolling_3_day_rainfall_mm": 1.5681283473968506,
+      "rolling_7_day_rainfall_mm": 2.6195329427719116
+    },
+    {
+      "date": "2015-07-02",
+      "rainfall_mm": 0.21888767182826996,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.21888767182826996,
+      "rolling_3_day_rainfall_mm": 1.7870160192251205,
+      "rolling_7_day_rainfall_mm": 2.8384206146001816
+    },
+    {
+      "date": "2015-07-03",
+      "rainfall_mm": 0.9210637807846069,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.9210637807846069,
+      "rolling_3_day_rainfall_mm": 2.7080798000097275,
+      "rolling_7_day_rainfall_mm": 3.7594843953847885
+    },
+    {
+      "date": "2015-07-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.139951452612877,
+      "rolling_7_day_rainfall_mm": 3.7594843953847885
+    },
+    {
+      "date": "2015-07-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.9210637807846069,
+      "rolling_7_day_rainfall_mm": 2.7080798000097275
+    },
+    {
+      "date": "2015-07-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 2.7080798000097275
+    },
+    {
+      "date": "2015-07-07",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 2.7080798000097275
+    },
+    {
+      "date": "2015-07-08",
+      "rainfall_mm": 0.629146933555603,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.629146933555603,
+      "rolling_3_day_rainfall_mm": 0.629146933555603,
+      "rolling_7_day_rainfall_mm": 1.76909838616848
+    },
+    {
+      "date": "2015-07-09",
+      "rainfall_mm": 3.1457347869873047,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 3.1457347869873047,
+      "rolling_3_day_rainfall_mm": 3.7748817205429077,
+      "rolling_7_day_rainfall_mm": 4.695945501327515
+    },
+    {
+      "date": "2015-07-10",
+      "rainfall_mm": 0.9736959934234619,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.9736959934234619,
+      "rolling_3_day_rainfall_mm": 4.74857771396637,
+      "rolling_7_day_rainfall_mm": 4.74857771396637
+    },
+    {
+      "date": "2015-07-11",
+      "rainfall_mm": 13.935574531555176,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 13.935574531555176,
+      "rolling_3_day_rainfall_mm": 18.055005311965942,
+      "rolling_7_day_rainfall_mm": 18.684152245521545
+    },
+    {
+      "date": "2015-07-12",
+      "rainfall_mm": 0.13158053159713745,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.13158053159713745,
+      "rolling_3_day_rainfall_mm": 15.040851056575775,
+      "rolling_7_day_rainfall_mm": 18.815732777118683
+    },
+    {
+      "date": "2015-07-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 14.067155063152313,
+      "rolling_7_day_rainfall_mm": 18.815732777118683
+    },
+    {
+      "date": "2015-07-14",
+      "rainfall_mm": 0.15789665281772614,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.15789665281772614,
+      "rolling_3_day_rainfall_mm": 0.2894771844148636,
+      "rolling_7_day_rainfall_mm": 18.97362942993641
+    },
+    {
+      "date": "2015-07-15",
+      "rainfall_mm": 0.970036506652832,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.970036506652832,
+      "rolling_3_day_rainfall_mm": 1.1279331594705582,
+      "rolling_7_day_rainfall_mm": 19.314519003033638
+    },
+    {
+      "date": "2015-07-16",
+      "rainfall_mm": 10.80576229095459,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 10.80576229095459,
+      "rolling_3_day_rainfall_mm": 11.933695450425148,
+      "rolling_7_day_rainfall_mm": 26.974546507000923
+    },
+    {
+      "date": "2015-07-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 11.775798797607422,
+      "rolling_7_day_rainfall_mm": 26.00085051357746
+    },
+    {
+      "date": "2015-07-18",
+      "rainfall_mm": 7.421142101287842,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 7.421142101287842,
+      "rolling_3_day_rainfall_mm": 18.22690439224243,
+      "rolling_7_day_rainfall_mm": 19.486418083310127
+    },
+    {
+      "date": "2015-07-19",
+      "rainfall_mm": 7.825390338897705,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 7.825390338897705,
+      "rolling_3_day_rainfall_mm": 15.246532440185547,
+      "rolling_7_day_rainfall_mm": 27.180227890610695
+    },
+    {
+      "date": "2015-07-20",
+      "rainfall_mm": 5.723817825317383,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 5.723817825317383,
+      "rolling_3_day_rainfall_mm": 20.97035026550293,
+      "rolling_7_day_rainfall_mm": 32.90404571592808
+    },
+    {
+      "date": "2015-07-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 13.549208164215088,
+      "rolling_7_day_rainfall_mm": 32.74614906311035
+    },
+    {
+      "date": "2015-07-22",
+      "rainfall_mm": 8.61668586730957,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 8.61668586730957,
+      "rolling_3_day_rainfall_mm": 14.340503692626953,
+      "rolling_7_day_rainfall_mm": 40.39279842376709
+    },
+    {
+      "date": "2015-07-23",
+      "rainfall_mm": 22.95139503479004,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 22.95139503479004,
+      "rolling_3_day_rainfall_mm": 31.56808090209961,
+      "rolling_7_day_rainfall_mm": 52.53843116760254
+    },
+    {
+      "date": "2015-07-24",
+      "rainfall_mm": 47.84071350097656,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 47.84071350097656,
+      "rolling_3_day_rainfall_mm": 79.40879440307617,
+      "rolling_7_day_rainfall_mm": 100.3791446685791
+    },
+    {
+      "date": "2015-07-25",
+      "rainfall_mm": 17.74066162109375,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 17.74066162109375,
+      "rolling_3_day_rainfall_mm": 88.53277015686035,
+      "rolling_7_day_rainfall_mm": 110.69866418838501
+    },
+    {
+      "date": "2015-07-26",
+      "rainfall_mm": 4.137348175048828,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 4.137348175048828,
+      "rolling_3_day_rainfall_mm": 69.71872329711914,
+      "rolling_7_day_rainfall_mm": 107.01062202453613
+    },
+    {
+      "date": "2015-07-27",
+      "rainfall_mm": 15.826786041259766,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 15.826786041259766,
+      "rolling_3_day_rainfall_mm": 37.704795837402344,
+      "rolling_7_day_rainfall_mm": 117.11359024047852
+    },
+    {
+      "date": "2015-07-28",
+      "rainfall_mm": 24.43305206298828,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 24.43305206298828,
+      "rolling_3_day_rainfall_mm": 44.397186279296875,
+      "rolling_7_day_rainfall_mm": 141.5466423034668
+    },
+    {
+      "date": "2015-07-29",
+      "rainfall_mm": 7.748917579650879,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 7.748917579650879,
+      "rolling_3_day_rainfall_mm": 48.008755683898926,
+      "rolling_7_day_rainfall_mm": 140.6788740158081
+    },
+    {
+      "date": "2015-07-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 32.18196964263916,
+      "rolling_7_day_rainfall_mm": 117.72747898101807
+    },
+    {
+      "date": "2015-07-31",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 7.748917579650879,
+      "rolling_7_day_rainfall_mm": 69.8867654800415
+    },
+    {
+      "date": "2015-08-01",
+      "rainfall_mm": 3.9761433601379395,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 3.9761433601379395,
+      "rolling_3_day_rainfall_mm": 3.9761433601379395,
+      "rolling_7_day_rainfall_mm": 56.12224721908569
+    },
+    {
+      "date": "2015-08-02",
+      "rainfall_mm": 2.5095925331115723,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.5095925331115723,
+      "rolling_3_day_rainfall_mm": 6.485735893249512,
+      "rolling_7_day_rainfall_mm": 54.49449157714844
+    },
+    {
+      "date": "2015-08-03",
+      "rainfall_mm": 8.820903778076172,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 8.820903778076172,
+      "rolling_3_day_rainfall_mm": 15.306639671325684,
+      "rolling_7_day_rainfall_mm": 47.488609313964844
+    },
+    {
+      "date": "2015-08-04",
+      "rainfall_mm": 0.7569758892059326,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.7569758892059326,
+      "rolling_3_day_rainfall_mm": 12.087472200393677,
+      "rolling_7_day_rainfall_mm": 23.812533140182495
+    },
+    {
+      "date": "2015-08-05",
+      "rainfall_mm": 30.47018051147461,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 30.47018051147461,
+      "rolling_3_day_rainfall_mm": 40.048060178756714,
+      "rolling_7_day_rainfall_mm": 46.533796072006226
+    },
+    {
+      "date": "2015-08-06",
+      "rainfall_mm": 1.631598711013794,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.631598711013794,
+      "rolling_3_day_rainfall_mm": 32.858755111694336,
+      "rolling_7_day_rainfall_mm": 48.16539478302002
+    },
+    {
+      "date": "2015-08-07",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 32.1017792224884,
+      "rolling_7_day_rainfall_mm": 48.16539478302002
+    },
+    {
+      "date": "2015-08-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.631598711013794,
+      "rolling_7_day_rainfall_mm": 44.18925142288208
+    },
+    {
+      "date": "2015-08-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 41.67965888977051
+    },
+    {
+      "date": "2015-08-10",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 32.858755111694336
+    },
+    {
+      "date": "2015-08-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 32.1017792224884
+    },
+    {
+      "date": "2015-08-12",
+      "rainfall_mm": 0.39474162459373474,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.39474162459373474,
+      "rolling_3_day_rainfall_mm": 0.39474162459373474,
+      "rolling_7_day_rainfall_mm": 2.0263403356075287
+    },
+    {
+      "date": "2015-08-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.39474162459373474,
+      "rolling_7_day_rainfall_mm": 0.39474162459373474
+    },
+    {
+      "date": "2015-08-14",
+      "rainfall_mm": 3.1457347869873047,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 3.1457347869873047,
+      "rolling_3_day_rainfall_mm": 3.5404764115810394,
+      "rolling_7_day_rainfall_mm": 3.5404764115810394
+    },
+    {
+      "date": "2015-08-15",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 3.1457347869873047,
+      "rolling_7_day_rainfall_mm": 3.5404764115810394
+    },
+    {
+      "date": "2015-08-16",
+      "rainfall_mm": 0.13158053159713745,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.13158053159713745,
+      "rolling_3_day_rainfall_mm": 3.277315318584442,
+      "rolling_7_day_rainfall_mm": 3.672056943178177
+    },
+    {
+      "date": "2015-08-17",
+      "rainfall_mm": 0.2368449717760086,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.2368449717760086,
+      "rolling_3_day_rainfall_mm": 0.36842550337314606,
+      "rolling_7_day_rainfall_mm": 3.9089019149541855
+    },
+    {
+      "date": "2015-08-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.36842550337314606,
+      "rolling_7_day_rainfall_mm": 3.9089019149541855
+    },
+    {
+      "date": "2015-08-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.2368449717760086,
+      "rolling_7_day_rainfall_mm": 3.5141602903604507
+    },
+    {
+      "date": "2015-08-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 3.5141602903604507
+    },
+    {
+      "date": "2015-08-21",
+      "rainfall_mm": 25.41786766052246,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 25.41786766052246,
+      "rolling_3_day_rainfall_mm": 25.41786766052246,
+      "rolling_7_day_rainfall_mm": 25.786293163895607
+    },
+    {
+      "date": "2015-08-22",
+      "rainfall_mm": 27.180612564086914,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 27.180612564086914,
+      "rolling_3_day_rainfall_mm": 52.598480224609375,
+      "rolling_7_day_rainfall_mm": 52.96690572798252
+    },
+    {
+      "date": "2015-08-23",
+      "rainfall_mm": 10.983600616455078,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 10.983600616455078,
+      "rolling_3_day_rainfall_mm": 63.58208084106445,
+      "rolling_7_day_rainfall_mm": 63.81892581284046
+    },
+    {
+      "date": "2015-08-24",
+      "rainfall_mm": 8.558380126953125,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 8.558380126953125,
+      "rolling_3_day_rainfall_mm": 46.72259330749512,
+      "rolling_7_day_rainfall_mm": 72.14046096801758
+    },
+    {
+      "date": "2015-08-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 19.541980743408203,
+      "rolling_7_day_rainfall_mm": 72.14046096801758
+    },
+    {
+      "date": "2015-08-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 8.558380126953125,
+      "rolling_7_day_rainfall_mm": 72.14046096801758
+    },
+    {
+      "date": "2015-08-27",
+      "rainfall_mm": 0.45573264360427856,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.45573264360427856,
+      "rolling_3_day_rainfall_mm": 0.45573264360427856,
+      "rolling_7_day_rainfall_mm": 72.59619361162186
+    },
+    {
+      "date": "2015-08-28",
+      "rainfall_mm": 0.39474162459373474,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.39474162459373474,
+      "rolling_3_day_rainfall_mm": 0.8504742681980133,
+      "rolling_7_day_rainfall_mm": 47.57306757569313
+    },
+    {
+      "date": "2015-08-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.8504742681980133,
+      "rolling_7_day_rainfall_mm": 20.392455011606216
+    },
+    {
+      "date": "2015-08-30",
+      "rainfall_mm": 0.35022029280662537,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.35022029280662537,
+      "rolling_3_day_rainfall_mm": 0.7449619174003601,
+      "rolling_7_day_rainfall_mm": 9.759074687957764
+    },
+    {
+      "date": "2015-08-31",
+      "rainfall_mm": 14.449958801269531,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 14.449958801269531,
+      "rolling_3_day_rainfall_mm": 14.800179094076157,
+      "rolling_7_day_rainfall_mm": 15.65065336227417
+    },
+    {
+      "date": "2015-09-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 14.800179094076157,
+      "rolling_7_day_rainfall_mm": 15.65065336227417
+    },
+    {
+      "date": "2015-09-02",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 14.449958801269531,
+      "rolling_7_day_rainfall_mm": 15.65065336227417
+    },
+    {
+      "date": "2015-09-03",
+      "rainfall_mm": 0.35022029280662537,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.35022029280662537,
+      "rolling_3_day_rainfall_mm": 0.35022029280662537,
+      "rolling_7_day_rainfall_mm": 15.545141011476517
+    },
+    {
+      "date": "2015-09-04",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.35022029280662537,
+      "rolling_7_day_rainfall_mm": 15.150399386882782
+    },
+    {
+      "date": "2015-09-05",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.35022029280662537,
+      "rolling_7_day_rainfall_mm": 15.150399386882782
+    },
+    {
+      "date": "2015-09-06",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 14.800179094076157
+    },
+    {
+      "date": "2015-09-07",
+      "rainfall_mm": 1.4120770692825317,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.4120770692825317,
+      "rolling_3_day_rainfall_mm": 1.4120770692825317,
+      "rolling_7_day_rainfall_mm": 1.762297362089157
+    },
+    {
+      "date": "2015-09-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.4120770692825317,
+      "rolling_7_day_rainfall_mm": 1.762297362089157
+    },
+    {
+      "date": "2015-09-09",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.4120770692825317,
+      "rolling_7_day_rainfall_mm": 1.762297362089157
+    },
+    {
+      "date": "2015-09-10",
+      "rainfall_mm": 12.814724922180176,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 12.814724922180176,
+      "rolling_3_day_rainfall_mm": 12.814724922180176,
+      "rolling_7_day_rainfall_mm": 14.226801991462708
+    },
+    {
+      "date": "2015-09-11",
+      "rainfall_mm": 9.6442289352417,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 9.6442289352417,
+      "rolling_3_day_rainfall_mm": 22.458953857421875,
+      "rolling_7_day_rainfall_mm": 23.871030926704407
+    },
+    {
+      "date": "2015-09-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 22.458953857421875,
+      "rolling_7_day_rainfall_mm": 23.871030926704407
+    },
+    {
+      "date": "2015-09-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 9.6442289352417,
+      "rolling_7_day_rainfall_mm": 23.871030926704407
+    },
+    {
+      "date": "2015-09-14",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 22.458953857421875
+    },
+    {
+      "date": "2015-09-15",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 22.458953857421875
+    },
+    {
+      "date": "2015-09-16",
+      "rainfall_mm": 1.7921267747879028,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.7921267747879028,
+      "rolling_3_day_rainfall_mm": 1.7921267747879028,
+      "rolling_7_day_rainfall_mm": 24.251080632209778
+    },
+    {
+      "date": "2015-09-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 1.7921267747879028,
+      "rolling_7_day_rainfall_mm": 11.436355710029602
+    },
+    {
+      "date": "2015-09-18",
+      "rainfall_mm": 2.2546465396881104,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.2546465396881104,
+      "rolling_3_day_rainfall_mm": 4.046773314476013,
+      "rolling_7_day_rainfall_mm": 4.046773314476013
+    },
+    {
+      "date": "2015-09-19",
+      "rainfall_mm": 10.284729957580566,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 10.284729957580566,
+      "rolling_3_day_rainfall_mm": 12.539376497268677,
+      "rolling_7_day_rainfall_mm": 14.33150327205658
+    },
+    {
+      "date": "2015-09-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 12.539376497268677,
+      "rolling_7_day_rainfall_mm": 14.33150327205658
+    },
+    {
+      "date": "2015-09-21",
+      "rainfall_mm": 24.441516876220703,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 24.441516876220703,
+      "rolling_3_day_rainfall_mm": 34.72624683380127,
+      "rolling_7_day_rainfall_mm": 38.77302014827728
+    },
+    {
+      "date": "2015-09-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 24.441516876220703,
+      "rolling_7_day_rainfall_mm": 38.77302014827728
+    },
+    {
+      "date": "2015-09-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 24.441516876220703,
+      "rolling_7_day_rainfall_mm": 36.98089337348938
+    },
+    {
+      "date": "2015-09-24",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 36.98089337348938
+    },
+    {
+      "date": "2015-09-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 34.72624683380127
+    },
+    {
+      "date": "2015-09-26",
+      "rainfall_mm": 34.20854187011719,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 34.20854187011719,
+      "rolling_3_day_rainfall_mm": 34.20854187011719,
+      "rolling_7_day_rainfall_mm": 58.65005874633789
+    },
+    {
+      "date": "2015-09-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 34.20854187011719,
+      "rolling_7_day_rainfall_mm": 58.65005874633789
+    },
+    {
+      "date": "2015-09-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 34.20854187011719,
+      "rolling_7_day_rainfall_mm": 34.20854187011719
+    },
+    {
+      "date": "2015-09-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 34.20854187011719
+    },
+    {
+      "date": "2015-09-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 34.20854187011719
+    },
+    {
+      "date": "2015-10-01",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 34.20854187011719
+    },
+    {
+      "date": "2015-10-02",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 34.20854187011719
+    },
+    {
+      "date": "2015-10-03",
+      "rainfall_mm": 50.242984771728516,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 50.242984771728516,
+      "rolling_3_day_rainfall_mm": 50.242984771728516,
+      "rolling_7_day_rainfall_mm": 50.242984771728516
+    },
+    {
+      "date": "2015-10-04",
+      "rainfall_mm": 0.6217401623725891,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.6217401623725891,
+      "rolling_3_day_rainfall_mm": 50.864724934101105,
+      "rolling_7_day_rainfall_mm": 50.864724934101105
+    },
+    {
+      "date": "2015-10-05",
+      "rainfall_mm": 0.10526443272829056,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.10526443272829056,
+      "rolling_3_day_rainfall_mm": 50.969989366829395,
+      "rolling_7_day_rainfall_mm": 50.969989366829395
+    },
+    {
+      "date": "2015-10-06",
+      "rainfall_mm": 2.4473981857299805,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.4473981857299805,
+      "rolling_3_day_rainfall_mm": 3.17440278083086,
+      "rolling_7_day_rainfall_mm": 53.417387552559376
+    },
+    {
+      "date": "2015-10-07",
+      "rainfall_mm": 16.829614639282227,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 16.829614639282227,
+      "rolling_3_day_rainfall_mm": 19.382277257740498,
+      "rolling_7_day_rainfall_mm": 70.2470021918416
+    },
+    {
+      "date": "2015-10-08",
+      "rainfall_mm": 8.917672157287598,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 8.917672157287598,
+      "rolling_3_day_rainfall_mm": 28.194684982299805,
+      "rolling_7_day_rainfall_mm": 79.1646743491292
+    },
+    {
+      "date": "2015-10-09",
+      "rainfall_mm": 9.961294174194336,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 9.961294174194336,
+      "rolling_3_day_rainfall_mm": 35.70858097076416,
+      "rolling_7_day_rainfall_mm": 89.12596852332354
+    },
+    {
+      "date": "2015-10-10",
+      "rainfall_mm": 13.068758010864258,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 13.068758010864258,
+      "rolling_3_day_rainfall_mm": 31.94772434234619,
+      "rolling_7_day_rainfall_mm": 51.95174176245928
+    },
+    {
+      "date": "2015-10-11",
+      "rainfall_mm": 11.839963912963867,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 11.839963912963867,
+      "rolling_3_day_rainfall_mm": 34.87001609802246,
+      "rolling_7_day_rainfall_mm": 63.169965513050556
+    },
+    {
+      "date": "2015-10-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 24.908721923828125,
+      "rolling_7_day_rainfall_mm": 63.064701080322266
+    },
+    {
+      "date": "2015-10-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 11.839963912963867,
+      "rolling_7_day_rainfall_mm": 60.617302894592285
+    },
+    {
+      "date": "2015-10-14",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 43.78768825531006
+    },
+    {
+      "date": "2015-10-15",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 34.87001609802246
+    },
+    {
+      "date": "2015-10-16",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 24.908721923828125
+    },
+    {
+      "date": "2015-10-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 11.839963912963867
+    },
+    {
+      "date": "2015-10-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-10-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-10-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-10-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-10-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-10-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-10-24",
+      "rainfall_mm": 5.921124458312988,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 5.921124458312988,
+      "rolling_3_day_rainfall_mm": 5.921124458312988,
+      "rolling_7_day_rainfall_mm": 5.921124458312988
+    },
+    {
+      "date": "2015-10-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 5.921124458312988,
+      "rolling_7_day_rainfall_mm": 5.921124458312988
+    },
+    {
+      "date": "2015-10-26",
+      "rainfall_mm": 1.0502046346664429,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.0502046346664429,
+      "rolling_3_day_rainfall_mm": 6.971329092979431,
+      "rolling_7_day_rainfall_mm": 6.971329092979431
+    },
+    {
+      "date": "2015-10-27",
+      "rainfall_mm": 8.69467830657959,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 8.69467830657959,
+      "rolling_3_day_rainfall_mm": 9.744882941246033,
+      "rolling_7_day_rainfall_mm": 15.666007399559021
+    },
+    {
+      "date": "2015-10-28",
+      "rainfall_mm": 2.449789524078369,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.449789524078369,
+      "rolling_3_day_rainfall_mm": 12.194672465324402,
+      "rolling_7_day_rainfall_mm": 18.11579692363739
+    },
+    {
+      "date": "2015-10-29",
+      "rainfall_mm": 15.797185897827148,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 15.797185897827148,
+      "rolling_3_day_rainfall_mm": 26.941653728485107,
+      "rolling_7_day_rainfall_mm": 33.91298282146454
+    },
+    {
+      "date": "2015-10-30",
+      "rainfall_mm": 13.525491714477539,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 13.525491714477539,
+      "rolling_3_day_rainfall_mm": 31.772467136383057,
+      "rolling_7_day_rainfall_mm": 47.43847453594208
+    },
+    {
+      "date": "2015-10-31",
+      "rainfall_mm": 22.18561553955078,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 22.18561553955078,
+      "rolling_3_day_rainfall_mm": 51.50829315185547,
+      "rolling_7_day_rainfall_mm": 63.70296561717987
+    },
+    {
+      "date": "2015-11-01",
+      "rainfall_mm": 24.88909339904785,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 24.88909339904785,
+      "rolling_3_day_rainfall_mm": 60.60020065307617,
+      "rolling_7_day_rainfall_mm": 88.59205901622772
+    },
+    {
+      "date": "2015-11-02",
+      "rainfall_mm": 24.9752197265625,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 24.9752197265625,
+      "rolling_3_day_rainfall_mm": 72.04992866516113,
+      "rolling_7_day_rainfall_mm": 112.51707410812378
+    },
+    {
+      "date": "2015-11-03",
+      "rainfall_mm": 0.4377753436565399,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.4377753436565399,
+      "rolling_3_day_rainfall_mm": 50.30208846926689,
+      "rolling_7_day_rainfall_mm": 104.26017114520073
+    },
+    {
+      "date": "2015-11-04",
+      "rainfall_mm": 12.97420597076416,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 12.97420597076416,
+      "rolling_3_day_rainfall_mm": 38.3872010409832,
+      "rolling_7_day_rainfall_mm": 114.78458759188652
+    },
+    {
+      "date": "2015-11-05",
+      "rainfall_mm": 0.4640914499759674,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.4640914499759674,
+      "rolling_3_day_rainfall_mm": 13.876072764396667,
+      "rolling_7_day_rainfall_mm": 99.45149314403534
+    },
+    {
+      "date": "2015-11-06",
+      "rainfall_mm": 1.902870774269104,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.902870774269104,
+      "rolling_3_day_rainfall_mm": 15.341168195009232,
+      "rolling_7_day_rainfall_mm": 87.8288722038269
+    },
+    {
+      "date": "2015-11-07",
+      "rainfall_mm": 0.629146933555603,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.629146933555603,
+      "rolling_3_day_rainfall_mm": 2.9961091578006744,
+      "rolling_7_day_rainfall_mm": 66.27240359783173
+    },
+    {
+      "date": "2015-11-08",
+      "rainfall_mm": 19.222681045532227,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 19.222681045532227,
+      "rolling_3_day_rainfall_mm": 21.754698753356934,
+      "rolling_7_day_rainfall_mm": 60.6059912443161
+    },
+    {
+      "date": "2015-11-09",
+      "rainfall_mm": 155.92324829101562,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 155.92324829101562,
+      "rolling_3_day_rainfall_mm": 175.77507627010345,
+      "rolling_7_day_rainfall_mm": 191.55401980876923
+    },
+    {
+      "date": "2015-11-10",
+      "rainfall_mm": 89.7839126586914,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 89.7839126586914,
+      "rolling_3_day_rainfall_mm": 264.92984199523926,
+      "rolling_7_day_rainfall_mm": 280.9001571238041
+    },
+    {
+      "date": "2015-11-11",
+      "rainfall_mm": 8.575151443481445,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 8.575151443481445,
+      "rolling_3_day_rainfall_mm": 254.28231239318848,
+      "rolling_7_day_rainfall_mm": 276.5011025965214
+    },
+    {
+      "date": "2015-11-12",
+      "rainfall_mm": 34.68418502807617,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 34.68418502807617,
+      "rolling_3_day_rainfall_mm": 133.04324913024902,
+      "rolling_7_day_rainfall_mm": 310.7211961746216
+    },
+    {
+      "date": "2015-11-13",
+      "rainfall_mm": 139.5066375732422,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 139.5066375732422,
+      "rolling_3_day_rainfall_mm": 182.7659740447998,
+      "rolling_7_day_rainfall_mm": 448.32496297359467
+    },
+    {
+      "date": "2015-11-14",
+      "rainfall_mm": 6.951836109161377,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 6.951836109161377,
+      "rolling_3_day_rainfall_mm": 181.14265871047974,
+      "rolling_7_day_rainfall_mm": 454.64765214920044
+    },
+    {
+      "date": "2015-11-15",
+      "rainfall_mm": 3.368461847305298,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 3.368461847305298,
+      "rolling_3_day_rainfall_mm": 149.82693552970886,
+      "rolling_7_day_rainfall_mm": 438.7934329509735
+    },
+    {
+      "date": "2015-11-16",
+      "rainfall_mm": 299.0087890625,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 299.0087890625,
+      "rolling_3_day_rainfall_mm": 309.3290870189667,
+      "rolling_7_day_rainfall_mm": 581.8789737224579
+    },
+    {
+      "date": "2015-11-17",
+      "rainfall_mm": 18.5704288482666,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 18.5704288482666,
+      "rolling_3_day_rainfall_mm": 320.9476797580719,
+      "rolling_7_day_rainfall_mm": 510.6654899120331
+    },
+    {
+      "date": "2015-11-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 317.5792179107666,
+      "rolling_7_day_rainfall_mm": 502.09033846855164
+    },
+    {
+      "date": "2015-11-19",
+      "rainfall_mm": 1.8421275615692139,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 1.8421275615692139,
+      "rolling_3_day_rainfall_mm": 20.412556409835815,
+      "rolling_7_day_rainfall_mm": 469.2482810020447
+    },
+    {
+      "date": "2015-11-20",
+      "rainfall_mm": 16.453800201416016,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 16.453800201416016,
+      "rolling_3_day_rainfall_mm": 18.29592776298523,
+      "rolling_7_day_rainfall_mm": 346.1954436302185
+    },
+    {
+      "date": "2015-11-21",
+      "rainfall_mm": 34.06934356689453,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 34.06934356689453,
+      "rolling_3_day_rainfall_mm": 52.36527132987976,
+      "rolling_7_day_rainfall_mm": 373.31295108795166
+    },
+    {
+      "date": "2015-11-22",
+      "rainfall_mm": 28.241039276123047,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 28.241039276123047,
+      "rolling_3_day_rainfall_mm": 78.7641830444336,
+      "rolling_7_day_rainfall_mm": 398.1855285167694
+    },
+    {
+      "date": "2015-11-23",
+      "rainfall_mm": 56.179969787597656,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 56.179969787597656,
+      "rolling_3_day_rainfall_mm": 118.49035263061523,
+      "rolling_7_day_rainfall_mm": 155.35670924186707
+    },
+    {
+      "date": "2015-11-24",
+      "rainfall_mm": 37.537208557128906,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 37.537208557128906,
+      "rolling_3_day_rainfall_mm": 121.95821762084961,
+      "rolling_7_day_rainfall_mm": 174.32348895072937
+    },
+    {
+      "date": "2015-11-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 93.71717834472656,
+      "rolling_7_day_rainfall_mm": 174.32348895072937
+    },
+    {
+      "date": "2015-11-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 37.537208557128906,
+      "rolling_7_day_rainfall_mm": 172.48136138916016
+    },
+    {
+      "date": "2015-11-27",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 156.02756118774414
+    },
+    {
+      "date": "2015-11-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 121.95821762084961
+    },
+    {
+      "date": "2015-11-29",
+      "rainfall_mm": 2.8242974281311035,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 2.8242974281311035,
+      "rolling_3_day_rainfall_mm": 2.8242974281311035,
+      "rolling_7_day_rainfall_mm": 96.54147577285767
+    },
+    {
+      "date": "2015-11-30",
+      "rainfall_mm": 32.90773391723633,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 32.90773391723633,
+      "rolling_3_day_rainfall_mm": 35.73203134536743,
+      "rolling_7_day_rainfall_mm": 73.26923990249634
+    },
+    {
+      "date": "2015-12-01",
+      "rainfall_mm": 72.26988220214844,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 72.26988220214844,
+      "rolling_3_day_rainfall_mm": 108.00191354751587,
+      "rolling_7_day_rainfall_mm": 108.00191354751587
+    },
+    {
+      "date": "2015-12-02",
+      "rainfall_mm": 329.34344482421875,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 329.34344482421875,
+      "rolling_3_day_rainfall_mm": 434.5210609436035,
+      "rolling_7_day_rainfall_mm": 437.3453583717346
+    },
+    {
+      "date": "2015-12-03",
+      "rainfall_mm": 6.627975940704346,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 6.627975940704346,
+      "rolling_3_day_rainfall_mm": 408.24130296707153,
+      "rolling_7_day_rainfall_mm": 443.97333431243896
+    },
+    {
+      "date": "2015-12-04",
+      "rainfall_mm": 15.409936904907227,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 15.409936904907227,
+      "rolling_3_day_rainfall_mm": 351.3813576698303,
+      "rolling_7_day_rainfall_mm": 459.3832712173462
+    },
+    {
+      "date": "2015-12-05",
+      "rainfall_mm": 13.867345809936523,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 13.867345809936523,
+      "rolling_3_day_rainfall_mm": 35.905258655548096,
+      "rolling_7_day_rainfall_mm": 473.2506170272827
+    },
+    {
+      "date": "2015-12-06",
+      "rainfall_mm": 13.21006965637207,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 13.21006965637207,
+      "rolling_3_day_rainfall_mm": 42.48735237121582,
+      "rolling_7_day_rainfall_mm": 483.6363892555237
+    },
+    {
+      "date": "2015-12-07",
+      "rainfall_mm": 48.236297607421875,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 48.236297607421875,
+      "rolling_3_day_rainfall_mm": 75.31371307373047,
+      "rolling_7_day_rainfall_mm": 498.96495294570923
+    },
+    {
+      "date": "2015-12-08",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 61.446367263793945,
+      "rolling_7_day_rainfall_mm": 426.6950707435608
+    },
+    {
+      "date": "2015-12-09",
+      "rainfall_mm": 3.4104154109954834,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 3.4104154109954834,
+      "rolling_3_day_rainfall_mm": 51.64671301841736,
+      "rolling_7_day_rainfall_mm": 100.76204133033752
+    },
+    {
+      "date": "2015-12-10",
+      "rainfall_mm": 3.7713427543640137,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 3.7713427543640137,
+      "rolling_3_day_rainfall_mm": 7.181758165359497,
+      "rolling_7_day_rainfall_mm": 97.90540814399719
+    },
+    {
+      "date": "2015-12-11",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 7.181758165359497,
+      "rolling_7_day_rainfall_mm": 82.49547123908997
+    },
+    {
+      "date": "2015-12-12",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 3.7713427543640137,
+      "rolling_7_day_rainfall_mm": 68.62812542915344
+    },
+    {
+      "date": "2015-12-13",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 55.41805577278137
+    },
+    {
+      "date": "2015-12-14",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 7.181758165359497
+    },
+    {
+      "date": "2015-12-15",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 7.181758165359497
+    },
+    {
+      "date": "2015-12-16",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 3.7713427543640137
+    },
+    {
+      "date": "2015-12-17",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-18",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-19",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-20",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-21",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-22",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-23",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-24",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-25",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-26",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.0
+    },
+    {
+      "date": "2015-12-27",
+      "rainfall_mm": 0.40675559639930725,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.40675559639930725,
+      "rolling_3_day_rainfall_mm": 0.40675559639930725,
+      "rolling_7_day_rainfall_mm": 0.40675559639930725
+    },
+    {
+      "date": "2015-12-28",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.40675559639930725,
+      "rolling_7_day_rainfall_mm": 0.40675559639930725
+    },
+    {
+      "date": "2015-12-29",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.40675559639930725,
+      "rolling_7_day_rainfall_mm": 0.40675559639930725
+    },
+    {
+      "date": "2015-12-30",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.40675559639930725
+    },
+    {
+      "date": "2015-12-31",
+      "rainfall_mm": 0.0,
+      "latitude": 13.25,
+      "longitude": 80.25,
+      "recent_rainfall_mm": 0.0,
+      "rolling_3_day_rainfall_mm": 0.0,
+      "rolling_7_day_rainfall_mm": 0.40675559639930725
+    }
+  ]
+}

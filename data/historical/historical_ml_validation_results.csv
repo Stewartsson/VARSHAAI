@@ -1,0 +1,2 @@
+model,train_year,test_year,threshold_mm,mae,rmse,pod,far,csi,true_positive,false_positive,false_negative,true_negative
+historical_lag_linear,2015,2018,64.5,3.565638524576524,8.982577703321757,0.0424442785539085,0.5871369294605809,0.04002816051493513,398,566,8979,1767169

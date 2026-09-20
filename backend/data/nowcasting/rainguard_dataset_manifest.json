@@ -1,0 +1,28 @@
+{
+  "dataset_name": "RainGuard High-Frequency Nowcasting Dataset",
+  "source_type": "DWR + INSAT + AWS + ARG + NWP",
+  "region": "Configurable IMD region",
+  "start_time": "YYYY-MM-DDTHH:MM:SS+05:30",
+  "end_time": "YYYY-MM-DDTHH:MM:SS+05:30",
+  "timestep_minutes": 30,
+  "grid_resolution_km": 4.0,
+  "latitude_points": 51,
+  "longitude_points": 52,
+  "feature_names": [
+    "radar_rainfall_mm",
+    "radar_reflectivity_dbz",
+    "satellite_qpe_mm",
+    "cloud_top_temperature_k",
+    "aws_rainfall_mm",
+    "arg_rainfall_mm",
+    "nwp_precipitation_mm",
+    "nwp_humidity",
+    "nwp_wind_speed_ms",
+    "nwp_pressure_hpa"
+  ],
+  "target_variable": "radar_rainfall_mm",
+  "missing_value_policy": "Preserve source missingness during ingestion; apply source-specific QC and controlled gap handling.",
+  "spatial_regridding": "Regrid gridded fields to the common 4-km grid; map point observations to the nearest common-grid cell.",
+  "temporal_alignment": "Align source observations to common 30-minute time windows using source-appropriate aggregation.",
+  "notes": "Dataset must contain genuine time-resolved observations. Daily rainfall datasets are not eligible for 30-minute ConvLSTM nowcasting."
+}

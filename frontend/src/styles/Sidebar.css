@@ -1,0 +1,527 @@
+/* =========================================================
+   VARSHAAI - SIDEBAR
+   AI Rainfall & Inundation Intelligence Platform
+   ========================================================= */
+
+
+/* =========================
+   MAIN SIDEBAR
+   ========================= */
+
+.sidebar {
+  width: 260px;
+  height: 100%;
+
+  flex-shrink: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background: #091624;
+
+  border-right: 1px solid #1c3042;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 25px 15px;
+
+  position: relative;
+}
+
+
+/* =========================
+   SIDEBAR SCROLLBAR
+   ========================= */
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #091624;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #20384a;
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #2c4b60;
+}
+
+
+/* =========================
+   SECTION LABEL
+   ========================= */
+
+.sidebar-label {
+  padding: 0 10px;
+
+  margin-bottom: 10px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  color: #536e82;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================
+   NAVIGATION MENU
+   ========================= */
+
+.navigation-menu {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+/* =========================
+   NAVIGATION BUTTON
+   ========================= */
+
+.nav-item {
+  width: 100%;
+
+  min-height: 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 12px;
+
+  border: 1px solid transparent;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #8299aa;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  font-size: 12px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+
+/* =========================
+   NAVIGATION HOVER
+   ========================= */
+
+.nav-item:hover {
+  background: #0d2232;
+
+  color: #d8e7f0;
+
+  border-color: #16384b;
+}
+
+
+/* =========================
+   NAVIGATION ACTIVE
+   ========================= */
+
+.nav-item.active {
+  background: #102d3e;
+
+  border-color: #1d4c62;
+
+  color: #67d5ff;
+
+  box-shadow:
+    inset 3px 0 0 #55cfff,
+    0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   NAVIGATION ICON
+   ========================= */
+
+.nav-item svg {
+  flex-shrink: 0;
+}
+
+
+/* =========================
+   NAVIGATION TEXT
+   ========================= */
+
+.nav-item span {
+  flex: 1;
+
+  white-space: nowrap;
+}
+
+
+/* =========================
+   ACTIVE ARROW
+   ========================= */
+
+.nav-arrow {
+  color: #67d5ff;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================
+   DIVIDER
+   ========================= */
+
+.sidebar-divider {
+  height: 1px;
+
+  background: #182c3c;
+
+  margin: 25px 8px;
+}
+
+
+/* =========================
+   AI PIPELINE SECTION
+   ========================= */
+
+.pipeline-section {
+  padding-bottom: 15px;
+}
+
+
+/* =========================
+   PIPELINE ITEM
+   ========================= */
+
+.pipeline-item {
+  min-height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 7px 9px;
+
+  border-radius: 7px;
+
+  margin-bottom: 5px;
+
+  transition:
+    background 0.2s ease;
+}
+
+
+/* =========================
+   PIPELINE HOVER
+   ========================= */
+
+.pipeline-item:hover {
+  background: #0c1e2d;
+}
+
+
+/* =========================
+   PIPELINE ICON
+   ========================= */
+
+.pipeline-icon {
+  width: 30px;
+
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: #102333;
+
+  color: #718da2;
+
+  border: 1px solid #173245;
+}
+
+
+/* =========================
+   PIPELINE TEXT CONTAINER
+   ========================= */
+
+.pipeline-item > div:nth-child(2) {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+/* =========================
+   PIPELINE TITLE
+   ========================= */
+
+.pipeline-item strong {
+  display: block;
+
+  font-size: 9px;
+
+  letter-spacing: 0.8px;
+
+  color: #a8bbc9;
+
+  font-weight: 700;
+}
+
+
+/* =========================
+   PIPELINE DESCRIPTION
+   ========================= */
+
+.pipeline-item span {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 8px;
+
+  color: #526d80;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================
+   PIPELINE STATUS DOT
+   ========================= */
+
+.pipeline-status {
+  width: 7px;
+
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #54d49b;
+
+  box-shadow:
+    0 0 8px rgba(84, 212, 155, 0.5);
+}
+
+
+/* =========================
+   SIDEBAR BOTTOM
+   ========================= */
+
+.sidebar-bottom {
+  margin-top: auto;
+
+  padding-top: 20px;
+}
+
+
+/* =========================
+   SYSTEM CONNECTION BOX
+   ========================= */
+
+.connection-box {
+  padding: 14px;
+
+  border-radius: 9px;
+
+  background: #0b1c2a;
+
+  border: 1px solid #1a3041;
+}
+
+
+/* =========================
+   CONNECTION HEADER
+   ========================= */
+
+.connection-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 13px;
+
+  color: #71899c;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================
+   CONNECTION ROW
+   ========================= */
+
+.connection-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 6px 0;
+
+  font-size: 9px;
+
+  color: #60798c;
+}
+
+
+/* =========================
+   CONNECTION ONLINE
+   ========================= */
+
+.connection-online {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #60cfa0;
+
+  font-size: 8px;
+}
+
+
+/* =========================
+   CONNECTION STATUS DOT
+   ========================= */
+
+.connection-online span {
+  width: 5px;
+
+  height: 5px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #60cfa0;
+
+  box-shadow:
+    0 0 5px rgba(96, 207, 160, 0.5);
+}
+
+
+/* =========================
+   VERSION
+   ========================= */
+
+.version {
+  text-align: center;
+
+  margin-top: 15px;
+
+  color: #3e5669;
+
+  font-size: 8px;
+
+  letter-spacing: 0.6px;
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+
+  .sidebar {
+    width: 230px;
+  }
+
+}
+
+
+/* SMALL TABLET */
+
+@media (max-width: 800px) {
+
+  .sidebar {
+    width: 75px;
+
+    padding: 20px 10px;
+  }
+
+  .sidebar-label,
+  .nav-item span,
+  .pipeline-section,
+  .sidebar-divider,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .nav-item {
+    justify-content: center;
+
+    padding: 0;
+
+    min-height: 44px;
+  }
+
+  .nav-arrow {
+    display: none;
+  }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .sidebar {
+    width: 64px;
+
+    padding: 15px 8px;
+  }
+
+  .nav-item {
+    min-height: 42px;
+
+    border-radius: 7px;
+  }
+
+}

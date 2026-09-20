@@ -1,0 +1,191 @@
+.top-header {
+  height: 76px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 26px;
+
+  background: #081522;
+
+  border-bottom: 1px solid #1c3042;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+
+/* BRAND */
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 245px;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #0e2b3c;
+
+  color: #5dd6ff;
+
+  border: 1px solid #1c5066;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #f2f8fc;
+}
+
+.brand-subtitle {
+  margin-top: 2px;
+
+  font-size: 9px;
+
+  letter-spacing: 1.4px;
+
+  color: #6f8da5;
+}
+
+
+/* CENTER */
+
+.header-center {
+  text-align: center;
+}
+
+.system-title {
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  color: #b7c9d8;
+}
+
+.system-subtitle {
+  margin-top: 4px;
+
+  font-size: 9px;
+
+  letter-spacing: 1.4px;
+
+  color: #557287;
+}
+
+
+/* STATUS */
+
+.header-status {
+  min-width: 330px;
+
+  display: flex;
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 22px;
+}
+
+.status-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #658096;
+}
+
+.status-item span {
+  display: block;
+
+  font-size: 8px;
+
+  letter-spacing: 1px;
+}
+
+.status-item strong {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 9px;
+
+  color: #65d5a0;
+
+  letter-spacing: 0.8px;
+}
+
+.live-indicator {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 7px 10px;
+
+  border-radius: 6px;
+
+  background: #0c2925;
+
+  border: 1px solid #1b5147;
+
+  color: #64d7a3;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .header-center {
+    display: none;
+  }
+
+  .header-status {
+    min-width: auto;
+  }
+
+  .status-item {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-header {
+    padding: 0 15px;
+  }
+
+  .brand-section {
+    min-width: auto;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+}

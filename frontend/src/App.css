@@ -1,0 +1,200 @@
+.app-shell {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #07121f;
+}
+
+.app-body {
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+
+  min-width: 0;
+  min-height: 0;
+
+  padding: 32px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* PAGE HEADER */
+
+.page-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 30px;
+}
+
+.breadcrumb {
+  margin-bottom: 8px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  color: #4e697e;
+}
+
+.page-heading h1 {
+  font-size: 30px;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.5px;
+
+  color: #eef6fb;
+}
+
+.page-heading p {
+  margin-top: 8px;
+
+  color: #6c8497;
+
+  font-size: 12px;
+}
+
+
+/* LIVE STATUS */
+
+.page-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 12px;
+
+  border-radius: 6px;
+
+  border: 1px solid #1d4038;
+
+  background: #0b211d;
+
+  color: #63cfa1;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #61d29f;
+
+  box-shadow: 0 0 8px rgba(97, 210, 159, 0.5);
+}
+
+
+/* PLACEHOLDER */
+
+.placeholder-panel {
+  min-height: 430px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px solid #1b3041;
+
+  border-radius: 14px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(20, 60, 82, 0.18),
+      transparent 55%
+    ),
+    #091825;
+}
+
+.placeholder-icon {
+  width: 70px;
+
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #102a3b;
+
+  border: 1px solid #1d4b61;
+
+  color: #5dcff5;
+
+  margin-bottom: 20px;
+}
+
+.placeholder-panel h2 {
+  font-size: 22px;
+
+  color: #dce9f1;
+}
+
+.placeholder-panel p {
+  margin-top: 8px;
+
+  font-size: 12px;
+
+  color: #5e788b;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .main-content {
+    padding: 20px;
+  }
+
+  .page-heading {
+    flex-direction: column;
+  }
+
+  .page-heading h1 {
+    font-size: 24px;
+  }
+}

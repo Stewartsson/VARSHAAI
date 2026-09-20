@@ -1,0 +1,2 @@
+model,train_year,test_year,rainfall_threshold_mm,probability_threshold,pod,far,csi,true_positive,false_positive,false_negative,true_negative
+hist_gradient_boosting_features,2015,2018,64.5,0.5,0.9322811133624826,0.06682322801024765,0.8739378186544037,8742,626,635,1767109

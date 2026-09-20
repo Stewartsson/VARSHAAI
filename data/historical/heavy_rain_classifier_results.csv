@@ -1,0 +1,2 @@
+model,train_year,test_year,rainfall_threshold_mm,classification_probability_threshold,pod,far,csi,true_positive,false_positive,false_negative,true_negative
+heavy_rain_logistic_classifier,2015,2018,64.5,0.5,0.7157939639543563,0.9599216585459062,0.03945056043071172,6712,160760,2665,1606975
