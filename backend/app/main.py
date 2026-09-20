@@ -80,6 +80,7 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:5175",
         "http://127.0.0.1:5175",
+        "https://varshaai-4js6.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
