@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useEffect, useState } from 'react'
 import {
   ArrowLeft,
@@ -109,8 +110,8 @@ function SourceDetail({ sourceType, onBack }) {
 
     try {
       const [statusResponse, latestResponse] = await Promise.all([
-        fetch('/api/satellite/hem/status'),
-        fetch('/api/satellite/hem/latest'),
+        apiFetch('/api/satellite/hem/status'),
+        apiFetch('/api/satellite/hem/latest'),
       ])
 
       if (!statusResponse.ok) {
@@ -142,7 +143,7 @@ function SourceDetail({ sourceType, onBack }) {
     setTimelineError('')
 
     try {
-      const response = await fetch('/api/satellite/hem/timeseries')
+      const response = await apiFetch('/api/satellite/hem/timeseries')
 
       if (!response.ok) {
         throw new Error('MOSDAC HEM time-series request failed')
@@ -785,3 +786,4 @@ function SourceDetail({ sourceType, onBack }) {
 }
 
 export default SourceDetail
+

@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useEffect, useState } from 'react'
 
 import {
@@ -37,10 +38,10 @@ function CommandCenter() {
     try {
       setError('')
 
-      const dashboardResponse = await fetch('/api/dashboard')
-      const sourcesResponse = await fetch('/api/sources')
-      const modelsResponse = await fetch('/api/models')
-      const floodResponse = await fetch('/api/flood/demo')
+      const dashboardResponse = await apiFetch('/api/dashboard')
+      const sourcesResponse = await apiFetch('/api/sources')
+      const modelsResponse = await apiFetch('/api/models')
+      const floodResponse = await apiFetch('/api/flood/demo')
 
       if (!dashboardResponse.ok) {
         throw new Error(

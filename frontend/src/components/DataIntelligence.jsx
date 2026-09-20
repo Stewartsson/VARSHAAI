@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useEffect, useState } from 'react'
 
 import {
@@ -43,7 +44,7 @@ function DataIntelligence({ onSourceSelect }) {
     }, FETCH_TIMEOUT)
 
     try {
-      const response = await fetch(url, {
+      const response = await apiFetch(url, {
         signal: controller.signal,
         cache: 'no-store',
       })

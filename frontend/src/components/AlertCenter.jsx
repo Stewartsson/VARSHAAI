@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useEffect, useMemo, useState } from 'react'
 import {
   Siren,
@@ -70,7 +71,7 @@ function AlertCenter() {
   async function loadRisk() {
     setError('')
     try {
-      const response = await fetch(`/api/flood/risk?t=${Date.now()}`)
+      const response = await apiFetch(`/api/flood/risk?t=${Date.now()}`)
       if (!response.ok) throw new Error(`Flood risk API returned HTTP ${response.status}`)
       const data = await response.json()
       setRiskData(data)
@@ -448,3 +449,4 @@ function AlertCenter() {
 }
 
 export default AlertCenter
+

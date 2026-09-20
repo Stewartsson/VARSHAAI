@@ -1,3 +1,4 @@
+import { apiFetch } from '../api';
 import { useEffect, useMemo, useState } from 'react'
 import {
   Waves,
@@ -63,7 +64,7 @@ function Inundation() {
   const [lastUpdated, setLastUpdated] = useState(null)
 
   async function fetchJson(url) {
-    const response = await fetch(`${url}?t=${Date.now()}`)
+    const response = await apiFetch(`${url}?t=${Date.now()}`)
     if (!response.ok) {
       throw new Error(`${url} returned HTTP ${response.status}`)
     }
@@ -529,3 +530,4 @@ function Inundation() {
 }
 
 export default Inundation
+
