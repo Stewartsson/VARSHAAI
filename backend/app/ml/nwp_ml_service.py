@@ -173,6 +173,15 @@ def validate_model_payload(
 def fetch_gfs_forecast() -> dict[str, Any]:
     """
     Fetch a 72-hour GFS forecast for Chennai.
+
+    Primary source:
+        Open-Meteo GFS endpoint.
+
+    Fallback:
+        Open-Meteo standard forecast endpoint.
+
+    The fallback keeps the downstream ML pipeline alive when
+    the GFS endpoint is temporarily rate-limited.
     """
 
     params = {
@@ -193,16 +202,77 @@ def fetch_gfs_forecast() -> dict[str, Any]:
         "timezone": "UTC",
     }
 
-    response = requests.get(
-        GFS_URL,
-        params=params,
-        timeout=30,
+    urls = [
+        (
+            GFS_URL,
+            "Open-Meteo GFS",
+        ),
+        (
+            "https://api.open-meteo.com/v1/forecast",
+            "Open-Meteo Forecast Fallback",
+        ),
+    ]
+
+    last_error = None
+
+    for url, source_name in urls:
+
+        try:
+
+            print(
+                f"Fetching NWP source: {source_name}"
+            )
+
+            response = requests.get(
+                url,
+                params=params,
+                timeout=30,
+                headers={
+                    "User-Agent": "VARSHAAI/1.0",
+                    "Accept": "application/json",
+                },
+            )
+
+            response.raise_for_status()
+
+            payload = response.json()
+
+            hourly = payload.get(
+                "hourly",
+                {},
+            )
+
+            times = hourly.get(
+                "time",
+                [],
+            )
+
+            if not times:
+                raise ValueError(
+                    "NWP response contains no hourly data."
+                )
+
+            print(
+                f"NWP source connected: {source_name}"
+            )
+
+            payload["_varshaai_source"] = source_name
+
+            return payload
+
+        except Exception as exc:
+
+            last_error = exc
+
+            print(
+                f"NWP source failed: "
+                f"{source_name} -> {exc}"
+            )
+
+    raise RuntimeError(
+        "All NWP forecast sources failed. "
+        f"Last error: {last_error}"
     )
-
-    response.raise_for_status()
-
-    return response.json()
-
 
 # ============================================================
 # HEM HISTORICAL DATA
