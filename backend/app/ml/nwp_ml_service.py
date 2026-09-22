@@ -1,31 +1,12 @@
-"""
-VARSHAAI - NWP ML Service
-
-Purpose:
-    Fetch genuine NWP forecast data for Chennai,
-    combine it with recent rainfall history,
-    and apply the trained NWP post-processing model.
-
-NWP source:
-    Open-Meteo GFS
-
-Historical rainfall source:
-    Open-Meteo Historical Archive
-
-Optional historical satellite source:
-    INSAT-3DR HEM time series
-
-Trained model:
-    backend/models/rainguard_nwp_postprocessor.joblib
-"""
-
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-
 import json
+import logging
+import threading
+import time
 
 import joblib
 import numpy as np
@@ -33,28 +14,23 @@ import requests
 
 
 # ============================================================
+# LOGGING
+# ============================================================
+
+logger = logging.getLogger(__name__)
+
+
+# ============================================================
 # PATHS
 # ============================================================
 
-# This file is:
-#
-# VARSHAAI/
-# └── backend/
-#     └── app/
-#         └── ml/
-#             └── nwp_ml_service.py
-#
-# parents[2] = backend/
-#
 BASE_DIR = Path(__file__).resolve().parents[2]
-
 
 MODEL_PATH = (
     BASE_DIR
     / "models"
     / "rainguard_nwp_postprocessor.joblib"
 )
-
 
 HEM_TIMESERIES_PATH = (
     BASE_DIR
@@ -72,25 +48,71 @@ HEM_TIMESERIES_PATH = (
 CHENNAI_LAT = 13.0827
 CHENNAI_LON = 80.2707
 
+REGION_NAME = "Chennai District, Tamil Nadu"
+
 
 # ============================================================
-# GFS / NWP
+# NWP CONFIGURATION
 # ============================================================
-
-GFS_URL = "https://api.open-meteo.com/v1/gfs"
 
 FORECAST_HOURS = 72
 
+# Primary Open-Meteo endpoint.
+OPEN_METEO_FORECAST_URL = (
+    "https://api.open-meteo.com/v1/forecast"
+)
 
-# ============================================================
-# RECENT HISTORICAL RAINFALL
-# ============================================================
+# Direct GFS endpoint as fallback.
+OPEN_METEO_GFS_URL = (
+    "https://api.open-meteo.com/v1/gfs"
+)
 
-HISTORICAL_URL = (
+# Historical archive endpoint.
+OPEN_METEO_ARCHIVE_URL = (
     "https://archive-api.open-meteo.com/v1/archive"
 )
 
-HISTORICAL_DAYS = 7
+
+# ============================================================
+# CACHE
+# ============================================================
+
+# IMPORTANT:
+# The frontend can request the forecast repeatedly.
+# Without caching, every request can hit Open-Meteo and
+# eventually produce HTTP 429 Too Many Requests.
+
+FORECAST_CACHE_SECONDS = 15 * 60
+HISTORICAL_CACHE_SECONDS = 30 * 60
+
+_forecast_cache: dict[str, Any] = {
+    "data": None,
+    "timestamp": 0.0,
+}
+
+_historical_cache: dict[str, Any] = {
+    "data": None,
+    "timestamp": 0.0,
+}
+
+_cache_lock = threading.Lock()
+
+
+# ============================================================
+# HTTP SESSION
+# ============================================================
+
+SESSION = requests.Session()
+
+SESSION.headers.update(
+    {
+        "User-Agent": (
+            "VARSHAAI-AI-Disaster-Intelligence/"
+            "1.0"
+        ),
+        "Accept": "application/json",
+    }
+)
 
 
 # ============================================================
@@ -109,17 +131,20 @@ FEATURE_NAMES = [
 
 
 # ============================================================
-# MODEL LOADING
+# MODEL
 # ============================================================
 
 def load_model_payload() -> dict[str, Any]:
     """
     Load the trained NWP post-processing model.
+
+    Expected file:
+        models/rainguard_nwp_postprocessor.joblib
     """
 
     if not MODEL_PATH.exists():
         raise FileNotFoundError(
-            f"Trained NWP model not found:\n{MODEL_PATH}"
+            f"Trained model not found: {MODEL_PATH}"
         )
 
     payload = joblib.load(MODEL_PATH)
@@ -130,63 +155,190 @@ def load_model_payload() -> dict[str, Any]:
             "Expected a dictionary."
         )
 
+    if "model" not in payload:
+        raise ValueError(
+            "Model payload does not contain 'model'."
+        )
+
     return payload
 
 
 # ============================================================
-# MODEL VALIDATION
+# SAFE FLOAT
 # ============================================================
 
-def validate_model_payload(
-    payload: dict[str, Any],
-) -> None:
+def safe_float(
+    value: Any,
+) -> float | None:
     """
-    Validate that the saved model contains the
-    expected components and features.
+    Convert a value to float safely.
     """
 
-    if "model" not in payload:
-        raise ValueError(
-            "Saved NWP model does not contain 'model'."
-        )
+    if value is None:
+        return None
 
-    if "feature_names" not in payload:
-        raise ValueError(
-            "Saved NWP model does not contain "
-            "'feature_names'."
-        )
+    try:
+        result = float(value)
 
-    saved_features = payload["feature_names"]
+        if not np.isfinite(result):
+            return None
 
-    if saved_features != FEATURE_NAMES:
-        raise ValueError(
-            "NWP model feature mismatch.\n"
-            f"Expected: {FEATURE_NAMES}\n"
-            f"Found:    {saved_features}"
-        )
+        return result
+
+    except (
+        TypeError,
+        ValueError,
+    ):
+        return None
 
 
 # ============================================================
-# GFS FORECAST
+# HTTP GET WITH RETRIES
 # ============================================================
 
-def fetch_gfs_forecast() -> dict[str, Any]:
+def http_get_json(
+    url: str,
+    params: dict[str, Any],
+    timeout: int = 20,
+    retries: int = 2,
+) -> dict[str, Any]:
     """
-    Fetch a 72-hour GFS forecast for Chennai.
+    Perform a GET request with small exponential retries.
 
-    Primary source:
-        Open-Meteo GFS endpoint.
+    This specifically handles temporary 429/5xx failures.
+    """
 
-    Fallback:
-        Open-Meteo standard forecast endpoint.
+    last_error: Exception | None = None
 
-    The fallback keeps the downstream ML pipeline alive when
-    the GFS endpoint is temporarily rate-limited.
+    for attempt in range(retries + 1):
+
+        try:
+
+            response = SESSION.get(
+                url,
+                params=params,
+                timeout=timeout,
+            )
+
+            # ------------------------------------------------
+            # RATE LIMIT
+            # ------------------------------------------------
+
+            if response.status_code == 429:
+
+                retry_after = response.headers.get(
+                    "Retry-After"
+                )
+
+                if retry_after:
+                    try:
+                        wait_seconds = min(
+                            float(retry_after),
+                            8.0,
+                        )
+                    except ValueError:
+                        wait_seconds = 2.0
+                else:
+                    wait_seconds = min(
+                        2 ** attempt,
+                        8,
+                    )
+
+                logger.warning(
+                    "Open-Meteo returned HTTP 429. "
+                    "Waiting %.1f seconds before retry.",
+                    wait_seconds,
+                )
+
+                if attempt < retries:
+                    time.sleep(wait_seconds)
+                    continue
+
+                raise RuntimeError(
+                    "Open-Meteo rate limit exceeded "
+                    "(HTTP 429)."
+                )
+
+            # ------------------------------------------------
+            # SERVER ERRORS
+            # ------------------------------------------------
+
+            if response.status_code >= 500:
+
+                last_error = RuntimeError(
+                    f"Open-Meteo server error "
+                    f"{response.status_code}"
+                )
+
+                if attempt < retries:
+                    time.sleep(
+                        min(
+                            2 ** attempt,
+                            8,
+                        )
+                    )
+                    continue
+
+                raise last_error
+
+            # ------------------------------------------------
+            # OTHER HTTP ERRORS
+            # ------------------------------------------------
+
+            response.raise_for_status()
+
+            data = response.json()
+
+            if not isinstance(data, dict):
+                raise ValueError(
+                    "Open-Meteo returned an unexpected "
+                    "response format."
+                )
+
+            return data
+
+        except Exception as exc:
+
+            last_error = exc
+
+            if attempt < retries:
+
+                wait_seconds = min(
+                    2 ** attempt,
+                    6,
+                )
+
+                logger.warning(
+                    "NWP request failed: %s. "
+                    "Retrying in %s seconds.",
+                    exc,
+                    wait_seconds,
+                )
+
+                time.sleep(wait_seconds)
+
+    raise RuntimeError(
+        f"NWP request failed after retries: "
+        f"{last_error}"
+    )
+
+
+# ============================================================
+# PRIMARY NWP FORECAST
+# ============================================================
+
+def fetch_primary_forecast() -> dict[str, Any]:
+    """
+    Fetch the 72-hour forecast using Open-Meteo.
+
+    The forecast endpoint is used as the primary source.
+    GFS is explicitly requested where supported.
     """
 
     params = {
         "latitude": CHENNAI_LAT,
         "longitude": CHENNAI_LON,
+
         "hourly": (
             "temperature_2m,"
             "relative_humidity_2m,"
@@ -198,81 +350,214 @@ def fetch_gfs_forecast() -> dict[str, Any]:
             "cloud_cover,"
             "cape"
         ),
+
         "forecast_hours": FORECAST_HOURS,
+
+        "timezone": "UTC",
+
+        # Request GFS where available.
+        "models": "gfs_seamless",
+    }
+
+    return http_get_json(
+        OPEN_METEO_FORECAST_URL,
+        params=params,
+    )
+
+
+# ============================================================
+# GFS FALLBACK
+# ============================================================
+
+def fetch_gfs_forecast() -> dict[str, Any]:
+    """
+    Direct GFS fallback endpoint.
+    """
+
+    params = {
+        "latitude": CHENNAI_LAT,
+        "longitude": CHENNAI_LON,
+
+        "hourly": (
+            "temperature_2m,"
+            "relative_humidity_2m,"
+            "precipitation,"
+            "rain,"
+            "pressure_msl,"
+            "wind_speed_10m,"
+            "wind_direction_10m,"
+            "cloud_cover,"
+            "cape"
+        ),
+
+        "forecast_hours": FORECAST_HOURS,
+
         "timezone": "UTC",
     }
 
-    urls = [
-        (
-            GFS_URL,
-            "Open-Meteo GFS",
-        ),
-        (
-            "https://api.open-meteo.com/v1/forecast",
-            "Open-Meteo Forecast Fallback",
-        ),
-    ]
+    return http_get_json(
+        OPEN_METEO_GFS_URL,
+        params=params,
+    )
 
-    last_error = None
 
-    for url, source_name in urls:
+# ============================================================
+# CACHED NWP FORECAST
+# ============================================================
 
-        try:
+def fetch_nwp_forecast() -> tuple[
+    dict[str, Any],
+    str,
+]:
+    """
+    Fetch NWP data with caching.
 
-            print(
-                f"Fetching NWP source: {source_name}"
+    Returns:
+        (forecast_data, source_name)
+    """
+
+    now = time.time()
+
+    # --------------------------------------------------------
+    # CHECK CACHE
+    # --------------------------------------------------------
+
+    with _cache_lock:
+
+        cached_data = _forecast_cache.get(
+            "data"
+        )
+
+        cached_timestamp = float(
+            _forecast_cache.get(
+                "timestamp",
+                0.0,
+            )
+        )
+
+        if (
+            cached_data is not None
+            and (
+                now - cached_timestamp
+            ) < FORECAST_CACHE_SECONDS
+        ):
+
+            logger.info(
+                "Using cached NWP forecast."
             )
 
-            response = requests.get(
-                url,
-                params=params,
-                timeout=30,
-                headers={
-                    "User-Agent": "VARSHAAI/1.0",
-                    "Accept": "application/json",
-                },
+            return (
+                cached_data,
+                _forecast_cache.get(
+                    "source",
+                    "Open-Meteo GFS",
+                ),
             )
 
-            response.raise_for_status()
+    # --------------------------------------------------------
+    # PRIMARY SOURCE
+    # --------------------------------------------------------
 
-            payload = response.json()
+    try:
 
-            hourly = payload.get(
-                "hourly",
-                {},
+        logger.info(
+            "Fetching NWP source: "
+            "Open-Meteo GFS forecast."
+        )
+
+        data = fetch_primary_forecast()
+
+        with _cache_lock:
+
+            _forecast_cache["data"] = data
+            _forecast_cache["timestamp"] = time.time()
+            _forecast_cache["source"] = (
+                "NOAA GFS"
             )
 
-            times = hourly.get(
-                "time",
-                [],
+        logger.info(
+            "Primary NWP forecast fetched successfully."
+        )
+
+        return (
+            data,
+            "NOAA GFS",
+        )
+
+    except Exception as primary_error:
+
+        logger.error(
+            "Primary NWP source failed: %s",
+            primary_error,
+        )
+
+    # --------------------------------------------------------
+    # GFS FALLBACK
+    # --------------------------------------------------------
+
+    try:
+
+        logger.info(
+            "Fetching NWP fallback: "
+            "Open-Meteo GFS."
+        )
+
+        data = fetch_gfs_forecast()
+
+        with _cache_lock:
+
+            _forecast_cache["data"] = data
+            _forecast_cache["timestamp"] = time.time()
+            _forecast_cache["source"] = (
+                "NOAA GFS"
             )
 
-            if not times:
-                raise ValueError(
-                    "NWP response contains no hourly data."
-                )
+        logger.info(
+            "GFS fallback fetched successfully."
+        )
 
-            print(
-                f"NWP source connected: {source_name}"
-            )
+        return (
+            data,
+            "NOAA GFS",
+        )
 
-            payload["_varshaai_source"] = source_name
+    except Exception as fallback_error:
 
-            return payload
+        logger.error(
+            "GFS fallback failed: %s",
+            fallback_error,
+        )
 
-        except Exception as exc:
+    # --------------------------------------------------------
+    # LAST KNOWN CACHE
+    # --------------------------------------------------------
 
-            last_error = exc
+    with _cache_lock:
 
-            print(
-                f"NWP source failed: "
-                f"{source_name} -> {exc}"
-            )
+        stale_data = _forecast_cache.get(
+            "data"
+        )
+
+        stale_source = _forecast_cache.get(
+            "source",
+            "NOAA GFS",
+        )
+
+    if stale_data is not None:
+
+        logger.warning(
+            "Using stale cached NWP forecast."
+        )
+
+        return (
+            stale_data,
+            stale_source,
+        )
 
     raise RuntimeError(
-        "All NWP forecast sources failed. "
-        f"Last error: {last_error}"
+        "All NWP forecast sources failed."
     )
+
 
 # ============================================================
 # HEM HISTORICAL DATA
@@ -280,158 +565,65 @@ def fetch_gfs_forecast() -> dict[str, Any]:
 
 def load_hem_timeseries() -> dict[str, Any]:
     """
-    Load processed INSAT-3DR HEM time-series data.
+    Load processed INSAT-3DR HEM time series.
 
     No synthetic observations are generated.
     """
 
     if not HEM_TIMESERIES_PATH.exists():
+
         return {
             "status": "unavailable",
             "observations": [],
         }
-
-    with open(
-        HEM_TIMESERIES_PATH,
-        "r",
-        encoding="utf-8",
-    ) as file:
-
-        return json.load(file)
-
-
-# ============================================================
-# RECENT HISTORICAL RAINFALL
-# ============================================================
-
-def fetch_recent_historical_rainfall() -> dict[str, Any]:
-    """
-    Fetch genuine recent rainfall history for Chennai.
-
-    Used for:
-
-        recent rainfall
-        rolling 3-day rainfall
-        rolling 7-day rainfall
-    """
-
-    now_utc = datetime.now(timezone.utc)
-
-    end_date = now_utc.date()
-
-    start_date = (
-        end_date
-        - timedelta(days=HISTORICAL_DAYS)
-    )
-
-    params = {
-        "latitude": CHENNAI_LAT,
-        "longitude": CHENNAI_LON,
-        "start_date": start_date.isoformat(),
-        "end_date": end_date.isoformat(),
-        "hourly": "precipitation",
-        "timezone": "UTC",
-    }
 
     try:
 
-        response = requests.get(
-            HISTORICAL_URL,
-            params=params,
-            timeout=30,
-        )
+        with open(
+            HEM_TIMESERIES_PATH,
+            "r",
+            encoding="utf-8",
+        ) as file:
 
-        response.raise_for_status()
+            data = json.load(file)
 
-        data = response.json()
+        if not isinstance(data, dict):
+
+            return {
+                "status": "unavailable",
+                "observations": [],
+            }
+
+        return data
 
     except Exception as exc:
 
+        logger.error(
+            "Failed to load HEM data: %s",
+            exc,
+        )
+
         return {
-            "source": "Open-Meteo Historical Archive",
-            "provider": "Open-Meteo",
             "status": "unavailable",
             "observations": [],
-            "history_available": False,
-            "error": str(exc),
         }
-
-    hourly = data.get(
-        "hourly",
-        {},
-    )
-
-    times = hourly.get(
-        "time",
-        [],
-    )
-
-    precipitation = hourly.get(
-        "precipitation",
-        [],
-    )
-
-    observations = []
-
-    for index, timestamp in enumerate(times):
-
-        if index >= len(precipitation):
-            continue
-
-        value = precipitation[index]
-
-        if value is None:
-            continue
-
-        try:
-
-            rainfall = float(value)
-
-            if not np.isfinite(rainfall):
-                continue
-
-            observations.append(
-                {
-                    "timestamp_utc": timestamp,
-                    "rainfall_mm": max(
-                        rainfall,
-                        0.0,
-                    ),
-                }
-            )
-
-        except (
-            TypeError,
-            ValueError,
-        ):
-
-            continue
-
-    return {
-        "source": "Open-Meteo Historical Archive",
-        "provider": "Open-Meteo",
-        "status": (
-            "available"
-            if observations
-            else "unavailable"
-        ),
-        "observations": observations,
-        "history_available": bool(
-            observations
-        ),
-        "error": None,
-    }
 
 
 # ============================================================
-# RAINFALL FEATURES
+# HISTORICAL RAINFALL FEATURES
 # ============================================================
 
 def calculate_rainfall_features(
     observations: list[dict[str, Any]],
 ) -> dict[str, Any]:
     """
-    Calculate recent rainfall features.
+    Calculate:
+
+    - recent rainfall
+    - rolling 3-day rainfall
+    - rolling 7-day rainfall
+
+    Historical values are never fabricated.
     """
 
     if not observations:
@@ -442,13 +634,14 @@ def calculate_rainfall_features(
             "rolling_7_day_rainfall_mm": None,
             "history_available": False,
             "history_coverage_hours": 0.0,
-            "history_source": "INSAT-3DR HEM",
             "history_reason": (
                 "No historical observations available."
             ),
         }
 
-    parsed = []
+    parsed: list[
+        tuple[datetime, float]
+    ] = []
 
     for item in observations:
 
@@ -457,19 +650,19 @@ def calculate_rainfall_features(
         )
 
         rainfall = item.get(
-            "rainfall_mm"
+            "rainfall_mm_hr"
         )
 
-        if timestamp is None:
-            continue
-
-        if rainfall is None:
+        if (
+            timestamp is None
+            or rainfall is None
+        ):
             continue
 
         try:
 
             dt = datetime.fromisoformat(
-                timestamp.replace(
+                str(timestamp).replace(
                     "Z",
                     "+00:00",
                 )
@@ -483,15 +676,14 @@ def calculate_rainfall_features(
             parsed.append(
                 (
                     dt,
-                    max(value, 0.0),
+                    value,
                 )
             )
 
         except (
-            TypeError,
             ValueError,
+            TypeError,
         ):
-
             continue
 
     if not parsed:
@@ -502,125 +694,148 @@ def calculate_rainfall_features(
             "rolling_7_day_rainfall_mm": None,
             "history_available": False,
             "history_coverage_hours": 0.0,
-            "history_source": "INSAT-3DR HEM",
             "history_reason": (
-                "Historical observations "
-                "could not be parsed."
+                "No valid rainfall observations available."
             ),
         }
+
+    # --------------------------------------------------------
+    # SORT
+    # --------------------------------------------------------
 
     parsed.sort(
         key=lambda item: item[0]
     )
 
-    latest_time = parsed[-1][0]
-
-    recent_start = (
-        latest_time
-        - timedelta(hours=24)
-    )
-
-    three_day_start = (
-        latest_time
-        - timedelta(days=3)
-    )
-
-    seven_day_start = (
-        latest_time
-        - timedelta(days=7)
-    )
-
-    recent_values = [
-        rainfall
-        for timestamp, rainfall in parsed
-        if timestamp > recent_start
-    ]
-
-    three_day_values = [
-        rainfall
-        for timestamp, rainfall in parsed
-        if timestamp > three_day_start
-    ]
-
-    seven_day_values = [
-        rainfall
-        for timestamp, rainfall in parsed
-        if timestamp > seven_day_start
-    ]
+    first_time = parsed[0][0]
+    last_time = parsed[-1][0]
 
     coverage_hours = (
-        parsed[-1][0]
-        - parsed[0][0]
+        last_time - first_time
     ).total_seconds() / 3600.0
 
+    recent_rainfall = parsed[-1][1]
+
+    # --------------------------------------------------------
+    # 3 DAY
+    # --------------------------------------------------------
+
+    rolling_3_day = None
+
+    if coverage_hours >= 72:
+
+        cutoff_3 = (
+            last_time.timestamp()
+            - 72 * 3600
+        )
+
+        values_3 = [
+            value
+            for dt, value in parsed
+            if dt.timestamp() >= cutoff_3
+        ]
+
+        if values_3:
+
+            rolling_3_day = float(
+                np.sum(values_3)
+            )
+
+    # --------------------------------------------------------
+    # 7 DAY
+    # --------------------------------------------------------
+
+    rolling_7_day = None
+
+    if coverage_hours >= 168:
+
+        cutoff_7 = (
+            last_time.timestamp()
+            - 168 * 3600
+        )
+
+        values_7 = [
+            value
+            for dt, value in parsed
+            if dt.timestamp() >= cutoff_7
+        ]
+
+        if values_7:
+
+            rolling_7_day = float(
+                np.sum(values_7)
+            )
+
+    # --------------------------------------------------------
+    # AVAILABILITY
+    # --------------------------------------------------------
+
+    history_available = (
+        rolling_3_day is not None
+        and rolling_7_day is not None
+    )
+
+    if history_available:
+
+        reason = (
+            "Required historical rainfall "
+            "features are available."
+        )
+
+    else:
+
+        reason = (
+            "Historical dataset does not contain "
+            "the full 3-day and 7-day windows "
+            "required by the trained model."
+        )
+
     return {
-        "recent_rainfall_mm": (
-            float(sum(recent_values))
-            if recent_values
-            else None
+        "recent_rainfall_mm": float(
+            recent_rainfall
         ),
+
         "rolling_3_day_rainfall_mm": (
-            float(sum(three_day_values))
-            if three_day_values
-            else None
+            rolling_3_day
         ),
+
         "rolling_7_day_rainfall_mm": (
-            float(sum(seven_day_values))
-            if seven_day_values
-            else None
+            rolling_7_day
         ),
-        "history_available": True,
-        "history_coverage_hours": float(
-            coverage_hours
+
+        "history_available": (
+            history_available
         ),
-        "history_source": "INSAT-3DR HEM",
-        "history_reason": None,
+
+        "history_coverage_hours": round(
+            coverage_hours,
+            2,
+        ),
+
+        "history_reason": reason,
     }
 
 
 # ============================================================
-# OPEN-METEO RAINFALL FEATURES
+# GFS RECORD BUILDING
 # ============================================================
 
-def calculate_open_meteo_rainfall_features(
-    observations: list[dict[str, Any]],
-) -> dict[str, Any]:
+def build_gfs_records(
+    nwp_data: dict[str, Any],
+) -> list[dict[str, Any]]:
     """
-    Calculate rainfall features from Open-Meteo
-    historical observations.
-
-    Used when INSAT-3DR HEM historical coverage
-    is unavailable.
+    Convert Open-Meteo hourly data into
+    model-ready records.
     """
 
-    result = calculate_rainfall_features(
-        observations
-    )
-
-    result["history_source"] = (
-        "Open-Meteo Historical Archive"
-    )
-
-    return result
-
-
-# ============================================================
-# NWP FEATURE MATRIX
-# ============================================================
-
-def build_nwp_feature_matrix(
-    forecast: dict[str, Any],
-    rainfall_features: dict[str, Any],
-) -> tuple[np.ndarray, list[str]]:
-    """
-    Convert NWP forecast + rainfall history into
-    the exact feature matrix expected by the model.
-    """
-
-    hourly = forecast.get(
+    hourly = nwp_data.get(
         "hourly",
         {},
     )
+
+    if not isinstance(hourly, dict):
+
+        return []
 
     times = hourly.get(
         "time",
@@ -647,364 +862,557 @@ def build_nwp_feature_matrix(
         [],
     )
 
-    recent_rainfall = (
-        rainfall_features.get(
+    records: list[
+        dict[str, Any]
+    ] = []
+
+    for index, timestamp in enumerate(
+        times
+    ):
+
+        precip = (
+            precipitation[index]
+            if index < len(precipitation)
+            else None
+        )
+
+        rh = (
+            humidity[index]
+            if index < len(humidity)
+            else None
+        )
+
+        wind_kmh = (
+            wind_speed[index]
+            if index < len(wind_speed)
+            else None
+        )
+
+        pressure_value = (
+            pressure[index]
+            if index < len(pressure)
+            else None
+        )
+
+        # ----------------------------------------------------
+        # Open-Meteo wind_speed_10m is km/h by default.
+        # Convert to m/s for the trained model.
+        # ----------------------------------------------------
+
+        wind_ms = None
+
+        if wind_kmh is not None:
+
+            try:
+
+                wind_ms = (
+                    float(wind_kmh)
+                    / 3.6
+                )
+
+            except (
+                TypeError,
+                ValueError,
+            ):
+
+                wind_ms = None
+
+        records.append(
+            {
+                "timestamp_utc": timestamp,
+
+                "nwp_precipitation_mm":
+                    safe_float(precip),
+
+                "nwp_humidity":
+                    safe_float(rh),
+
+                "nwp_wind_speed_ms":
+                    wind_ms,
+
+                "nwp_pressure_hpa":
+                    safe_float(
+                        pressure_value
+                    ),
+            }
+        )
+
+    return records
+
+
+# ============================================================
+# MODEL PREDICTION
+# ============================================================
+
+def predict_single_record(
+    model: Any,
+    record: dict[str, Any],
+    historical: dict[str, Any],
+) -> float | None:
+    """
+    Run one ML prediction.
+    """
+
+    values = [
+        record.get(
+            "nwp_precipitation_mm"
+        ),
+
+        record.get(
+            "nwp_humidity"
+        ),
+
+        record.get(
+            "nwp_wind_speed_ms"
+        ),
+
+        record.get(
+            "nwp_pressure_hpa"
+        ),
+
+        historical.get(
             "recent_rainfall_mm"
-        )
-    )
+        ),
 
-    rolling_3_day = (
-        rainfall_features.get(
+        historical.get(
             "rolling_3_day_rainfall_mm"
-        )
-    )
+        ),
 
-    rolling_7_day = (
-        rainfall_features.get(
+        historical.get(
             "rolling_7_day_rainfall_mm"
-        )
-    )
+        ),
+    ]
 
-    if recent_rainfall is None:
-        recent_rainfall = 0.0
+    # --------------------------------------------------------
+    # Validate all seven values.
+    # --------------------------------------------------------
 
-    if rolling_3_day is None:
-        rolling_3_day = 0.0
+    for value in values:
 
-    if rolling_7_day is None:
-        rolling_7_day = 0.0
-
-    sample_count = min(
-        len(times),
-        len(precipitation),
-        len(humidity),
-        len(wind_speed),
-        len(pressure),
-    )
-
-    rows = []
-
-    valid_times = []
-
-    for index in range(sample_count):
+        if value is None:
+            return None
 
         try:
 
-            values = [
-                float(precipitation[index]),
-                float(humidity[index]),
-                float(wind_speed[index]) / 3.6,
-                float(pressure[index]),
-                float(recent_rainfall),
-                float(rolling_3_day),
-                float(rolling_7_day),
-            ]
+            if not np.isfinite(
+                float(value)
+            ):
+                return None
 
         except (
             TypeError,
             ValueError,
         ):
 
-            continue
-
-        if not np.isfinite(
-            values
-        ).all():
-
-            continue
-
-        rows.append(values)
-        valid_times.append(
-            times[index]
-        )
-
-    if not rows:
-
-        raise ValueError(
-            "No valid NWP feature rows "
-            "could be created."
-        )
+            return None
 
     X = np.asarray(
-        rows,
+        [values],
         dtype=np.float32,
     )
 
-    return X, valid_times
-
-
-# ============================================================
-# POST-PROCESS NWP
-# ============================================================
-
-def postprocess_forecast(
-    X: np.ndarray,
-) -> np.ndarray:
-    """
-    Apply the trained NWP post-processing model.
-    """
-
-    payload = load_model_payload()
-
-    validate_model_payload(
-        payload
+    prediction = model.predict(
+        X
     )
 
-    model = payload["model"]
+    if prediction is None:
+        return None
 
-    if X.ndim != 2:
-        raise ValueError(
-            "NWP feature matrix must be 2-dimensional."
-        )
+    if len(prediction) == 0:
+        return None
 
-    if X.shape[1] != len(
-        FEATURE_NAMES
-    ):
-        raise ValueError(
-            f"Expected {len(FEATURE_NAMES)} features, "
-            f"received {X.shape[1]}."
-        )
-
-    predictions = model.predict(X)
-
-    predictions = np.asarray(
-        predictions,
-        dtype=np.float32,
+    prediction_value = safe_float(
+        prediction[0]
     )
 
-    predictions = np.maximum(
-        predictions,
+    if prediction_value is None:
+        return None
+
+    # Rainfall cannot be negative.
+    return max(
+        prediction_value,
         0.0,
     )
 
-    return predictions
-
 
 # ============================================================
-# COMPLETE 72-HOUR FORECAST
+# POST-PROCESSED FORECAST
 # ============================================================
 
-def generate_nwp_forecast() -> dict[str, Any]:
+def generate_postprocessed_forecast() -> dict[str, Any]:
     """
-    Complete NWP rainfall prediction pipeline.
+    Complete pipeline:
+
+        NWP
+          ↓
+        ML post-processing
+          ↓
+        Rainfall forecast
+
+    The ML model runs only when all seven
+    required features are genuinely available.
     """
 
-    print(
-        "\n========================================"
-    )
-    print(
-        "       VARSHAAI NWP FORECAST"
-    )
-    print(
-        "========================================"
+    # --------------------------------------------------------
+    # LOAD MODEL
+    # --------------------------------------------------------
+
+    model_payload = load_model_payload()
+
+    model = model_payload.get(
+        "model"
     )
 
-    print(
-        "Model path:",
-        MODEL_PATH,
-    )
+    if model is None:
 
-    if not MODEL_PATH.exists():
-
-        raise FileNotFoundError(
-            f"NWP model not found:\n{MODEL_PATH}"
+        raise ValueError(
+            "Trained model object is missing."
         )
 
-    print(
-        "Model found: YES"
+    model_features = model_payload.get(
+        "feature_names",
+        FEATURE_NAMES,
     )
 
-    print(
-        "\nFetching GFS forecast..."
-    )
+    # --------------------------------------------------------
+    # HISTORICAL HEM
+    # --------------------------------------------------------
 
-    forecast = fetch_gfs_forecast()
+    hem_data = load_hem_timeseries()
 
-    print(
-        "GFS forecast received."
-    )
-
-    print(
-        "\nFetching recent rainfall..."
-    )
-
-    historical = (
-        fetch_recent_historical_rainfall()
-    )
-
-    print(
-        "Historical rainfall status:",
-        historical.get(
-            "status"
-        ),
-    )
-
-    observations = historical.get(
+    observations = hem_data.get(
         "observations",
         [],
     )
 
-    rainfall_features = (
-        calculate_open_meteo_rainfall_features(
+    if not isinstance(
+        observations,
+        list,
+    ):
+
+        observations = []
+
+    historical = (
+        calculate_rainfall_features(
             observations
         )
     )
 
-    print(
-        "\nRainfall features:"
+    # --------------------------------------------------------
+    # NWP
+    # --------------------------------------------------------
+
+    nwp_data, nwp_source = (
+        fetch_nwp_forecast()
     )
 
-    print(
-        "  Recent rainfall:",
-        rainfall_features.get(
-            "recent_rainfall_mm"
-        ),
-        "mm",
-    )
-
-    print(
-        "  Rolling 3-day:",
-        rainfall_features.get(
-            "rolling_3_day_rainfall_mm"
-        ),
-        "mm",
-    )
-
-    print(
-        "  Rolling 7-day:",
-        rainfall_features.get(
-            "rolling_7_day_rainfall_mm"
-        ),
-        "mm",
-    )
-
-    print(
-        "\nBuilding NWP features..."
-    )
-
-    X, valid_times = (
-        build_nwp_feature_matrix(
-            forecast,
-            rainfall_features,
+    nwp_records = (
+        build_gfs_records(
+            nwp_data
         )
     )
 
-    print(
-        "Feature matrix:",
-        X.shape,
+    # --------------------------------------------------------
+    # FEATURE STATUS
+    # --------------------------------------------------------
+
+    nwp_features_available = (
+        len(nwp_records) > 0
     )
 
-    print(
-        "\nApplying NWP post-processing model..."
+    feature_status = {
+
+        "nwp_precipitation_mm":
+            (
+                "available"
+                if nwp_features_available
+                else "unavailable"
+            ),
+
+        "nwp_humidity":
+            (
+                "available"
+                if nwp_features_available
+                else "unavailable"
+            ),
+
+        "nwp_wind_speed_ms":
+            (
+                "available"
+                if nwp_features_available
+                else "unavailable"
+            ),
+
+        "nwp_pressure_hpa":
+            (
+                "available"
+                if nwp_features_available
+                else "unavailable"
+            ),
+
+        "recent_rainfall_mm":
+            (
+                "available"
+                if historical[
+                    "recent_rainfall_mm"
+                ] is not None
+                else "unavailable"
+            ),
+
+        "rolling_3_day_rainfall_mm":
+            (
+                "available"
+                if historical[
+                    "rolling_3_day_rainfall_mm"
+                ] is not None
+                else "unavailable"
+            ),
+
+        "rolling_7_day_rainfall_mm":
+            (
+                "available"
+                if historical[
+                    "rolling_7_day_rainfall_mm"
+                ] is not None
+                else "unavailable"
+            ),
+    }
+
+    # --------------------------------------------------------
+    # ML GATE
+    # --------------------------------------------------------
+
+    required_available = all(
+        value == "available"
+        for value in feature_status.values()
     )
 
-    predictions = postprocess_forecast(
-        X
-    )
+    predictions: list[
+        dict[str, Any]
+    ] = []
 
-    print(
-        "Predictions generated:",
-        len(predictions),
-    )
+    # --------------------------------------------------------
+    # ML INFERENCE
+    # --------------------------------------------------------
 
-    forecast_rows = []
+    if required_available:
 
-    for index, timestamp in enumerate(
-        valid_times
-    ):
+        for index, record in enumerate(
+            nwp_records
+        ):
 
-        forecast_rows.append(
-            {
-                "timestamp_utc": timestamp,
-                "rainfall_prediction_mm": float(
-                    predictions[index]
-                ),
-            }
+            prediction_value = (
+                predict_single_record(
+                    model=model,
+                    record=record,
+                    historical=historical,
+                )
+            )
+
+            if prediction_value is None:
+                continue
+
+            predictions.append(
+                {
+                    "timestamp_utc":
+                        record[
+                            "timestamp_utc"
+                        ],
+
+                    "lead_hour":
+                        index + 1,
+
+                    "raw_nwp_precipitation_mm":
+                        record[
+                            "nwp_precipitation_mm"
+                        ],
+
+                    "ml_postprocessed_precipitation_mm":
+                        prediction_value,
+                }
+            )
+
+    # --------------------------------------------------------
+    # STATUS
+    # --------------------------------------------------------
+
+    if predictions:
+
+        status = (
+            "prediction_available"
         )
 
-    print(
-        "\nNWP forecast completed."
-    )
+    elif not nwp_records:
 
-    print(
-        "========================================"
-    )
+        status = (
+            "nwp_unavailable"
+        )
+
+    elif not historical[
+        "history_available"
+    ]:
+
+        status = (
+            "historical_data_required"
+        )
+
+    else:
+
+        status = (
+            "prediction_unavailable"
+        )
+
+    # --------------------------------------------------------
+    # RETURN
+    # --------------------------------------------------------
 
     return {
-        "status": "success",
-        "location": {
-            "name": "Chennai",
-            "latitude": CHENNAI_LAT,
-            "longitude": CHENNAI_LON,
-        },
-        "model": (
-            "rainguard_nwp_postprocessor"
+
+        "status":
+            status,
+
+        "source":
+            nwp_source,
+
+        "provider":
+            "Open-Meteo",
+
+        "model":
+            type(model).__name__,
+
+        "model_file":
+            MODEL_PATH.name,
+
+        "region":
+            REGION_NAME,
+
+        "latitude":
+            CHENNAI_LAT,
+
+        "longitude":
+            CHENNAI_LON,
+
+        "forecast_horizon_hours":
+            FORECAST_HOURS,
+
+        "feature_names":
+            model_features,
+
+        "feature_count":
+            len(model_features),
+
+        "feature_status":
+            feature_status,
+
+        "historical_rainfall":
+            historical,
+
+        "prediction_available":
+            bool(predictions),
+
+        "predictions":
+            predictions,
+
+        "prediction_count":
+            len(predictions),
+
+        "cache_seconds":
+            FORECAST_CACHE_SECONDS,
+
+        "scientific_note": (
+            "The NWP forecast is obtained from "
+            "Open-Meteo. The trained ML model is "
+            "executed only when all seven required "
+            "features are genuinely available. "
+            "Historical rainfall is not synthesized."
         ),
-        "nwp_source": (
-            "Open-Meteo GFS"
-        ),
-        "historical_rainfall_source": (
-            historical.get(
-                "source"
-            )
-        ),
-        "feature_names": FEATURE_NAMES,
-        "forecast_hours": len(
-            forecast_rows
-        ),
-        "forecast": forecast_rows,
     }
 
 
 # ============================================================
-# SIMPLE MODEL TEST
+# SAFE SERVICE WRAPPER
 # ============================================================
 
-def test_model() -> None:
+def get_postprocessed_forecast() -> dict[str, Any]:
     """
-    Test only the trained model file.
+    Public service function.
+
+    This wrapper prevents an external NWP failure
+    from unnecessarily crashing the API process.
     """
 
-    print(
-        "\n===== VARSHAAI NWP MODEL TEST ====="
-    )
+    try:
 
-    print(
-        "Model path:",
-        MODEL_PATH,
-    )
-
-    print(
-        "Exists:",
-        MODEL_PATH.exists(),
-    )
-
-    payload = load_model_payload()
-
-    validate_model_payload(
-        payload
-    )
-
-    print(
-        "Model loaded successfully."
-    )
-
-    print(
-        "Feature names:"
-    )
-
-    for index, name in enumerate(
-        FEATURE_NAMES,
-        start=1,
-    ):
-
-        print(
-            f"  {index}. {name}"
+        return (
+            generate_postprocessed_forecast()
         )
 
-    print(
-        "===== MODEL TEST PASSED ====="
-    )
+    except Exception as exc:
+
+        logger.exception(
+            "Integrated NWP-to-ML forecast failed."
+        )
+
+        return {
+
+            "status":
+                "error",
+
+            "source":
+                "Open-Meteo",
+
+            "provider":
+                "Open-Meteo",
+
+            "model":
+                "HistGradientBoostingRegressor",
+
+            "model_file":
+                MODEL_PATH.name,
+
+            "region":
+                REGION_NAME,
+
+            "latitude":
+                CHENNAI_LAT,
+
+            "longitude":
+                CHENNAI_LON,
+
+            "forecast_horizon_hours":
+                FORECAST_HOURS,
+
+            "feature_names":
+                FEATURE_NAMES,
+
+            "feature_count":
+                len(FEATURE_NAMES),
+
+            "feature_status":
+                {
+                    feature:
+                        "unavailable"
+                    for feature in FEATURE_NAMES
+                },
+
+            "prediction_available":
+                False,
+
+            "predictions":
+                [],
+
+            "prediction_count":
+                0,
+
+            "error":
+                str(exc),
+
+            "scientific_note": (
+                "The live NWP provider was temporarily "
+                "unavailable. No synthetic rainfall "
+                "prediction was generated."
+            ),
+        }
 
 
 # ============================================================
@@ -1013,486 +1421,81 @@ def test_model() -> None:
 
 if __name__ == "__main__":
 
-    try:
-
-        test_model()
-
-        print(
-            "\n===== RUNNING FULL NWP TEST ====="
-        )
-
-        result = (
-            generate_nwp_forecast()
-        )
-
-        print(
-            "\nSUCCESS!"
-        )
-
-        print(
-            "Forecast records:",
-            result["forecast_hours"],
-        )
-
-        print(
-            "\nFirst 5 predictions:"
-        )
-
-        for item in result[
-            "forecast"
-        ][:5]:
-
-            print(
-                f"  {item['timestamp_utc']} "
-                f"-> "
-                f"{item['rainfall_prediction_mm']:.3f} mm"
-            )
-
-    except Exception as error:
-
-        print(
-            "\n========================================"
-        )
-        print(
-            "          NWP TEST FAILED"
-        )
-        print(
-            "========================================"
-        )
-
-        print(
-            repr(error)
-        )
-
-        raise
-    # ============================================================
-# COMPLETE NWP FEATURE MATRIX
-# ============================================================
-
-def _complete_nwp_feature_matrix(
-    forecast: dict[str, Any],
-    rainfall_features: dict[str, Any],
-) -> tuple[np.ndarray, list[str]]:
-    """
-    Build the seven-feature matrix required by the trained
-    NWP post-processing model.
-    """
-
-    hourly = forecast.get("hourly", {})
-
-    times = hourly.get("time", [])
-    precipitation = hourly.get("precipitation", [])
-    humidity = hourly.get("relative_humidity_2m", [])
-    wind_speed = hourly.get("wind_speed_10m", [])
-    pressure = hourly.get("pressure_msl", [])
-
-    recent = rainfall_features.get(
-        "recent_rainfall_mm"
-    )
-    rolling_3 = rainfall_features.get(
-        "rolling_3_day_rainfall_mm"
-    )
-    rolling_7 = rainfall_features.get(
-        "rolling_7_day_rainfall_mm"
-    )
-
-    if recent is None:
-        recent = 0.0
-
-    if rolling_3 is None:
-        rolling_3 = 0.0
-
-    if rolling_7 is None:
-        rolling_7 = 0.0
-
-    sample_count = min(
-        len(times),
-        len(precipitation),
-        len(humidity),
-        len(wind_speed),
-        len(pressure),
-    )
-
-    rows = []
-    valid_times = []
-
-    for index in range(sample_count):
-
-        try:
-            row = [
-                float(precipitation[index]),
-                float(humidity[index]),
-                float(wind_speed[index]) / 3.6,
-                float(pressure[index]),
-                float(recent),
-                float(rolling_3),
-                float(rolling_7),
-            ]
-
-        except (TypeError, ValueError):
-            continue
-
-        if not np.isfinite(row).all():
-            continue
-
-        rows.append(row)
-        valid_times.append(times[index])
-
-    if not rows:
-        raise ValueError(
-            "No valid NWP feature rows could be created."
-        )
-
-    X = np.asarray(
-        rows,
-        dtype=np.float32,
-    )
-
-    return X, valid_times
-
-
-# ============================================================
-# GENERATE POST-PROCESSED FORECAST
-# ============================================================
-
-def generate_postprocessed_forecast() -> dict[str, Any]:
-    """
-    Generate a 72-hour NWP rainfall forecast and apply the
-    trained HistGradientBoosting post-processing model.
-    """
-
-    print()
-    print("========================================")
-    print("       VARSHAAI NWP FORECAST")
-    print("========================================")
-
-    print(
-        f"Model path: {MODEL_PATH}"
-    )
-
-    if not MODEL_PATH.exists():
-        raise FileNotFoundError(
-            f"Trained model not found: {MODEL_PATH}"
-        )
-
-    print("Model found: YES")
-
-    # --------------------------------------------------------
-    # LOAD MODEL
-    # --------------------------------------------------------
-
-    payload = load_model_payload()
-
-    model = payload.get("model")
-
-    if model is None:
-        raise ValueError(
-            "Model payload does not contain 'model'."
-        )
-
-    feature_names = payload.get(
-        "feature_names",
-        FEATURE_NAMES,
-    )
-
-    if len(feature_names) != 7:
-        raise ValueError(
-            f"Expected 7 model features, "
-            f"received {len(feature_names)}."
-        )
-
-    # --------------------------------------------------------
-    # FETCH NWP
-    # --------------------------------------------------------
-
-    print()
-    print("Fetching GFS forecast...")
-
-    forecast = fetch_gfs_forecast()
-
-    print("GFS forecast received.")
-
-    # --------------------------------------------------------
-    # FETCH RECENT RAINFALL
-    # --------------------------------------------------------
-
-    print()
-    print("Fetching recent rainfall...")
-
-    rainfall_history = (
-        fetch_recent_historical_rainfall()
-    )
-
-    print(
-        "Historical rainfall status:",
-        rainfall_history.get(
-            "status",
-            "unknown",
-        ),
-    )
-
-    observations = rainfall_history.get(
-        "observations",
-        [],
-    )
-
-    rainfall_features = (
-        calculate_open_meteo_rainfall_features(
-            observations
-        )
-    )
-
-    print()
-    print("Rainfall features:")
-    print(
-        "  Recent rainfall:",
-        rainfall_features.get(
-            "recent_rainfall_mm"
-        ),
-        "mm",
-    )
-    print(
-        "  Rolling 3-day:",
-        rainfall_features.get(
-            "rolling_3_day_rainfall_mm"
-        ),
-        "mm",
-    )
-    print(
-        "  Rolling 7-day:",
-        rainfall_features.get(
-            "rolling_7_day_rainfall_mm"
-        ),
-        "mm",
-    )
-
-    # --------------------------------------------------------
-    # BUILD FEATURES
-    # --------------------------------------------------------
-
-    print()
-    print("Building NWP features...")
-
-    X, valid_times = (
-        _complete_nwp_feature_matrix(
-            forecast,
-            rainfall_features,
-        )
-    )
-
-    print(
-        "Feature matrix:",
-        X.shape,
-    )
-
-    # --------------------------------------------------------
-    # VERIFY FEATURE ORDER
-    # --------------------------------------------------------
-
-    expected_features = [
-        "nwp_precipitation_mm",
-        "nwp_humidity",
-        "nwp_wind_speed_ms",
-        "nwp_pressure_hpa",
-        "recent_rainfall_mm",
-        "rolling_3_day_rainfall_mm",
-        "rolling_7_day_rainfall_mm",
-    ]
-
-    if list(feature_names) != expected_features:
-        raise ValueError(
-            "Model feature order does not match "
-            "the expected NWP feature order."
-        )
-
-    # --------------------------------------------------------
-    # MODEL PREDICTION
-    # --------------------------------------------------------
-
     print()
     print(
-        "Applying NWP post-processing model..."
+        "=========================================="
     )
-
-    predictions = model.predict(X)
-
-    predictions = np.asarray(
-        predictions,
-        dtype=np.float32,
+    print(
+        "       VARSHAAI NWP ML SERVICE"
     )
-
-    predictions = np.maximum(
-        predictions,
-        0.0,
+    print(
+        "=========================================="
     )
 
     print(
-        "Predictions generated:",
-        len(predictions),
-    )
-
-    # --------------------------------------------------------
-    # BUILD RESPONSE
-    # --------------------------------------------------------
-
-    records = []
-
-    for timestamp, prediction, row in zip(
-        valid_times,
-        predictions,
-        X,
-    ):
-
-        records.append(
-            {
-                "timestamp_utc": timestamp,
-                "nwp_precipitation_mm": float(
-                    row[0]
-                ),
-                "nwp_humidity": float(
-                    row[1]
-                ),
-                "nwp_wind_speed_ms": float(
-                    row[2]
-                ),
-                "nwp_pressure_hpa": float(
-                    row[3]
-                ),
-                "recent_rainfall_mm": float(
-                    row[4]
-                ),
-                "rolling_3_day_rainfall_mm": float(
-                    row[5]
-                ),
-                "rolling_7_day_rainfall_mm": float(
-                    row[6]
-                ),
-                "postprocessed_rainfall_mm": float(
-                    prediction
-                ),
-            }
-        )
-
-    print()
-    print(
-        "NWP forecast completed."
-    )
-    print(
-        "========================================"
-    )
-
-    return {
-        "status": "success",
-        "location": {
-            "name": "Chennai",
-            "latitude": CHENNAI_LAT,
-            "longitude": CHENNAI_LON,
-        },
-        "forecast_hours": len(records),
-        "model": {
-            "type": type(model).__name__,
-            "file": MODEL_PATH.name,
-            "features": list(feature_names),
-        },
-        "rainfall_history": {
-            "source": rainfall_history.get(
-                "source"
-            ),
-            "provider": rainfall_history.get(
-                "provider"
-            ),
-            "status": rainfall_history.get(
-                "status"
-            ),
-            "history_available": rainfall_features.get(
-                "history_available",
-                False,
-            ),
-            "recent_rainfall_mm": rainfall_features.get(
-                "recent_rainfall_mm"
-            ),
-            "rolling_3_day_rainfall_mm": rainfall_features.get(
-                "rolling_3_day_rainfall_mm"
-            ),
-            "rolling_7_day_rainfall_mm": rainfall_features.get(
-                "rolling_7_day_rainfall_mm"
-            ),
-        },
-        "records": records,
-        "generated_at": datetime.now(
-            timezone.utc
-        ).isoformat(),
-    }
-
-
-# ============================================================
-# MODULE TEST
-# ============================================================
-
-if __name__ == "__main__":
-
-    print()
-    print("===== VARSHAAI NWP MODEL TEST =====")
-
-    print(
-        "Model path:",
+        "Model:",
         MODEL_PATH,
     )
 
     print(
-        "Exists:",
-        MODEL_PATH.exists(),
+        "HEM:",
+        HEM_TIMESERIES_PATH,
     )
-
-    payload = load_model_payload()
 
     print(
-        "Model loaded successfully."
+        "Region:",
+        REGION_NAME,
     )
 
-    feature_names = payload.get(
-        "feature_names",
+    print(
+        "Forecast:",
+        f"{FORECAST_HOURS} hours",
+    )
+
+    print(
+        "Features:",
         FEATURE_NAMES,
     )
 
-    print(
-        "Feature names:"
-    )
+    try:
 
-    for index, name in enumerate(
-        feature_names,
-        start=1,
-    ):
-        print(
-            f"  {index}. {name}"
+        payload = (
+            load_model_payload()
         )
 
-    print(
-        "===== MODEL TEST PASSED ====="
-    )
+        print(
+            "Model loaded:",
+            type(
+                payload.get("model")
+            ).__name__,
+        )
 
-    print()
-    print(
-        "===== RUNNING FULL NWP TEST ====="
-    )
+        result = (
+            get_postprocessed_forecast()
+        )
 
-    result = generate_postprocessed_forecast()
-
-    print()
-    print("SUCCESS!")
-    print(
-        "Forecast records:",
-        result["forecast_hours"],
-    )
-
-    print()
-    print("First 5 predictions:")
-
-    for record in result["records"][:5]:
+        print()
+        print(
+            "Status:",
+            result.get("status"),
+        )
 
         print(
-            f"  "
-            f"{record['timestamp_utc']} "
-            f"-> "
-            f"{record['postprocessed_rainfall_mm']:.3f} mm"
+            "Prediction count:",
+            result.get(
+                "prediction_count"
+            ),
+        )
+
+        print(
+            "Source:",
+            result.get("source"),
+        )
+
+    except Exception as exc:
+
+        print()
+        print(
+            "SERVICE ERROR:",
+            exc,
         )
