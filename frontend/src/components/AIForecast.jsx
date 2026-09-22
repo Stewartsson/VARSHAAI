@@ -39,7 +39,9 @@ import '../styles/AIForecast.css'
 // BACKEND
 // ============================================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000'
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  ''
 
 const FLOOD_FORECAST_ENDPOINT =
   `${API_BASE_URL}/api/nwp/ml/flood-forecast`
