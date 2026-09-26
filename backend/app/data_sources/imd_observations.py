@@ -11,14 +11,24 @@ CHENNAI_LAT = 13.0827
 CHENNAI_LON = 80.2707
 
 
+import os
+
+IMD_API_KEY = os.environ.get("IMD_API_KEY")
+
 def _fetch_json(url: str, timeout: int = 15) -> Any:
+    headers = {
+        "User-Agent": "VARSHAAI/1.0",
+        "Accept": "application/json",
+    }
+    
+    if IMD_API_KEY:
+        headers["Authorization"] = f"Token {IMD_API_KEY}"
+        headers["api-key"] = IMD_API_KEY
+        
     response = requests.get(
         url,
         timeout=timeout,
-        headers={
-            "User-Agent": "VARSHAAI/1.0",
-            "Accept": "application/json",
-        },
+        headers=headers,
     )
 
     response.raise_for_status()
@@ -120,48 +130,43 @@ def fetch_tamil_nadu_observations() -> dict:
             ),
         }
 
-    except Exception as exc:
-        # Fallback to synthetic observations for SIH demo if IMD API is inaccessible
-        import random
-        
-        synthetic_records = []
-        # Generate 15 synthetic AWS/ARG stations around Chennai
-        for i in range(15):
-            lat = CHENNAI_LAT + random.uniform(-0.5, 0.5)
-            lon = CHENNAI_LON + random.uniform(-0.5, 0.5)
-            synthetic_records.append({
-                "station_id": f"AWS-{i+100}",
-                "call_sign": f"V{i}MA",
-                "station": f"Chennai Demo AWS {i}",
-                "district": "CHENNAI",
-                "state": "TAMIL NADU",
-                "date": datetime.now().strftime("%Y-%m-%d"),
-                "time": datetime.now().strftime("%H:%M:%S"),
-                "temperature_c": random.uniform(25, 35),
-                "dew_point_c": random.uniform(20, 25),
-                "relative_humidity_percent": random.uniform(60, 95),
-                "wind_direction_deg": random.uniform(0, 360),
-                "wind_speed_kmph": random.uniform(5, 30),
-                "mslp_hpa": random.uniform(1000, 1010),
-                "latitude": lat,
-                "longitude": lon,
-                "weather_code": "00",
-                "nebulosity": random.uniform(0, 8),
-                "feel_like_c": random.uniform(27, 38),
-                "raw": {},
-            })
-            
+    except requests.HTTPError as exc:
+        status_code = (
+            exc.response.status_code
+            if exc.response is not None
+            else None
+        )
+
         return {
-            "status": "connected",
-            "source": "India Meteorological Department (Synthetic Fallback)",
+            "status": "access_pending" if status_code in (401, 403) else "unavailable",
+            "source": "India Meteorological Department",
             "network": "AWS/ARG",
             "state": "Tamil Nadu",
             "state_id": TAMIL_NADU_STATE_ID,
             "checked_at_utc": checked_at,
-            "total_records": len(synthetic_records),
-            "observations": synthetic_records,
+            "total_records": 0,
+            "observations": [],
+            "http_status": status_code,
+            "error": str(exc),
             "endpoint": url,
-            "access_note": "Using synthetic AWS/ARG data for SIH demonstration.",
+            "access_note": (
+                "IMD AWS/ARG endpoint requires valid authentication. "
+                "Ensure IMD_API_KEY is correctly set in Render environment."
+            ),
+        }
+
+    except Exception as exc:
+        return {
+            "status": "unavailable",
+            "source": "India Meteorological Department",
+            "network": "AWS/ARG",
+            "state": "Tamil Nadu",
+            "state_id": TAMIL_NADU_STATE_ID,
+            "checked_at_utc": checked_at,
+            "total_records": 0,
+            "observations": [],
+            "error": str(exc),
+            "endpoint": url,
         }
 
 

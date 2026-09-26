@@ -560,26 +560,7 @@ def fetch_nwp_forecast() -> tuple[
             stale_source,
         )
 
-    logger.warning("All NWP forecast sources failed or rate limited. Using synthetic fallback for SIH demo.")
-    
-    # Generate 72 hours of synthetic fallback data
-    import datetime
-    now = datetime.datetime.now(datetime.timezone.utc).replace(minute=0, second=0, microsecond=0)
-    times = [(now + datetime.timedelta(hours=i)).isoformat() for i in range(72)]
-    
-    import random
-    synthetic_data = {
-        "hourly": {
-            "time": times,
-            "precipitation": [random.uniform(0, 10) if i < 12 else random.uniform(0, 2) for i in range(72)],
-            "relative_humidity_2m": [random.uniform(70, 95) for _ in range(72)],
-            "wind_speed_10m": [random.uniform(5, 25) for _ in range(72)],
-            "pressure_msl": [random.uniform(1000, 1010) for _ in range(72)]
-        }
-    }
-    
-    return (synthetic_data, "Synthetic Fallback GFS")
-
+    raise RuntimeError("All NWP forecast sources failed or rate limited.")
 # ============================================================
 # HEM HISTORICAL DATA
 # ============================================================
