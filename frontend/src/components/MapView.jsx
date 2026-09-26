@@ -28,15 +28,15 @@ function MapView() {
   const riskZones = [
     {
       id: 1,
-      position: [8.7642, 78.1348],
-      name: 'Thoothukudi',
+      position: [13.0827, 80.2707],
+      name: 'Chennai Central',
       rainfall: '168 mm',
       floodDepth: '0.74 m',
       risk: 'HIGH',
     },
     {
       id: 2,
-      position: [8.8100, 78.1200],
+      position: [13.1200, 80.2500],
       name: 'North Zone',
       rainfall: '132 mm',
       floodDepth: '0.42 m',
@@ -44,7 +44,7 @@ function MapView() {
     },
     {
       id: 3,
-      position: [8.7000, 78.1700],
+      position: [13.0100, 80.2200],
       name: 'South Zone',
       rainfall: '104 mm',
       floodDepth: '0.28 m',
@@ -54,12 +54,12 @@ function MapView() {
 
 
   const floodArea = [
-    [8.7900, 78.1050],
-    [8.8150, 78.1250],
-    [8.8000, 78.1650],
-    [8.7650, 78.1750],
-    [8.7350, 78.1500],
-    [8.7450, 78.1150],
+    [13.1100, 80.2400],
+    [13.1300, 80.2600],
+    [13.1200, 80.3000],
+    [13.0800, 80.3100],
+    [13.0500, 80.2800],
+    [13.0600, 80.2500],
   ]
 
 

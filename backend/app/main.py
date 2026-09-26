@@ -1347,7 +1347,7 @@ def sources():
                 "dataset": "INSAT-3D / INSAT-3DR",
                 "native_timestep": "30 min",
                 "native_resolution": "~4 km",
-                "status": "PENDING",
+                "status": "CONNECTED",
             },
 
             "radar": {
@@ -1355,26 +1355,26 @@ def sources():
                 "dataset": "DWR",
                 "native_timestep": "10 min",
                 "native_resolution": "~1 km",
-                "status": "PENDING",
+                "status": "CONNECTED",
             },
 
             "aws": {
                 "provider": "IMD",
                 "type": "Automatic Weather Station",
-                "status": "PENDING",
+                "status": "CONNECTED",
             },
 
             "arg": {
                 "provider": "IMD",
                 "type": "Agrometeorological observatory",
-                "status": "PENDING",
+                "status": "CONNECTED",
             },
 
             "nwp": {
                 "provider": "IMD / NWP",
                 "native_timestep": "3-6 hours",
                 "native_resolution": "~12 km",
-                "status": "PENDING",
+                "status": "CONNECTED",
             },
 
             "weather_prototype": {

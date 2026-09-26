@@ -780,11 +780,19 @@ backtesting.
                 <Bar
                   dataKey="pod"
                   name="POD"
+                  fill="#3b82f6"
+                />
+
+                <Bar
+                  dataKey="far"
+                  name="FAR"
+                  fill="#ef4444"
                 />
 
                 <Bar
                   dataKey="csi"
                   name="CSI"
+                  fill="#10b981"
                 />
 
               </BarChart>
