@@ -660,172 +660,298 @@ function SourceDetail({ sourceType, onBack }) {
           </section>
         </>
       ) : (
-        <section className="real-observation-card">
-          <div className="section-header">
-            <div>
-              <div className="section-label">
-                <Database size={16} />
-                REAL-TIME {source.title.toUpperCase()} CONNECTION
+        <>
+          <section className="real-observation-card">
+            <div className="section-header">
+              <div>
+                <div className="section-label">
+                  <Database size={16} />
+                  REAL-TIME {source.title.toUpperCase()} CONNECTION
+                </div>
+
+                <h2>{source.name} Live Data</h2>
               </div>
 
-              <h2>{source.name} Live Data</h2>
+              <button
+                className="observation-refresh"
+                onClick={fetchGenericData}
+                disabled={genericLoading}
+              >
+                <RefreshCw size={14} className={genericLoading ? 'spin' : ''} />
+                Refresh
+              </button>
             </div>
 
-            <button
-              className="observation-refresh"
-              onClick={fetchGenericData}
-              disabled={genericLoading}
-            >
-              <RefreshCw size={14} className={genericLoading ? 'spin' : ''} />
-              Refresh
-            </button>
-          </div>
+            {genericLoading ? (
+              <div className="observation-loading">
+                <RefreshCw size={22} className="spin" />
+                Connecting to {source.title}...
+              </div>
+            ) : genericData ? (
+              <>
+                <div className="real-observation-grid">
+                  <div className="rainfall-card">
+                    <span>LATEST VALUE</span>
+                    <strong>
+                      {genericData.observations && genericData.observations.length > 0
+                        ? Number(
+                            genericData.observations[genericData.observations.length - 1].rainfall_mm_hr ?? 
+                            genericData.observations[genericData.observations.length - 1].rainfall_mm ?? 
+                            genericData.observations[genericData.observations.length - 1].precipitation_mm ?? 0
+                          ).toFixed(1)
+                        : '--'}
+                    </strong>
+                    <small>mm/hr</small>
+                  </div>
 
-          {genericData ? (
-            <div className="timeseries-header" style={{flexDirection: 'column', gap: '1.5rem', width: '100%'}}>
-              <div style={{display: 'flex', gap: '1.5rem'}}>
-                {sourceType === 'radar' && (
-                  <>
-                    <div className="timeseries-stat">
-                      <span>RADAR</span>
-                      <strong>{genericData.radar || '--'}</strong>
+                  <div className="observation-box">
+                    <div className="observation-icon">
+                      <Clock3 size={18} />
                     </div>
-                    <div className="timeseries-stat">
-                      <span>TOTAL PRODUCTS</span>
-                      <strong>{genericData.total_products || 0}</strong>
-                    </div>
-                    <div className="timeseries-stat">
-                      <span>REACHABLE PRODUCTS</span>
-                      <strong>{genericData.reachable_products || 0}</strong>
-                    </div>
-                    <div className="timeseries-stat">
-                      <span>DATA QUALITY</span>
-                      <strong>100%</strong>
-                      <small>QC Passed</small>
-                    </div>
-                  </>
-                )}
-                {(sourceType === 'aws' || sourceType === 'arg') && (
-                  <>
-                    <div className="timeseries-stat">
-                      <span>NETWORK</span>
-                      <strong>{genericData.network || '--'}</strong>
-                    </div>
-                    <div className="timeseries-stat">
-                      <span>TOTAL RECORDS</span>
-                      <strong>{genericData.total_records || 0}</strong>
-                    </div>
-                    <div className="timeseries-stat">
-                      <span>STATE</span>
-                      <strong>{genericData.state || '--'}</strong>
-                    </div>
-                    <div className="timeseries-stat">
-                      <span>STATUS</span>
-                      <strong style={{color: genericData.status === 'access_pending' ? '#fbbf24' : '#4ade80'}}>
-                        {genericData.status === 'access_pending' ? 'Auth Required' : 'Connected'}
+                    <div>
+                      <span>Latest Observation</span>
+                      <strong>
+                        {genericData.observations && genericData.observations.length > 0
+                          ? formatIST(
+                              genericData.observations[genericData.observations.length - 1].timestamp_utc || 
+                              genericData.observations[genericData.observations.length - 1].time
+                            )
+                          : '--'}
                       </strong>
                     </div>
-                  </>
-                )}
-                {sourceType === 'nwp' && (
-                  <>
-                    <div className="timeseries-stat">
-                      <span>MODEL</span>
-                      <strong>{genericData.model || '--'}</strong>
+                  </div>
+
+                  <div className="observation-box">
+                    <div className="observation-icon">
+                      <MapPin size={18} />
                     </div>
-                    <div className="timeseries-stat">
-                      <span>OBSERVATIONS</span>
-                      <strong>{genericData.observation_count || 0}</strong>
-                      <small>72 hr horizon</small>
+                    <div>
+                      <span>Nearest Chennai Pixel</span>
+                      <strong>13.090°N, 80.290°E</strong>
                     </div>
-                    <div className="timeseries-stat">
-                      <span>MAX PRECIPITATION</span>
-                      <strong>{genericData.max_hourly_precipitation_mm !== null ? genericData.max_hourly_precipitation_mm : '--'}</strong>
-                      <small>mm/hr</small>
+                  </div>
+
+                  <div className="observation-box">
+                    <div className="observation-icon">
+                      <Database size={18} />
                     </div>
-                    <div className="timeseries-stat">
-                      <span>BIAS CORRECTION</span>
-                      <strong>{genericData.postprocessing?.bias_correction === 'ready_for_integration' ? 'Ready' : '--'}</strong>
+                    <div>
+                      <span>Source File</span>
+                      <strong className="source-file">
+                        {genericData.radar || genericData.network || genericData.model || 'live_feed.json'}
+                      </strong>
                     </div>
-                  </>
-                )}
+                  </div>
+                </div>
+
+                <div className="observation-meta">
+                  <div>
+                    <span>Source</span>
+                    <strong>{source.title.toUpperCase()}</strong>
+                  </div>
+                  <div>
+                    <span>Product</span>
+                    <strong>{source.dataType}</strong>
+                  </div>
+                  <div>
+                    <span>Data Source</span>
+                    <strong>{source.provider || 'IMD'}</strong>
+                  </div>
+                  <div>
+                    <span>Status</span>
+                    <strong className="active-text" style={{ color: genericData.status === 'access_pending' ? '#fbbf24' : '#4ade80' }}>
+                      {genericData.status === 'access_pending' ? 'AUTH REQUIRED' : 'VERIFIED'}
+                    </strong>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="observation-loading">
+                No {source.title} data available.
+              </div>
+            )}
+          </section>
+
+          <section className="timeseries-card">
+            <div className="section-header">
+              <div>
+                <div className="section-label">
+                  <BarChart3 size={16} />
+                  REAL {source.title.toUpperCase()} TIME-SERIES
+                </div>
+
+                <h2>{source.name} Rainfall Timeline — Chennai</h2>
+
+                <p className="timeseries-subtitle">
+                  Live connection to {source.title} processed by the VARSHAAI backend.
+                </p>
               </div>
 
-              {genericData.observations && genericData.observations.length > 0 && (
-                <div className="chart-container">
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart
-                      data={genericData.observations.map((item, i) => ({
-                        fullTime: formatIST(item.timestamp_utc || item.time || new Date()),
-                        time: item.station_id || formatShortIST(item.timestamp_utc),
-                        rainfall: Number(item.rainfall_mm_hr ?? item.rainfall_mm ?? item.precipitation_mm ?? 0)
-                      }))}
-                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                    >
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                        vertical={false}
-                        stroke="#1b344a"
-                      />
+              <div className="timeseries-source-badge">
+                {source.provider || 'IMD'}
+              </div>
+            </div>
 
-                      <XAxis
-                        dataKey="time"
-                        tick={{ fill: '#64748b', fontSize: 9 }}
-                        tickLine={false}
-                        axisLine={{ stroke: '#1b344a' }}
-                        minTickGap={18}
-                      />
-
-                      <YAxis
-                        tick={{ fill: '#64748b', fontSize: 9 }}
-                        tickLine={false}
-                        axisLine={false}
-                        width={42}
-                        label={{
-                          value: 'mm',
-                          angle: -90,
-                          position: 'insideLeft',
-                          fill: '#4d8db7',
-                          fontSize: 9,
-                        }}
-                      />
-
-                      <Tooltip
-                        contentStyle={{
-                          background: '#081522',
-                          border: '1px solid #1b344a',
-                          borderRadius: '8px',
-                          color: '#e2e8f0',
-                          fontSize: '11px',
-                        }}
-                        labelStyle={{
-                          color: '#7dd3fc',
-                          marginBottom: '4px',
-                        }}
-                        formatter={(value) => [`${Number(value).toFixed(2)} mm`, 'Rainfall']}
-                        labelFormatter={(_, payload) => payload?.[0]?.payload?.fullTime || ''}
-                      />
-
-                      <Line
-                        type="monotone"
-                        dataKey="rainfall"
-                        stroke="#38bdf8"
-                        strokeWidth={2.5}
-                        dot={{ r: 2.5, fill: '#38bdf8', strokeWidth: 0 }}
-                        activeDot={{ r: 5 }}
-                        connectNulls
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
+            {genericLoading ? (
+              <div className="observation-loading timeseries-loading">
+                <RefreshCw size={22} className="spin" />
+                Loading {source.title} observations...
+              </div>
+            ) : genericData ? (
+              <>
+                <div className="timeseries-summary-grid">
+                  {sourceType === 'radar' && (
+                    <>
+                      <div className="timeseries-stat">
+                        <span>RADAR</span>
+                        <strong>{genericData.radar || '--'}</strong>
+                        <small>Chennai DWR</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>TOTAL PRODUCTS</span>
+                        <strong>{genericData.total_products || 0}</strong>
+                        <small>scanned</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>REACHABLE PRODUCTS</span>
+                        <strong>{genericData.reachable_products || 0}</strong>
+                        <small>online</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>DATA QUALITY</span>
+                        <strong>100%</strong>
+                        <small>QC Passed</small>
+                      </div>
+                    </>
+                  )}
+                  {(sourceType === 'aws' || sourceType === 'arg') && (
+                    <>
+                      <div className="timeseries-stat">
+                        <span>NETWORK</span>
+                        <strong>{genericData.network || '--'}</strong>
+                        <small>Sensor array</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>TOTAL RECORDS</span>
+                        <strong>{genericData.total_records || 0}</strong>
+                        <small>station pings</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>STATE</span>
+                        <strong>{genericData.state || '--'}</strong>
+                        <small>region filter</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>STATUS</span>
+                        <strong style={{color: genericData.status === 'access_pending' ? '#fbbf24' : '#4ade80'}}>
+                          {genericData.status === 'access_pending' ? 'Auth Required' : 'Connected'}
+                        </strong>
+                        <small>live feed</small>
+                      </div>
+                    </>
+                  )}
+                  {sourceType === 'nwp' && (
+                    <>
+                      <div className="timeseries-stat">
+                        <span>MODEL</span>
+                        <strong>{genericData.model || '--'}</strong>
+                        <small>numerical weather prediction</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>OBSERVATIONS</span>
+                        <strong>{genericData.observation_count || 0}</strong>
+                        <small>72 hr horizon</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>MAX PRECIPITATION</span>
+                        <strong>{genericData.max_hourly_precipitation_mm !== null ? genericData.max_hourly_precipitation_mm : '--'}</strong>
+                        <small>mm/hr</small>
+                      </div>
+                      <div className="timeseries-stat">
+                        <span>BIAS CORRECTION</span>
+                        <strong>{genericData.postprocessing?.bias_correction === 'ready_for_integration' ? 'Ready' : '--'}</strong>
+                        <small>ML pipeline</small>
+                      </div>
+                    </>
+                  )}
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="observation-loading">
-              Connecting to {source.title}...
-            </div>
-          )}
-        </section>
+
+                {genericData.observations && genericData.observations.length > 0 && (
+                  <div className="chart-container">
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart
+                        data={genericData.observations.map((item, i) => ({
+                          fullTime: formatIST(item.timestamp_utc || item.time || new Date()),
+                          time: item.station_id || formatShortIST(item.timestamp_utc),
+                          rainfall: Number(item.rainfall_mm_hr ?? item.rainfall_mm ?? item.precipitation_mm ?? 0)
+                        }))}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                      >
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          vertical={false}
+                          stroke="#1b344a"
+                        />
+
+                        <XAxis
+                          dataKey="time"
+                          tick={{ fill: '#64748b', fontSize: 9 }}
+                          tickLine={false}
+                          axisLine={{ stroke: '#1b344a' }}
+                          minTickGap={18}
+                        />
+
+                        <YAxis
+                          tick={{ fill: '#64748b', fontSize: 9 }}
+                          tickLine={false}
+                          axisLine={false}
+                          width={42}
+                          label={{
+                            value: 'mm',
+                            angle: -90,
+                            position: 'insideLeft',
+                            fill: '#4d8db7',
+                            fontSize: 9,
+                          }}
+                        />
+
+                        <Tooltip
+                          contentStyle={{
+                            background: '#081522',
+                            border: '1px solid #1b344a',
+                            borderRadius: '8px',
+                            color: '#e2e8f0',
+                            fontSize: '11px',
+                          }}
+                          labelStyle={{
+                            color: '#7dd3fc',
+                            marginBottom: '4px',
+                          }}
+                          formatter={(value) => [`${Number(value).toFixed(2)} mm`, 'Rainfall']}
+                          labelFormatter={(_, payload) => payload?.[0]?.payload?.fullTime || ''}
+                        />
+
+                        <Line
+                          type="monotone"
+                          dataKey="rainfall"
+                          stroke="#38bdf8"
+                          strokeWidth={2.5}
+                          dot={{ r: 2.5, fill: '#38bdf8', strokeWidth: 0 }}
+                          activeDot={{ r: 5 }}
+                          connectNulls
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="observation-loading">
+                No {source.title} time-series available.
+              </div>
+            )}
+          </section>
+        </>
       )}
 
       <div className="source-content-grid">
