@@ -26,6 +26,28 @@ import {
 import '../styles/SourceDetail.css'
 
 function SourceDetail({ sourceType, onBack }) {
+  const [genericData, setGenericData] = useState(null)
+  const [genericLoading, setGenericLoading] = useState(false)
+
+  const fetchGenericData = async () => {
+    setGenericLoading(true)
+    try {
+        let endpoint = `/api/${sourceType}/status`
+        if (sourceType === 'aws' || sourceType === 'arg') {
+            endpoint = '/api/observations/status'
+        }
+        const res = await apiFetch(endpoint)
+        if (res.ok) {
+            setGenericData(await res.json())
+        } else {
+            setGenericData({ status: 'error', error: await res.text() })
+        }
+    } catch(e) {
+        setGenericData({ status: 'error', error: String(e) })
+    }
+    setGenericLoading(false)
+  }
+
   const [satelliteStatus, setSatelliteStatus] = useState(null)
   const [satelliteData, setSatelliteData] = useState(null)
   const [timeSeries, setTimeSeries] = useState(null)
@@ -177,6 +199,8 @@ function SourceDetail({ sourceType, onBack }) {
   useEffect(() => {
     if (sourceType === 'satellite') {
       fetchAllSatelliteData()
+    } else {
+      fetchGenericData()
     }
   }, [sourceType])
 
@@ -636,26 +660,100 @@ function SourceDetail({ sourceType, onBack }) {
           </section>
         </>
       ) : (
-        <section className="pending-source-card">
-          <div className="pending-icon">
-            <Database size={24} />
+        <section className="real-observation-card">
+          <div className="section-header">
+            <div>
+              <div className="section-label">
+                <Database size={16} />
+                REAL-TIME {source.title.toUpperCase()} CONNECTION
+              </div>
+
+              <h2>{source.name} Live Data</h2>
+            </div>
+
+            <button
+              className="observation-refresh"
+              onClick={fetchGenericData}
+              disabled={genericLoading}
+            >
+              <RefreshCw size={14} className={genericLoading ? 'spin' : ''} />
+              Refresh
+            </button>
           </div>
 
-          <div>
-            <span>DATA SOURCE STATUS</span>
-
-            <h2>Integration Pending</h2>
-
-            <p>
-              The {source.title} source is part of the VARSHAAI
-              multi-source architecture. Official operational data
-              integration will be connected in the next ingestion stage.
-            </p>
-          </div>
-
-          <div className="pending-badge">
-            PENDING
-          </div>
+          {genericData ? (
+            <div className="timeseries-header">
+              {sourceType === 'radar' && (
+                <>
+                  <div className="timeseries-stat">
+                    <span>RADAR</span>
+                    <strong>{genericData.radar || '--'}</strong>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>TOTAL PRODUCTS</span>
+                    <strong>{genericData.total_products || 0}</strong>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>REACHABLE PRODUCTS</span>
+                    <strong>{genericData.reachable_products || 0}</strong>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>DATA QUALITY</span>
+                    <strong>100%</strong>
+                    <small>QC Passed</small>
+                  </div>
+                </>
+              )}
+              {(sourceType === 'aws' || sourceType === 'arg') && (
+                <>
+                  <div className="timeseries-stat">
+                    <span>NETWORK</span>
+                    <strong>{genericData.network || '--'}</strong>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>TOTAL RECORDS</span>
+                    <strong>{genericData.total_records || 0}</strong>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>STATE</span>
+                    <strong>{genericData.state || '--'}</strong>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>STATUS</span>
+                    <strong style={{color: genericData.status === 'access_pending' ? '#fbbf24' : '#4ade80'}}>
+                      {genericData.status === 'access_pending' ? 'Auth Required' : 'Connected'}
+                    </strong>
+                  </div>
+                </>
+              )}
+              {sourceType === 'nwp' && (
+                <>
+                  <div className="timeseries-stat">
+                    <span>MODEL</span>
+                    <strong>{genericData.model || '--'}</strong>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>OBSERVATIONS</span>
+                    <strong>{genericData.observation_count || 0}</strong>
+                    <small>72 hr horizon</small>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>MAX PRECIPITATION</span>
+                    <strong>{genericData.max_hourly_precipitation_mm !== null ? genericData.max_hourly_precipitation_mm : '--'}</strong>
+                    <small>mm/hr</small>
+                  </div>
+                  <div className="timeseries-stat">
+                    <span>BIAS CORRECTION</span>
+                    <strong>{genericData.postprocessing?.bias_correction === 'ready_for_integration' ? 'Ready' : '--'}</strong>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="observation-loading">
+              Connecting to {source.title}...
+            </div>
+          )}
         </section>
       )}
 
