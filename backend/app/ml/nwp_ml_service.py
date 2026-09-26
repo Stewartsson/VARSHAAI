@@ -225,60 +225,14 @@ def http_get_json(
             # ------------------------------------------------
 
             if response.status_code == 429:
-
-                retry_after = response.headers.get(
-                    "Retry-After"
-                )
-
-                if retry_after:
-                    try:
-                        wait_seconds = min(
-                            float(retry_after),
-                            8.0,
-                        )
-                    except ValueError:
-                        wait_seconds = 2.0
-                else:
-                    wait_seconds = min(
-                        2 ** attempt,
-                        8,
-                    )
-
-                logger.warning(
-                    "Open-Meteo returned HTTP 429. "
-                    "Waiting %.1f seconds before retry.",
-                    wait_seconds,
-                )
-
-                if attempt < retries:
-                    time.sleep(wait_seconds)
-                    continue
-
-                raise RuntimeError(
-                    "Open-Meteo rate limit exceeded "
-                    "(HTTP 429)."
-                )
+                raise RuntimeError("Open-Meteo rate limit exceeded (HTTP 429).")
 
             # ------------------------------------------------
             # SERVER ERRORS
             # ------------------------------------------------
 
             if response.status_code >= 500:
-
-                last_error = RuntimeError(
-                    f"Open-Meteo server error "
-                    f"{response.status_code}"
-                )
-
-                if attempt < retries:
-                    time.sleep(
-                        min(
-                            2 ** attempt,
-                            8,
-                        )
-                    )
-                    continue
-
+                last_error = RuntimeError(f"Open-Meteo server error {response.status_code}")
                 raise last_error
 
             # ------------------------------------------------
@@ -298,29 +252,8 @@ def http_get_json(
             return data
 
         except Exception as exc:
-
             last_error = exc
-
-            if attempt < retries:
-
-                wait_seconds = min(
-                    2 ** attempt,
-                    6,
-                )
-
-                logger.warning(
-                    "NWP request failed: %s. "
-                    "Retrying in %s seconds.",
-                    exc,
-                    wait_seconds,
-                )
-
-                time.sleep(wait_seconds)
-
-    raise RuntimeError(
-        f"NWP request failed after retries: "
-        f"{last_error}"
-    )
+            raise last_error
 
 
 # ============================================================

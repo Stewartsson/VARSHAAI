@@ -62,23 +62,14 @@ def _request_weather(url: str) -> dict[str, Any]:
                     "429 Too Many Requests",
                     response=response,
                 )
-
-                if attempt < 2:
-                    time.sleep(2 * (attempt + 1))
-                    continue
+                response.raise_for_status()
 
             response.raise_for_status()
             return response.json()
 
         except requests.RequestException as exc:
             last_error = exc
-
-            if attempt < 2:
-                time.sleep(2 * (attempt + 1))
-            else:
-                raise
-
-    raise last_error or RuntimeError("Weather request failed")
+            raise last_error
 
 
 def _fetch_gfs() -> tuple[dict[str, Any], str]:
