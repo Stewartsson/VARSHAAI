@@ -682,71 +682,142 @@ function SourceDetail({ sourceType, onBack }) {
           </div>
 
           {genericData ? (
-            <div className="timeseries-header">
-              {sourceType === 'radar' && (
-                <>
-                  <div className="timeseries-stat">
-                    <span>RADAR</span>
-                    <strong>{genericData.radar || '--'}</strong>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>TOTAL PRODUCTS</span>
-                    <strong>{genericData.total_products || 0}</strong>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>REACHABLE PRODUCTS</span>
-                    <strong>{genericData.reachable_products || 0}</strong>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>DATA QUALITY</span>
-                    <strong>100%</strong>
-                    <small>QC Passed</small>
-                  </div>
-                </>
-              )}
-              {(sourceType === 'aws' || sourceType === 'arg') && (
-                <>
-                  <div className="timeseries-stat">
-                    <span>NETWORK</span>
-                    <strong>{genericData.network || '--'}</strong>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>TOTAL RECORDS</span>
-                    <strong>{genericData.total_records || 0}</strong>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>STATE</span>
-                    <strong>{genericData.state || '--'}</strong>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>STATUS</span>
-                    <strong style={{color: genericData.status === 'access_pending' ? '#fbbf24' : '#4ade80'}}>
-                      {genericData.status === 'access_pending' ? 'Auth Required' : 'Connected'}
-                    </strong>
-                  </div>
-                </>
-              )}
-              {sourceType === 'nwp' && (
-                <>
-                  <div className="timeseries-stat">
-                    <span>MODEL</span>
-                    <strong>{genericData.model || '--'}</strong>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>OBSERVATIONS</span>
-                    <strong>{genericData.observation_count || 0}</strong>
-                    <small>72 hr horizon</small>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>MAX PRECIPITATION</span>
-                    <strong>{genericData.max_hourly_precipitation_mm !== null ? genericData.max_hourly_precipitation_mm : '--'}</strong>
-                    <small>mm/hr</small>
-                  </div>
-                  <div className="timeseries-stat">
-                    <span>BIAS CORRECTION</span>
-                    <strong>{genericData.postprocessing?.bias_correction === 'ready_for_integration' ? 'Ready' : '--'}</strong>
-                  </div>
-                </>
+            <div className="timeseries-header" style={{flexDirection: 'column', gap: '1.5rem', width: '100%'}}>
+              <div style={{display: 'flex', gap: '1.5rem'}}>
+                {sourceType === 'radar' && (
+                  <>
+                    <div className="timeseries-stat">
+                      <span>RADAR</span>
+                      <strong>{genericData.radar || '--'}</strong>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>TOTAL PRODUCTS</span>
+                      <strong>{genericData.total_products || 0}</strong>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>REACHABLE PRODUCTS</span>
+                      <strong>{genericData.reachable_products || 0}</strong>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>DATA QUALITY</span>
+                      <strong>100%</strong>
+                      <small>QC Passed</small>
+                    </div>
+                  </>
+                )}
+                {(sourceType === 'aws' || sourceType === 'arg') && (
+                  <>
+                    <div className="timeseries-stat">
+                      <span>NETWORK</span>
+                      <strong>{genericData.network || '--'}</strong>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>TOTAL RECORDS</span>
+                      <strong>{genericData.total_records || 0}</strong>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>STATE</span>
+                      <strong>{genericData.state || '--'}</strong>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>STATUS</span>
+                      <strong style={{color: genericData.status === 'access_pending' ? '#fbbf24' : '#4ade80'}}>
+                        {genericData.status === 'access_pending' ? 'Auth Required' : 'Connected'}
+                      </strong>
+                    </div>
+                  </>
+                )}
+                {sourceType === 'nwp' && (
+                  <>
+                    <div className="timeseries-stat">
+                      <span>MODEL</span>
+                      <strong>{genericData.model || '--'}</strong>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>OBSERVATIONS</span>
+                      <strong>{genericData.observation_count || 0}</strong>
+                      <small>72 hr horizon</small>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>MAX PRECIPITATION</span>
+                      <strong>{genericData.max_hourly_precipitation_mm !== null ? genericData.max_hourly_precipitation_mm : '--'}</strong>
+                      <small>mm/hr</small>
+                    </div>
+                    <div className="timeseries-stat">
+                      <span>BIAS CORRECTION</span>
+                      <strong>{genericData.postprocessing?.bias_correction === 'ready_for_integration' ? 'Ready' : '--'}</strong>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {genericData.observations && genericData.observations.length > 0 && (
+                <div className="chart-container">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart
+                      data={genericData.observations.map((item, i) => ({
+                        fullTime: formatIST(item.timestamp_utc || item.time || new Date()),
+                        time: item.station_id || formatShortIST(item.timestamp_utc),
+                        rainfall: Number(item.rainfall_mm_hr ?? item.rainfall_mm ?? item.precipitation_mm ?? 0)
+                      }))}
+                      margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        vertical={false}
+                        stroke="#1b344a"
+                      />
+
+                      <XAxis
+                        dataKey="time"
+                        tick={{ fill: '#64748b', fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={{ stroke: '#1b344a' }}
+                        minTickGap={18}
+                      />
+
+                      <YAxis
+                        tick={{ fill: '#64748b', fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={false}
+                        width={42}
+                        label={{
+                          value: 'mm',
+                          angle: -90,
+                          position: 'insideLeft',
+                          fill: '#4d8db7',
+                          fontSize: 9,
+                        }}
+                      />
+
+                      <Tooltip
+                        contentStyle={{
+                          background: '#081522',
+                          border: '1px solid #1b344a',
+                          borderRadius: '8px',
+                          color: '#e2e8f0',
+                          fontSize: '11px',
+                        }}
+                        labelStyle={{
+                          color: '#7dd3fc',
+                          marginBottom: '4px',
+                        }}
+                        formatter={(value) => [`${Number(value).toFixed(2)} mm`, 'Rainfall']}
+                        labelFormatter={(_, payload) => payload?.[0]?.payload?.fullTime || ''}
+                      />
+
+                      <Line
+                        type="monotone"
+                        dataKey="rainfall"
+                        stroke="#38bdf8"
+                        strokeWidth={2.5}
+                        dot={{ r: 2.5, fill: '#38bdf8', strokeWidth: 0 }}
+                        activeDot={{ r: 5 }}
+                        connectNulls
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               )}
             </div>
           ) : (
