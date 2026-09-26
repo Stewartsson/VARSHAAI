@@ -2,3 +2,10 @@ fastapi
 uvicorn[standard]
 pydantic
 httpx
+numpy
+scikit-learn
+tensorflow
+h5py
+netCDF4
+xarray
+joblib

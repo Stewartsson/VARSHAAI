@@ -27,6 +27,8 @@ function CommandCenter() {
 
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [runningPipeline, setRunningPipeline] = useState(false)
+  const [pipelineResult, setPipelineResult] = useState(null)
   const [error, setError] = useState('')
 
 
@@ -121,6 +123,25 @@ function CommandCenter() {
     await loadData()
   }
 
+  async function runPipeline() {
+    try {
+      setRunningPipeline(true)
+      setError('')
+      const response = await apiFetch('/api/pipeline/run')
+      if (!response.ok) {
+        throw new Error(`Pipeline API error: ${response.status}`)
+      }
+      const data = await response.json()
+      setPipelineResult(data)
+      // We can also reload the main dashboard data if needed
+      await loadData()
+    } catch (err) {
+      console.error('Pipeline error:', err)
+      setError(err instanceof Error ? err.message : 'Pipeline execution failed')
+    } finally {
+      setRunningPipeline(false)
+    }
+  }
 
   // =====================================================
   // SAFE DATA EXTRACTION
@@ -906,8 +927,70 @@ function CommandCenter() {
 
           </button>
 
-        </div>
+          <button
+            className="refresh-button pipeline-button"
+            onClick={runPipeline}
+            disabled={runningPipeline}
+            style={{ marginLeft: '10px', backgroundColor: 'var(--red)', color: 'white' }}
+          >
+            <Activity
+              size={14}
+              className={runningPipeline ? 'spinning' : ''}
+            />
+            {runningPipeline ? 'Running AI Engine...' : 'Run SIH Pipeline'}
+          </button>
 
+        </div>
+        
+        {pipelineResult && (
+          <div style={{ padding: '16px', backgroundColor: 'rgba(0,0,0,0.2)', marginBottom: '20px', borderRadius: '8px', borderLeft: '4px solid var(--red)' }}>
+            <h3 style={{ margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <AlertTriangle size={18} color="var(--red)" />
+              End-to-End Pipeline Completed
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div>
+                <strong>Pipeline Execution Steps:</strong>
+                <ul style={{ paddingLeft: '20px', margin: '8px 0', fontSize: '0.9em', color: 'var(--text-muted)' }}>
+                  {pipelineResult.pipeline_steps.map((step, i) => (
+                    <li key={i}>{step}</li>
+                  ))}
+                </ul>
+                <div style={{ marginTop: '10px', fontSize: '0.8em', color: pipelineResult.latency_budget_met ? 'var(--green)' : 'var(--red)' }}>
+                  <strong>Total Latency: {pipelineResult.latency_profile.total_pipeline_ms} ms</strong>
+                  <br />(Budget &lt; 5 mins: {pipelineResult.latency_budget_met ? 'PASS' : 'FAIL'})
+                </div>
+              </div>
+              <div>
+                <strong>Block-Level Risk Granularity:</strong>
+                <div style={{ marginTop: '8px', fontSize: '0.9em', color: 'var(--text-muted)' }}>
+                  {Object.entries(pipelineResult.results.block_assessments).map(([block, assessment]) => (
+                    <div key={block} style={{ marginBottom: '4px', display: 'flex', justifyContent: 'space-between' }}>
+                      <span>{block}</span>
+                      <span>
+                        <strong style={{color: 'white', marginRight: '8px'}}>{assessment.max_depth_m.toFixed(2)}m</strong>
+                        <span style={{ 
+                          color: assessment.risk_level === 'RED' ? 'var(--red)' : 
+                                 assessment.risk_level === 'ORANGE' ? 'orange' : 
+                                 assessment.risk_level === 'YELLOW' ? 'yellow' : 'var(--green)',
+                          fontWeight: 'bold'
+                        }}>
+                          {assessment.risk_level}
+                        </span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={{ marginTop: '16px', fontSize: '0.8em' }}>
+              <strong>Generated CAP 1.2 XML:</strong>
+              <pre style={{ backgroundColor: '#000', padding: '10px', borderRadius: '4px', marginTop: '8px', overflowX: 'auto' }}>
+                {pipelineResult.cap_xml_snippet}
+              </pre>
+            </div>
+          </div>
+        )}
 
         <div className="source-grid">
 

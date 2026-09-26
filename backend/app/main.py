@@ -46,7 +46,7 @@ from .data_sources.radar_api import router as radar_router
 from .data_sources.imd_observation_api import router as imd_observation_router
 from .data_sources.nwp_api import router as nwp_router
 from .nwp_ml_api import router as nwp_ml_router
-
+from .orchestrator import run_end_to_end_pipeline
 
 # ============================================================
 # APPLICATION
@@ -68,6 +68,13 @@ app.include_router(radar_router)
 app.include_router(imd_observation_router)
 app.include_router(nwp_router)
 app.include_router(nwp_ml_router)
+
+@app.get("/api/pipeline/run")
+def trigger_pipeline():
+    """
+    Trigger the end-to-end data ingestion, ML, inundation, and CAP alert pipeline.
+    """
+    return run_end_to_end_pipeline()
 
 # ============================================================
 # CORS
