@@ -636,7 +636,7 @@ def nwp_ml_flood_forecast() -> dict[str, Any]:
             )
 
         records = nwp_result.get(
-            "records",
+            "predictions",
             [],
         )
 
@@ -699,7 +699,7 @@ def nwp_ml_flood_forecast() -> dict[str, Any]:
             # ------------------------------------------------
 
             rainfall_value = record.get(
-                "postprocessed_rainfall_mm"
+                "ml_postprocessed_precipitation_mm"
             )
 
             try:
