@@ -43,7 +43,7 @@ function CommandCenter() {
       const dashboardResponse = await apiFetch('/api/dashboard')
       const sourcesResponse = await apiFetch('/api/sources')
       const modelsResponse = await apiFetch('/api/models')
-      const floodResponse = await apiFetch('/api/flood/demo')
+      const floodResponse = await apiFetch('/api/flood/risk?mode=live')
 
       if (!dashboardResponse.ok) {
         throw new Error(
