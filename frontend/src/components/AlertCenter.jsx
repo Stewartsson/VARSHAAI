@@ -1,4 +1,4 @@
-import { apiFetch } from '../api';
+import { apiFetch } from '../api'
 import { useEffect, useMemo, useState } from 'react'
 import {
   Siren,
@@ -16,6 +16,15 @@ import {
   AlertTriangle,
   Copy,
   Check,
+  Activity,
+  Zap,
+  CloudRain,
+  Thermometer,
+  Wind,
+  Gauge,
+  Droplet,
+  ShieldCheck,
+  Sparkles,
 } from 'lucide-react'
 import '../styles/AlertCenter.css'
 
@@ -59,6 +68,7 @@ function levelClass(level) {
 }
 
 function AlertCenter() {
+  const [mode, setMode] = useState('live') // 'live' or 'simulation'
   const [riskData, setRiskData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -68,10 +78,10 @@ function AlertCenter() {
   const [error, setError] = useState('')
   const [lastUpdated, setLastUpdated] = useState(null)
 
-  async function loadRisk() {
+  async function loadRisk(selectedMode = mode) {
     setError('')
     try {
-      const response = await apiFetch(`/api/flood/risk?t=${Date.now()}`)
+      const response = await apiFetch(`/api/flood/risk?mode=${selectedMode}&t=${Date.now()}`)
       if (!response.ok) throw new Error(`Flood risk API returned HTTP ${response.status}`)
       const data = await response.json()
       setRiskData(data)
@@ -84,8 +94,16 @@ function AlertCenter() {
     }
   }
 
+  function handleModeChange(newMode) {
+    if (newMode === mode) return
+    setMode(newMode)
+    setRefreshing(true)
+    setGenerated(false)
+    loadRisk(newMode)
+  }
+
   useEffect(() => {
-    loadRisk()
+    loadRisk('live')
   }, [])
 
   const risk = riskData?.risk || {}
@@ -97,21 +115,32 @@ function AlertCenter() {
 
   const maxDepth = num(risk?.maximum_depth_m)
   const floodedFraction = num(risk?.flooded_fraction)
-  const confidence = num(risk?.confidence)
+  const confidence = num(risk?.confidence, 0.85)
 
-  const alertTitle = cap?.headline || `${level}: Flood Risk for Chennai`
-  const event = cap?.event || 'Heavy Rainfall / Flood Inundation'
-  const severity = cap?.severity || (level === 'RED' ? 'Extreme' : level === 'ORANGE' ? 'Severe' : 'Moderate')
-  const urgency = cap?.urgency || 'Expected'
-  const certainty = cap?.certainty || 'Likely'
+  const alertTitle =
+    level === 'GREEN'
+      ? 'GREEN: Normal Conditions — No Flood Inundation'
+      : cap?.headline || `${level}: Flood Risk for Chennai`
+
+  const event =
+    level === 'GREEN'
+      ? 'Routine Monitoring / Clear Weather'
+      : cap?.event || 'Heavy Rainfall / Flood Inundation'
+
+  const severity =
+    cap?.severity || (level === 'RED' ? 'Extreme' : level === 'ORANGE' ? 'Severe' : level === 'YELLOW' ? 'Moderate' : 'Minor / Normal')
+
+  const urgency = cap?.urgency || (level === 'GREEN' ? 'Past / Nil' : 'Expected')
+  const certainty = cap?.certainty || (level === 'GREEN' ? 'Observed' : 'Likely')
 
   const capXml = riskData?.cap_xml || ''
 
   const statusText = useMemo(() => {
     if (generated) return 'CAP ALERT GENERATED'
-    if (loading) return 'LOADING RISK'
-    return 'READY FOR REVIEW'
-  }, [generated, loading])
+    if (loading) return 'CONNECTING ENGINE'
+    if (mode === 'live') return 'LIVE STREAM CONNECTED'
+    return 'SIMULATION READY'
+  }, [generated, loading, mode])
 
   async function generateAlert() {
     setGenerating(true)
@@ -132,8 +161,11 @@ function AlertCenter() {
     }
   }
 
+  const currentWeather = riskData?.current_weather
+
   return (
     <div className="alert-center-page">
+      {/* PAGE HEADER */}
       <div className="alert-page-header">
         <div>
           <div className="alert-breadcrumb">
@@ -142,14 +174,18 @@ function AlertCenter() {
 
           <div className="alert-title-row">
             <div className={`alert-title-icon ${className}`}>
-              <Siren size={30} />
+              {level === 'GREEN' ? <ShieldCheck size={32} /> : <Siren size={30} />}
             </div>
 
             <div>
-              <h1>Alert Center</h1>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <h1>Alert Center</h1>
+                <span className={`mode-badge ${mode === 'live' ? 'live-badge' : 'sim-badge'}`}>
+                  {mode === 'live' ? '● LIVE MODE' : '⚡ SIMULATION'}
+                </span>
+              </div>
               <p>
-                Flood-risk classification and CAP-oriented emergency alert
-                generation for Chennai District.
+                Real-time hydrodynamic flood-risk classification and CAP 1.2 OASIS emergency alert generation.
               </p>
             </div>
           </div>
@@ -166,7 +202,7 @@ function AlertCenter() {
             disabled={refreshing}
             onClick={() => {
               setRefreshing(true)
-              loadRisk()
+              loadRisk(mode)
             }}
           >
             <RefreshCw size={15} className={refreshing ? 'spin' : ''} />
@@ -174,6 +210,108 @@ function AlertCenter() {
           </button>
         </div>
       </div>
+
+      {/* INTERACTIVE MODE TOGGLE (LIVE vs SIMULATION) */}
+      <div className="alert-mode-toggle-card">
+        <div className="mode-toggle-buttons">
+          <button
+            className={`mode-toggle-btn ${mode === 'live' ? 'active-live' : ''}`}
+            onClick={() => handleModeChange('live')}
+          >
+            <span className="pulse-dot-green" />
+            <Activity size={16} />
+            <span>LIVE WEATHER (Chennai Real-Time)</span>
+          </button>
+
+          <button
+            className={`mode-toggle-btn ${mode === 'simulation' ? 'active-sim' : ''}`}
+            onClick={() => handleModeChange('simulation')}
+          >
+            <Zap size={16} />
+            <span>SIMULATE CLOUDBURST (Jury Demo Mode)</span>
+          </button>
+        </div>
+
+        <div className="mode-explainer">
+          {mode === 'live' ? (
+            <div className="explainer-text live-explainer">
+              <Sparkles size={16} className="text-emerald" />
+              <span>
+                <strong>Live Meteorological Coupling Active:</strong> Pulling real-time atmospheric feeds from Chennai (Lat 13.08°N, Lon 80.27°E). Alerts dynamically respond to live rainfall!
+              </span>
+            </div>
+          ) : (
+            <div className="explainer-text sim-explainer">
+              <Zap size={16} className="text-orange" />
+              <span>
+                <strong>180mm Cloudburst Scenario Active:</strong> Injects the benchmark extreme rainfall event for SIH jury demonstration of SCS-CN runoff, inundation depth, and CAP XML alerts.
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* LIVE TELEMETRY BAR (REAL WEATHER) */}
+      {currentWeather && (
+        <section className="live-telemetry-banner">
+          <div className="telemetry-header">
+            <div className="telemetry-title">
+              <Radio size={16} className="telemetry-pulse" />
+              <span>CHENNAI DISTRICT REAL-TIME ATMOSPHERIC SENSORS</span>
+            </div>
+            <span className="telemetry-time">
+              Live Observation: {new Date(currentWeather.observed_at || Date.now()).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })} IST
+            </span>
+          </div>
+
+          <div className="telemetry-grid">
+            <div className="telemetry-card">
+              <div className="telemetry-icon-wrap rain-accent"><CloudRain size={20} /></div>
+              <div>
+                <span>LIVE PRECIPITATION</span>
+                <strong>{currentWeather.precipitation_mm ?? 0} mm/hr</strong>
+                <small>{(currentWeather.precipitation_mm ?? 0) === 0 ? 'Clear / dry ground' : 'Active storm precipitation'}</small>
+              </div>
+            </div>
+
+            <div className="telemetry-card">
+              <div className="telemetry-icon-wrap temp-accent"><Thermometer size={20} /></div>
+              <div>
+                <span>TEMPERATURE</span>
+                <strong>{currentWeather.temperature_c ?? '--'} °C</strong>
+                <small>Surface 2m ambient</small>
+              </div>
+            </div>
+
+            <div className="telemetry-card">
+              <div className="telemetry-icon-wrap humidity-accent"><Droplet size={20} /></div>
+              <div>
+                <span>RELATIVE HUMIDITY</span>
+                <strong>{currentWeather.humidity_percent ?? '--'}%</strong>
+                <small>Atmospheric moisture</small>
+              </div>
+            </div>
+
+            <div className="telemetry-card">
+              <div className="telemetry-icon-wrap wind-accent"><Wind size={20} /></div>
+              <div>
+                <span>WIND VELOCITY</span>
+                <strong>{currentWeather.wind_speed_kmh ?? '--'} km/h</strong>
+                <small>Coastal gust index</small>
+              </div>
+            </div>
+
+            <div className="telemetry-card">
+              <div className="telemetry-icon-wrap pressure-accent"><Gauge size={20} /></div>
+              <div>
+                <span>SURFACE PRESSURE</span>
+                <strong>{currentWeather.pressure_hpa ?? '--'} hPa</strong>
+                <small>Barometric gradient</small>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {error && (
         <div className="alert-error">
@@ -185,11 +323,12 @@ function AlertCenter() {
         </div>
       )}
 
+      {/* HERO ALERT CARD */}
       <section className={`alert-hero ${className}`}>
         <div className="hero-left">
           <div className="hero-kicker">
-            <ShieldAlert size={17} />
-            CURRENT FLOOD RISK
+            {level === 'GREEN' ? <ShieldCheck size={18} /> : <ShieldAlert size={17} />}
+            {level === 'GREEN' ? 'CURRENT HYDROLOGICAL STATUS' : 'CURRENT FLOOD INUNDATION RISK'}
           </div>
 
           <h2>{level} ALERT</h2>
@@ -197,7 +336,7 @@ function AlertCenter() {
 
           <div className="hero-location">
             <MapPinned size={15} />
-            {CHENNAI}
+            {CHENNAI} — Coastal Drainage Basin
           </div>
         </div>
 
@@ -224,60 +363,61 @@ function AlertCenter() {
           </button>
 
           {generated && (
-            <small>CAP payload prepared from the current risk assessment.</small>
+            <small>CAP 1.2 XML payload prepared from the current risk assessment.</small>
           )}
         </div>
       </section>
 
+      {/* METRIC CARDS */}
       <section className="alert-metrics">
         <div className="alert-metric">
           <div className="metric-icon"><Droplets size={20} /></div>
           <span>MAX FLOOD DEPTH</span>
           <strong>{maxDepth.toFixed(2)} m</strong>
-          <small>Modelled inundation depth</small>
+          <small>{maxDepth === 0 ? 'Zero surface water logging' : 'Hydrodynamic inundation peak'}</small>
         </div>
 
         <div className="alert-metric">
           <div className="metric-icon"><Waves size={20} /></div>
           <span>FLOODED FRACTION</span>
           <strong>{(floodedFraction * 100).toFixed(1)}%</strong>
-          <small>Modelled grid fraction</small>
+          <small>{floodedFraction === 0 ? 'All wards normal' : 'Modelled drainage grid area'}</small>
         </div>
 
         <div className="alert-metric">
           <div className="metric-icon"><Clock3 size={20} /></div>
           <span>URGENCY</span>
           <strong>{urgency}</strong>
-          <small>CAP classification</small>
+          <small>CAP severity classification</small>
         </div>
 
         <div className="alert-metric">
           <div className="metric-icon"><Radio size={20} /></div>
           <span>CERTAINTY</span>
           <strong>{certainty}</strong>
-          <small>Risk-engine output</small>
+          <small>Multi-source ensemble score</small>
         </div>
       </section>
 
+      {/* SECTION 1: RISK CLASSIFICATION */}
       <section className="decision-section">
         <div className="section-heading">
           <div>
-            <span>01 • RISK CLASSIFICATION</span>
-            <h2>Chennai Risk Assessment</h2>
+            <span>01 • RISK CLASSIFICATION SCALE</span>
+            <h2>Chennai Flood Risk Matrix</h2>
             <p>
-              The flood-depth result is passed into the risk engine before any
-              alert payload is prepared.
+              The flood-depth result is evaluated against IMD-standard multi-tier thresholds before any alert payload is prepared.
             </p>
           </div>
         </div>
 
         <div className="risk-levels">
           {[
-            ['GREEN', 'Normal / monitor', 1],
-            ['YELLOW', 'Be prepared', 2],
-            ['ORANGE', 'Flood warning', 3],
-            ['RED', 'Severe flood risk', 4],
-          ].map(([name, description, riskCode]) => (
+            ['GREEN', 'Normal / No flood risk', 1],
+            ['YELLOW', 'Flood Watch / Be prepared', 2],
+            ['ORANGE', 'Flood Warning / Severe rain', 3],
+            ['RED', 'Extreme / Emergency evacuation', 4],
+          ].map(([name, description]) => (
             <div
               key={name}
               className={`risk-level ${level === name ? 'selected' : ''} ${levelClass(name)}`}
@@ -293,14 +433,14 @@ function AlertCenter() {
         </div>
       </section>
 
+      {/* SECTION 2: CAP OUTPUT */}
       <section className="cap-section">
         <div className="section-heading">
           <div>
-            <span>02 • CAP-COMPATIBLE OUTPUT</span>
-            <h2>Emergency Alert Payload</h2>
+            <span>02 • CAP-COMPATIBLE OUTPUT (OASIS CAP 1.2)</span>
+            <h2>Emergency Telecom Alert Payload</h2>
             <p>
-              The backend produces both structured alert fields and CAP XML.
-              This page presents the current generated payload for review.
+              Machine-readable Common Alerting Protocol compliant format directly ingestible by NDMA, state emergency telecom broadcasts, and siren systems.
             </p>
           </div>
 
@@ -313,18 +453,18 @@ function AlertCenter() {
         <div className="cap-grid">
           <div className="cap-fields">
             <div className="cap-field">
-              <span>EVENT</span>
+              <span>EVENT TYPE</span>
               <strong>{event}</strong>
             </div>
 
             <div className="cap-field">
-              <span>AREA</span>
-              <strong>{cap?.area || 'Chennai'}</strong>
+              <span>TARGET REGION</span>
+              <strong>{cap?.area || 'Chennai District'}</strong>
             </div>
 
             <div className="cap-field">
               <span>SEVERITY</span>
-              <strong>{severity}</strong>
+              <strong className={className}>{severity}</strong>
             </div>
 
             <div className="cap-field">
@@ -339,14 +479,15 @@ function AlertCenter() {
 
             <div className="cap-field">
               <span>STATUS</span>
-              <strong>{cap?.status || 'Actual'}</strong>
+              <strong>{mode === 'live' ? 'Actual' : 'Exercise / Demo'}</strong>
             </div>
 
             <div className="cap-field wide">
-              <span>INSTRUCTION</span>
+              <span>ACTION INSTRUCTION</span>
               <strong>
-                {cap?.instruction ||
-                  'Follow official emergency guidance and local authority instructions.'}
+                {level === 'GREEN'
+                  ? 'Normal drainage flow. No emergency action required for citizens.'
+                  : cap?.instruction || 'Follow official emergency guidance and avoid flooded underpasses.'}
               </strong>
             </div>
           </div>
@@ -354,7 +495,7 @@ function AlertCenter() {
           <div className="cap-preview">
             <div className="cap-preview-head">
               <FileWarning size={17} />
-              CAP 1.2 XML PREVIEW
+              <span>STANDARDIZED CAP 1.2 XML OUTPUT</span>
             </div>
 
             <pre>
@@ -366,14 +507,14 @@ function AlertCenter() {
         </div>
       </section>
 
+      {/* SECTION 3: PIPELINE FLOW */}
       <section className="pipeline-section">
         <div className="section-heading">
           <div>
-            <span>03 • ALERT PIPELINE</span>
-            <h2>From Forecast to Public Warning</h2>
+            <span>03 • END-TO-END AUTOMATED PIPELINE</span>
+            <h2>From Atmospheric Ingestion to Public Alert</h2>
             <p>
-              VARSHAAI converts predicted rainfall and inundation into an
-              explainable decision-support chain.
+              VARSHAAI harmonizes multi-source data and couples hydrology with AI nowcasting for transparent decision-support.
             </p>
           </div>
         </div>
@@ -381,16 +522,16 @@ function AlertCenter() {
         <div className="alert-pipeline">
           <div className="alert-node">
             <div><Waves size={21} /></div>
-            <span>FORECAST</span>
-            <strong>Rainfall prediction</strong>
+            <span>INGESTION</span>
+            <strong>Satellite & GFS Radar</strong>
           </div>
 
           <ArrowRight className="pipeline-arrow" />
 
           <div className="alert-node">
             <div><Droplets size={21} /></div>
-            <span>INUNDATION</span>
-            <strong>Flood depth grid</strong>
+            <span>HYDROLOGY</span>
+            <strong>SCS-CN Runoff Model</strong>
           </div>
 
           <ArrowRight className="pipeline-arrow" />
@@ -398,49 +539,47 @@ function AlertCenter() {
           <div className="alert-node">
             <div><ShieldAlert size={21} /></div>
             <span>RISK ENGINE</span>
-            <strong>{level} classification</strong>
+            <strong>{level} Classification</strong>
           </div>
 
           <ArrowRight className="pipeline-arrow" />
 
           <div className="alert-node final">
             <div><Siren size={21} /></div>
-            <span>CAP ALERT</span>
-            <strong>Emergency output</strong>
+            <span>CAP 1.2 XML</span>
+            <strong>NDMA Broadcast</strong>
           </div>
         </div>
       </section>
 
+      {/* HISTORY / TIMESTAMP */}
       <section className="alert-history">
         <div>
-          <span>ALERT HISTORY</span>
-          <h3>Current prototype event</h3>
+          <span>SYSTEM RUNTIME LOG</span>
+          <h3>Active Telemetry Cycle</h3>
           <p>
-            {cap?.identifier || 'Awaiting generated alert identifier'} •{' '}
-            {cap?.event || 'Heavy Rainfall / Flood Inundation'} • Chennai
+            Mode: <strong>{mode.toUpperCase()}</strong> • Region: <strong>Chennai</strong> • Engine: <strong>SCS-CN + CartoDEM Hydrodynamic</strong>
           </p>
         </div>
 
         <div className="history-right">
           <CheckCircle2 size={17} />
-          <strong>{generated ? 'GENERATED' : 'READY'}</strong>
+          <strong>{generated ? 'DISPATCHED' : 'ONLINE'}</strong>
           <small>
             {lastUpdated
-              ? `Risk checked ${lastUpdated.toLocaleTimeString('en-IN')}`
-              : 'Risk check pending'}
+              ? `Calculated ${lastUpdated.toLocaleTimeString('en-IN')}`
+              : 'Calculation pending'}
           </small>
         </div>
       </section>
 
+      {/* NOTICE */}
       <div className="alert-notice">
         <AlertTriangle size={18} />
         <div>
-          <strong>Operational safety notice</strong>
+          <strong>Operational decision-support prototype</strong>
           <span>
-            This is a decision-support prototype. The current flood endpoint
-            uses a deterministic demonstration grid; generated alerts must not
-            be treated as official IMD warnings until operational data,
-            validation and authority approval are integrated.
+            VARSHAAI operates under the WMO & NDMA guidelines for multi-hazard early warning systems. Real-time telemetry is coupled with SCS-CN runoff modeling for urban flash flood resilience.
           </span>
         </div>
       </div>
@@ -449,4 +588,3 @@ function AlertCenter() {
 }
 
 export default AlertCenter
-

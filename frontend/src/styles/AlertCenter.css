@@ -634,3 +634,256 @@
     justify-content: flex-start;
   }
 }
+
+
+/* ============================================================
+   ADVANCED GRAPHICS & LIVE TELEMETRY UI ENHANCEMENTS
+   ============================================================ */
+
+.mode-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.mode-badge.live-badge {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid #10b981;
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}
+
+.mode-badge.sim-badge {
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid #f97316;
+  color: #fb923c;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.25);
+}
+
+/* INTERACTIVE MODE TOGGLE */
+.alert-mode-toggle-card {
+  margin-bottom: 22px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #091e2b 0%, #061622 100%);
+  border: 1px solid #1e4559;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mode-toggle-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mode-toggle-btn {
+  flex: 1;
+  min-width: 250px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid #234d61;
+  background: #0b2230;
+  color: #8faec0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mode-toggle-btn:hover {
+  background: #0f2c3e;
+  border-color: #3b748f;
+  color: #e2f1f7;
+  transform: translateY(-1px);
+}
+
+.mode-toggle-btn.active-live {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.25) 100%);
+  border: 1px solid #10b981;
+  color: #6ee7b7;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+}
+
+.mode-toggle-btn.active-sim {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.18) 0%, rgba(217, 119, 6, 0.25) 100%);
+  border: 1px solid #f97316;
+  color: #fdba74;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.35);
+}
+
+.pulse-dot-green {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: radar-pulse 1.8s infinite;
+}
+
+@keyframes radar-pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.mode-explainer {
+  border-top: 1px solid #133446;
+  padding-top: 11px;
+}
+
+.explainer-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.live-explainer { color: #86efac; }
+.sim-explainer { color: #fed7aa; }
+
+.text-emerald { color: #10b981; }
+.text-orange { color: #f97316; }
+
+/* LIVE ATMOSPHERIC TELEMETRY BANNER */
+.live-telemetry-banner {
+  margin-bottom: 22px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #091e2b 0%, #071722 100%);
+  border: 1px solid #184257;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.telemetry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #143547;
+}
+
+.telemetry-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.telemetry-pulse {
+  animation: pulse-spin 2s ease-in-out infinite;
+}
+
+@keyframes pulse-spin {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.telemetry-time {
+  color: #648da1;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.telemetry-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #0b2230;
+  border: 1px solid #173b4d;
+  transition: all 0.2s ease;
+}
+
+.telemetry-card:hover {
+  border-color: #265972;
+  transform: translateY(-2px);
+  background: #0e293a;
+}
+
+.telemetry-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.rain-accent { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+.temp-accent { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+.humidity-accent { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.wind-accent { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
+.pressure-accent { background: rgba(236, 72, 153, 0.15); color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3); }
+
+.telemetry-card > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.telemetry-card span {
+  color: #628ea3;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.telemetry-card strong {
+  color: #e2f2f7;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.telemetry-card small {
+  color: #557e93;
+  font-size: 9px;
+}
+
+/* GLOWING HERO CARDS ACCENT */
+.alert-hero.alert-green {
+  border-color: #10b981;
+  background: linear-gradient(110deg, #07221d, #091f2b);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.18);
+}
+
+.alert-hero.alert-orange {
+  border-color: #f97316;
+  background: linear-gradient(110deg, #2b170c, #1f1412);
+  box-shadow: 0 0 25px rgba(249, 115, 22, 0.22);
+}
+
+.alert-hero.alert-red {
+  border-color: #ef4444;
+  background: linear-gradient(110deg, #300f15, #211116);
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.28);
+}
+
+.alert-hero.alert-yellow {
+  border-color: #eab308;
+  background: linear-gradient(110deg, #261f0a, #1a1710);
+  box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
+}
