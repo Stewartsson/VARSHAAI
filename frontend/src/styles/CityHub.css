@@ -1,0 +1,621 @@
+.city-hub-page {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.city-hub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.city-hub-breadcrumb {
+  color: #38bdf8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.city-hub-title-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.city-hub-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #092536;
+  border: 1px solid #1e526d;
+  display: grid;
+  place-items: center;
+  color: #38bdf8;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+.city-hub-title-row h1 {
+  margin: 0;
+  font-size: 30px;
+  color: #f1f8fa;
+  line-height: 1.1;
+}
+
+.city-hub-title-row p {
+  margin: 6px 0 0;
+  color: #7296a8;
+  font-size: 13px;
+}
+
+.city-hub-refresh {
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid #1f475c;
+  background: #0a1f2c;
+  color: #a4c4d2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.city-hub-refresh:hover {
+  background: #0e2a3c;
+  border-color: #367290;
+  color: #e2f1f7;
+}
+
+.city-hub-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  font-size: 12px;
+}
+
+/* SECTION TITLE STRIP */
+.section-title-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  margin-bottom: 14px;
+}
+
+/* CITY SELECTOR CARDS */
+.city-selector-section {
+  margin-bottom: 26px;
+}
+
+.city-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.city-card {
+  padding: 18px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #0a1f2c 0%, #061622 100%);
+  border: 1px solid #173b4d;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.city-card:hover {
+  transform: translateY(-3px);
+  border-color: #2b6785;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.city-card.selected {
+  background: linear-gradient(135deg, #0d293a 0%, #081d2a 100%);
+  border: 1px solid #38bdf8;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
+}
+
+.city-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.city-card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #f0f7f9;
+}
+
+.city-card-header span {
+  font-size: 11px;
+  color: #638a9d;
+}
+
+.city-risk-pill {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.city-risk-pill.green {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid #10b981;
+  color: #34d399;
+}
+
+.city-risk-pill.yellow {
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid #eab308;
+  color: #facc15;
+}
+
+.city-risk-pill.orange {
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid #f97316;
+  color: #fb923c;
+}
+
+.city-risk-pill.red {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #f87171;
+}
+
+.city-card-weather {
+  display: flex;
+  gap: 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #081a25;
+  border: 1px solid #133242;
+}
+
+.city-weather-stat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #b1d0dc;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.city-card-radar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #719bb0;
+}
+
+.radar-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: radar-pulse 2s infinite;
+}
+
+.radar-station-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.city-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #123040;
+  padding-top: 10px;
+  color: #557b8e;
+  font-size: 10px;
+}
+
+.city-arrow {
+  color: #38bdf8;
+  transition: transform 0.2s ease;
+}
+
+.city-card:hover .city-arrow {
+  transform: translateX(4px);
+}
+
+/* CITY DETAIL HERO BANNER */
+.city-hero-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 26px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  border: 1px solid #1b4559;
+  background: linear-gradient(110deg, #09212f, #061824);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.city-hero-banner.risk-green {
+  border-color: #10b981;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+}
+
+.city-hero-banner.risk-orange {
+  border-color: #f97316;
+  box-shadow: 0 0 25px rgba(249, 115, 22, 0.2);
+}
+
+.hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.hero-details h2 {
+  margin: 6px 0 4px;
+  color: #f2f8fa;
+  font-size: 26px;
+}
+
+.hero-details p {
+  margin: 0;
+  color: #7296a8;
+  font-size: 12px;
+}
+
+.hero-risk-box {
+  min-width: 180px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hero-risk-box span {
+  color: #5b8496;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.hero-risk-box strong {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.hero-risk-box strong.risk-green { color: #34d399; }
+.hero-risk-box strong.risk-yellow { color: #facc15; }
+.hero-risk-box strong.risk-orange { color: #fb923c; }
+.hero-risk-box strong.risk-red { color: #f87171; }
+
+.hero-risk-box small {
+  color: #698c9e;
+  font-size: 10px;
+}
+
+/* TELEMETRY STRIP */
+.city-telemetry-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.city-telemetry-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #091d2a;
+  border: 1px solid #14374a;
+}
+
+.city-telemetry-box > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.city-telemetry-box span {
+  color: #5b8396;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.city-telemetry-box strong {
+  color: #e2f1f7;
+  font-size: 16px;
+}
+
+.city-telemetry-box small {
+  color: #557c8f;
+  font-size: 9px;
+}
+
+.telemetry-icon-blue { color: #38bdf8; }
+.telemetry-icon-amber { color: #f59e0b; }
+.telemetry-icon-emerald { color: #10b981; }
+.telemetry-icon-purple { color: #a855f7; }
+.telemetry-icon-pink { color: #ec4899; }
+
+/* MAP & SPECS SPLIT */
+.city-map-split {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.city-map-card {
+  border-radius: 14px;
+  background: #091c28;
+  border: 1px solid #173b4d;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid #14374a;
+  color: #e2f0f5;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.map-card-header > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+}
+
+.map-legend-pills {
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+}
+
+.legend-radar { color: #38bdf8; }
+.legend-hotspot { color: #f97316; }
+
+.leaflet-map-wrapper {
+  width: 100%;
+  height: 480px;
+}
+
+.city-leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #07151e;
+}
+
+/* RADAR PULSE MARKER */
+.radar-marker-pulse {
+  position: relative;
+}
+
+.radar-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0284c7;
+  border: 2px solid #ffffff;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 2;
+}
+
+.radar-wave {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #38bdf8;
+  animation: radar-marker-animation 2s infinite ease-out;
+  position: absolute;
+}
+
+@keyframes radar-marker-animation {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.hotspot-pin {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ea580c;
+  border: 2px solid #fed7aa;
+  box-shadow: 0 0 10px #ea580c;
+}
+
+.map-popup-card {
+  color: #0f172a;
+}
+
+.map-popup-card h4 {
+  margin: 0 0 4px;
+  color: #0369a1;
+  font-size: 13px;
+}
+
+.map-popup-card p {
+  margin: 2px 0;
+  font-size: 11px;
+}
+
+/* SPECS SIDEBAR */
+.city-sidebar-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.specs-card {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: #091d2a;
+  border: 1px solid #163b4d;
+}
+
+.specs-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #133344;
+  padding-bottom: 8px;
+}
+
+.specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.spec-item span {
+  color: #638c9f;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.spec-item strong {
+  color: #d8edf3;
+  font-size: 11px;
+}
+
+.text-emerald { color: #34d399 !important; }
+
+.basins-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.basin-tag {
+  padding: 5px 11px;
+  border-radius: 7px;
+  background: #0b2536;
+  border: 1px solid #1c4b63;
+  color: #7dd3fc;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.hotspots-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hotspot-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #081a25;
+  border: 1px solid #123142;
+}
+
+.hotspot-item strong {
+  display: block;
+  color: #e2f1f7;
+  font-size: 11px;
+}
+
+.hotspot-item small {
+  color: #557b8e;
+  font-size: 9px;
+}
+
+.hotspot-risk-badge {
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.hotspot-risk-badge.critical { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; }
+.hotspot-risk-badge.severe { background: rgba(249, 115, 22, 0.2); border: 1px solid #f97316; color: #fb923c; }
+.hotspot-risk-badge.high { background: rgba(234, 179, 8, 0.2); border: 1px solid #eab308; color: #facc15; }
+.hotspot-risk-badge.medium { background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; color: #7dd3fc; }
+
+/* 24-HOUR FORECAST CHART */
+.city-forecast-chart-card {
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: #091c28;
+  border: 1px solid #163a4d;
+}
+
+.chart-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  color: #e2eff4;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.chart-card-header > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+}
+
+.chart-card-header small {
+  color: #5f8698;
+  font-size: 10px;
+}
+
+.city-chart-wrap {
+  width: 100%;
+}

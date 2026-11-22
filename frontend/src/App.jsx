@@ -7,6 +7,7 @@ import {
   Waves,
   BarChart3,
   Siren,
+  Radio,
 } from 'lucide-react'
 
 import Header from './components/Header'
@@ -19,6 +20,7 @@ import Inundation from './components/Inundation'
 import Validation from './components/Validation'
 import AlertCenter from './components/AlertCenter'
 import SourceDetail from './components/SourceDetail'
+import CityHub from './components/CityHub'
 
 
 function App() {
@@ -69,6 +71,12 @@ function App() {
       id: 'alerts',
       label: 'Alert Center',
       icon: Siren,
+    },
+
+    {
+      id: 'cities',
+      label: 'Multi-City Radar',
+      icon: Radio,
     },
   ]
 
@@ -189,6 +197,15 @@ function App() {
 
           {activePage === 'alerts' && (
             <AlertCenter />
+          )}
+
+
+          {/* =================================================
+              MULTI-CITY RADAR / NATIONAL GRID
+              ================================================= */}
+
+          {activePage === 'cities' && (
+            <CityHub />
           )}
 
 

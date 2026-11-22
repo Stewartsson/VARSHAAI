@@ -5,49 +5,52 @@ import httpx
 CHENNAI_LAT = 13.0827
 CHENNAI_LON = 80.2707
 
-_WEATHER_CACHE = {
-    "timestamp": 0,
-    "data": None,
-}
-
+# In-memory cache by coordinate key: "lat,lon" -> {"timestamp": t, "data": dict}
+_WEATHER_CACHE = {}
 CACHE_TTL_SECONDS = 300  # 5 minutes cache to prevent rate limits
 
 
-def _get_baseline_weather():
+def _get_baseline_weather(lat: float, lon: float):
     now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
     return {
-        "latitude": CHENNAI_LAT,
-        "longitude": CHENNAI_LON,
+        "latitude": lat,
+        "longitude": lon,
         "timezone": "Asia/Kolkata",
         "current": {
             "time": now_iso,
-            "temperature_2m": 31.0,
-            "relative_humidity_2m": 52,
+            "temperature_2m": 29.5,
+            "relative_humidity_2m": 54,
             "precipitation": 0.0,
             "rain": 0.0,
-            "wind_speed_10m": 14.0,
-            "surface_pressure": 1012.5,
+            "wind_speed_10m": 12.0,
+            "surface_pressure": 1012.0,
         },
         "hourly": {
+            "time": [
+                (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=i)).isoformat()
+                for i in range(48)
+            ],
             "precipitation": [0.0] * 48,
             "rain": [0.0] * 48,
             "precipitation_probability": [0] * 48,
+            "temperature_2m": [28.0 + (i % 6) for i in range(48)],
         },
-        "source": "Chennai Meteorological Baseline (Live Observation)",
+        "source": "Regional Meteorological Baseline (Normal Observation)",
     }
 
 
-async def get_weather():
+async def get_weather(lat: float = CHENNAI_LAT, lon: float = CHENNAI_LON):
+    cache_key = f"{round(lat, 2)},{round(lon, 2)}"
     now = time.time()
 
-    # Serve cached response if valid
-    if _WEATHER_CACHE["data"] and (now - _WEATHER_CACHE["timestamp"]) < CACHE_TTL_SECONDS:
-        return _WEATHER_CACHE["data"]
+    cached = _WEATHER_CACHE.get(cache_key)
+    if cached and (now - cached["timestamp"]) < CACHE_TTL_SECONDS:
+        return cached["data"]
 
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
-        "latitude": CHENNAI_LAT,
-        "longitude": CHENNAI_LON,
+        "latitude": lat,
+        "longitude": lon,
         "current": (
             "temperature_2m,"
             "relative_humidity_2m,"
@@ -59,7 +62,8 @@ async def get_weather():
         "hourly": (
             "precipitation,"
             "rain,"
-            "precipitation_probability"
+            "precipitation_probability,"
+            "temperature_2m"
         ),
         "forecast_days": 2,
         "timezone": "Asia/Kolkata",
@@ -71,17 +75,19 @@ async def get_weather():
 
             if response.status_code == 200:
                 data = response.json()
-                _WEATHER_CACHE["data"] = data
-                _WEATHER_CACHE["timestamp"] = now
+                _WEATHER_CACHE[cache_key] = {
+                    "timestamp": now,
+                    "data": data,
+                }
                 return data
 
             # If rate limited (HTTP 429) on shared cloud IP:
-            if _WEATHER_CACHE["data"]:
-                return _WEATHER_CACHE["data"]
+            if cached:
+                return cached["data"]
 
-            return _get_baseline_weather()
+            return _get_baseline_weather(lat, lon)
 
     except Exception:
-        if _WEATHER_CACHE["data"]:
-            return _WEATHER_CACHE["data"]
-        return _get_baseline_weather()
+        if cached:
+            return cached["data"]
+        return _get_baseline_weather(lat, lon)

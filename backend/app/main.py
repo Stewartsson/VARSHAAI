@@ -38,6 +38,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from .data_sources.weather import get_weather
+from .cities_service import get_all_cities_summary, get_city_detail
 from .alerts.risk_classifier import FloodRiskClassifier
 from .alerts.cap_generator import CAPGenerator
 from .data_sources.mosdac.hem_api import router as hem_router
@@ -1506,6 +1507,27 @@ def models():
             "status": "SCREENING READY",
         },
     }
+
+
+# ============================================================
+# MULTI-CITY RADAR & INTELLIGENCE API
+# ============================================================
+
+@app.get("/api/cities")
+async def get_cities():
+    """Return live status, weather and radar network for 5 major Indian metros."""
+    cities = await get_all_cities_summary()
+    return {
+        "status": "success",
+        "count": len(cities),
+        "cities": cities,
+    }
+
+
+@app.get("/api/cities/{city_id}")
+async def get_city(city_id: str):
+    """Return in-depth radar specs, 48h timeline, and flood analysis for a specific city."""
+    return await get_city_detail(city_id)
 
 
 # ============================================================
