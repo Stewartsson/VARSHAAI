@@ -422,6 +422,10 @@
   background: #07151e;
 }
 
+.city-leaflet-container .leaflet-tile {
+  filter: brightness(0.68) invert(1) contrast(2.8) hue-rotate(200deg) saturate(0.35);
+}
+
 /* RADAR PULSE MARKER */
 .radar-marker-pulse {
   position: relative;
