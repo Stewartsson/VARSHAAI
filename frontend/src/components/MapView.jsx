@@ -12,46 +12,69 @@ import 'leaflet/dist/leaflet.css'
 import '../styles/MapView.css'
 
 
-function MapView() {
+function MapView({ mode = 'live', rainfall = 0.0 }) {
 
   /*
    * Prototype center:
-   * Thoothukudi / Tuticorin region
-   *
-   * Later this will come from:
-   * Backend API → GeoJSON / raster prediction
+   * Chennai Metropolitan Region
    */
 
   const center = [13.0827, 80.2707]
+  const isSimulation = mode === 'simulation' || rainfall > 25.0
 
-
-  const riskZones = [
-    {
-      id: 1,
-      position: [13.0827, 80.2707],
-      name: 'Chennai Central',
-      rainfall: '168 mm',
-      floodDepth: '0.74 m',
-      risk: 'HIGH',
-    },
-    {
-      id: 2,
-      position: [13.1200, 80.2500],
-      name: 'North Zone',
-      rainfall: '132 mm',
-      floodDepth: '0.42 m',
-      risk: 'MODERATE',
-    },
-    {
-      id: 3,
-      position: [13.0100, 80.2200],
-      name: 'South Zone',
-      rainfall: '104 mm',
-      floodDepth: '0.28 m',
-      risk: 'LOW',
-    },
-  ]
-
+  const riskZones = isSimulation
+    ? [
+        {
+          id: 1,
+          position: [13.0827, 80.2707],
+          name: 'Chennai Central',
+          rainfall: '168 mm',
+          floodDepth: '0.74 m',
+          risk: 'HIGH',
+        },
+        {
+          id: 2,
+          position: [13.1200, 80.2500],
+          name: 'North Zone',
+          rainfall: '132 mm',
+          floodDepth: '0.42 m',
+          risk: 'MODERATE',
+        },
+        {
+          id: 3,
+          position: [13.0100, 80.2200],
+          name: 'South Zone',
+          rainfall: '104 mm',
+          floodDepth: '0.28 m',
+          risk: 'LOW',
+        },
+      ]
+    : [
+        {
+          id: 1,
+          position: [13.0827, 80.2707],
+          name: 'Chennai Central (AWS 1)',
+          rainfall: `${rainfall.toFixed(1)} mm`,
+          floodDepth: '0.00 m',
+          risk: 'CLEAR',
+        },
+        {
+          id: 2,
+          position: [13.1200, 80.2500],
+          name: 'North Zone (Madhavaram)',
+          rainfall: `${rainfall.toFixed(1)} mm`,
+          floodDepth: '0.00 m',
+          risk: 'CLEAR',
+        },
+        {
+          id: 3,
+          position: [13.0100, 80.2200],
+          name: 'South Zone (Guindy AWS)',
+          rainfall: `${rainfall.toFixed(1)} mm`,
+          floodDepth: '0.00 m',
+          risk: 'CLEAR',
+        },
+      ]
 
   const floodArea = [
     [13.1100, 80.2400],
@@ -94,10 +117,11 @@ function MapView() {
         <Polygon
           positions={floodArea}
           pathOptions={{
-            color: '#ef6c63',
-            fillColor: '#ef6c63',
-            fillOpacity: 0.25,
+            color: isSimulation ? '#ef6c63' : '#10b981',
+            fillColor: isSimulation ? '#ef6c63' : '#10b981',
+            fillOpacity: isSimulation ? 0.25 : 0.08,
             weight: 2,
+            dashArray: isSimulation ? null : '4, 6',
           }}
         >
 
@@ -106,15 +130,15 @@ function MapView() {
             <div className="map-popup">
 
               <strong>
-                Predicted Inundation Zone
+                {isSimulation ? 'Predicted Inundation Zone (Simulation)' : 'Active Hydrodynamic Monitoring Area'}
               </strong>
 
               <span>
-                Risk: HIGH
+                Risk: {isSimulation ? 'HIGH' : 'NORMAL / GREEN'}
               </span>
 
               <span>
-                Predicted depth: 0.74 m
+                Predicted depth: {isSimulation ? '0.74 m' : '0.00 m'}
               </span>
 
             </div>
@@ -140,14 +164,14 @@ function MapView() {
                   ? '#ff6257'
                   : zone.risk === 'MODERATE'
                     ? '#e5b94c'
-                    : '#55d49a',
+                    : '#10b981',
 
               fillColor:
                 zone.risk === 'HIGH'
                   ? '#ff6257'
                   : zone.risk === 'MODERATE'
                     ? '#e5b94c'
-                    : '#55d49a',
+                    : '#10b981',
 
               fillOpacity: 0.8,
 

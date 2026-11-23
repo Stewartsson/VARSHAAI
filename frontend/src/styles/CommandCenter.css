@@ -35,7 +35,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 15px;
+  padding: 8px 14px;
   border: 1px solid #18503f;
   border-radius: 8px;
   background: #08251e;
@@ -43,6 +43,116 @@
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
+}
+
+.command-live.mode-badge-sim {
+  border-color: #7c2d12;
+  background: #2a1205;
+  color: #fb923c;
+}
+
+.command-live.mode-badge-sim .live-dot {
+  background: #fb923c;
+  box-shadow: 0 0 10px rgba(251, 146, 60, 0.8);
+}
+
+.command-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.command-mode-toggle {
+  display: flex;
+  background: #061824;
+  padding: 4px;
+  border-radius: 9px;
+  border: 1px solid #1a3c50;
+  gap: 4px;
+}
+
+.command-mode-toggle .mode-btn {
+  padding: 7px 13px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #7b9eb3;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.command-mode-toggle .mode-btn:hover {
+  color: #e0f2fe;
+}
+
+.command-mode-toggle .mode-btn.active-live {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid #10b981;
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+}
+
+.command-mode-toggle .mode-btn.active-sim {
+  background: rgba(249, 115, 22, 0.2);
+  border: 1px solid #f97316;
+  color: #fb923c;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+}
+
+.command-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #092231;
+  border: 1px solid #1c4b66;
+  border-radius: 8px;
+  color: #93c5fd;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.command-refresh-btn:hover {
+  background: #0c3046;
+  border-color: #38bdf8;
+  color: #e0f2fe;
+}
+
+.command-sim-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  margin-bottom: 22px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(180, 83, 9, 0.15) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.4);
+  color: #fdba74;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.command-live-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  margin-bottom: 22px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.12) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #a7f3d0;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .live-dot {

@@ -10,6 +10,7 @@ import {
   Radio,
   Navigation,
   Camera,
+  Globe,
 } from 'lucide-react'
 
 import Header from './components/Header'
@@ -26,6 +27,7 @@ import CityHub from './components/CityHub'
 import CitizenAlert from './components/CitizenAlert'
 import UrbanSimulation from './components/UrbanSimulation'
 import CrowdsourceTriage from './components/CrowdsourceTriage'
+import LiveSatelliteMaps from './components/LiveSatelliteMaps'
 
 
 function App() {
@@ -90,6 +92,12 @@ function App() {
       id: 'cities',
       label: 'Multi-City Radar',
       icon: Radio,
+    },
+
+    {
+      id: 'satellite-maps',
+      label: 'Live Satellite & Ocean',
+      icon: Globe,
     },
 
     {
@@ -248,6 +256,15 @@ function App() {
 
           {activePage === 'cities' && (
             <CityHub />
+          )}
+
+
+          {/* =================================================
+              LIVE METEOROLOGICAL SATELLITE & OCEAN OBSERVATORY
+              ================================================= */}
+
+          {activePage === 'satellite-maps' && (
+            <LiveSatelliteMaps />
           )}
 
 
