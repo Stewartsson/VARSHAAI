@@ -1673,6 +1673,66 @@ async def dispatch_alert(req: AlertDispatchRequest):
 
 
 # ============================================================
+# HYDROLOGICAL STRESS & CROWDSOURCE TRIAGE API
+# ============================================================
+
+class StressSimulationRequest(BaseModel):
+    rainfall_mm_hr: float = 60.0
+    drain_clogging_percent: float = 55.0
+    tide_surge_m: float = 1.1
+    soil_amc: str = "AMC-II"
+
+
+@app.post("/api/simulation/stress")
+async def simulate_drainage_stress(req: StressSimulationRequest):
+    """Compute explainable SCS-CN runoff depth under drainage clogging and tidal lockage."""
+    base_cn = 84.0
+    if req.soil_amc == "AMC-I":
+        base_cn = 72.0
+    elif req.soil_amc == "AMC-III":
+        base_cn = 93.0
+
+    s_retention = (25400.0 / base_cn) - 254.0
+    p = max(0.0, req.rainfall_mm_hr)
+    ia = 0.2 * s_retention
+
+    runoff_mm = 0.0
+    if p > ia:
+        runoff_mm = math.pow(p - ia, 2) / (p + 0.8 * s_retention)
+
+    max_conveyance = 45.0
+    actual_conveyance = max(
+        0.0,
+        max_conveyance * (1.0 - req.drain_clogging_percent / 100.0) * (1.0 - (req.tide_surge_m - 0.2) * 0.25)
+    )
+    excess_mm = max(0.0, runoff_mm - actual_conveyance)
+    street_depth_m = round(excess_mm * 0.012, 2)
+
+    risk_level = "GREEN"
+    if street_depth_m >= 0.5:
+        risk_level = "RED"
+    elif street_depth_m >= 0.2:
+        risk_level = "ORANGE"
+    elif street_depth_m >= 0.08:
+        risk_level = "YELLOW"
+
+    return {
+        "status": "success",
+        "rainfall_mm_hr": req.rainfall_mm_hr,
+        "drain_clogging_percent": req.drain_clogging_percent,
+        "tide_surge_m": req.tide_surge_m,
+        "soil_amc": req.soil_amc,
+        "curve_number": base_cn,
+        "runoff_depth_mm": round(runoff_mm, 1),
+        "actual_drainage_capacity_mm_hr": round(actual_conveyance, 1),
+        "street_ponding_depth_m": street_depth_m,
+        "risk_level": risk_level,
+        "time_to_ponding_min": max(12, int(60 / (1 + req.drain_clogging_percent / 25))),
+        "advisory": "Deploy High-Capacity Dewatering Pumps" if req.drain_clogging_percent >= 50 else "Conveyance Nominal",
+    }
+
+
+# ============================================================
 # STARTUP MESSAGE
 # ============================================================
 

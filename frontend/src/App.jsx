@@ -8,6 +8,8 @@ import {
   BarChart3,
   Siren,
   Radio,
+  Navigation,
+  Camera,
 } from 'lucide-react'
 
 import Header from './components/Header'
@@ -22,6 +24,8 @@ import AlertCenter from './components/AlertCenter'
 import SourceDetail from './components/SourceDetail'
 import CityHub from './components/CityHub'
 import CitizenAlert from './components/CitizenAlert'
+import UrbanSimulation from './components/UrbanSimulation'
+import CrowdsourceTriage from './components/CrowdsourceTriage'
 
 
 function App() {
@@ -86,6 +90,18 @@ function App() {
       id: 'cities',
       label: 'Multi-City Radar',
       icon: Radio,
+    },
+
+    {
+      id: 'routing',
+      label: 'Safe Routing & Stress',
+      icon: Navigation,
+    },
+
+    {
+      id: 'crowdsource',
+      label: 'Crowdsourced Triage',
+      icon: Camera,
     },
   ]
 
@@ -232,6 +248,24 @@ function App() {
 
           {activePage === 'cities' && (
             <CityHub />
+          )}
+
+
+          {/* =================================================
+              SAFE ROUTING & URBAN DRAINAGE SIMULATOR
+              ================================================= */}
+
+          {activePage === 'routing' && (
+            <UrbanSimulation />
+          )}
+
+
+          {/* =================================================
+              CROWDSOURCED TRIAGE & SNAP-AND-VERIFY
+              ================================================= */}
+
+          {activePage === 'crowdsource' && (
+            <CrowdsourceTriage />
           )}
 
 

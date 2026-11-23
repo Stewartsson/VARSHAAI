@@ -32,10 +32,60 @@ import {
   PhoneCall,
   Compass,
   Navigation,
+  Volume2,
+  VolumeX,
+  Languages,
+  Play,
+  Square,
+  Phone,
+  PhoneForwarded,
 } from 'lucide-react'
 import '../styles/AlertCenter.css'
 
 const CHENNAI = 'Chennai District, Tamil Nadu'
+
+const VERNACULAR_SCRIPTS = {
+  ta: {
+    lang: 'ta-IN',
+    name: 'Tamil (தமிழ்)',
+    title: 'தமிழ் அவசர குரல் எச்சரிக்கை',
+    badge: 'Regional Voice Protocol: Tamil Nadu SDMA',
+    script:
+      'எச்சரிக்கை! வர்ஷா ஏஐ அவசர பேரிடர் அறிவிப்பு. உங்கள் பகுதியில் அடுத்த 45 நிமிடங்களில் மிகக் கனமழை மற்றும் தீவிர வெள்ள அபாயம் கணிக்கப்பட்டுள்ளது. தாழ்வான பகுதியில் உள்ள பொதுமக்கள் உடனடியாக குருநானக் கல்லூரி நிவாரண முகாமிற்கு செல்லவும். சுரங்கப்பாதைகளை தவிர்க்கவும். அவசர உதவிக்கு 1070 அல்லது 1913 என்ற எண்ணை அழைக்கவும்.',
+    phoneticTranslation:
+      'Warning! VARSHAAI emergency alert. Heavy cloudburst predicted in your area within 45 minutes. Please evacuate lowlands towards Guru Nanak College Relief Center immediately. Avoid subways. Dial 1070 for emergency.',
+  },
+  te: {
+    lang: 'te-IN',
+    name: 'Telugu (తెలుగు)',
+    title: 'తెలుగు అత్యవసర వాయిస్ హెచ్చరిక',
+    badge: 'Regional Voice Protocol: Telangana SDMA / GHMC',
+    script:
+      'హెచ్చరిక! వర్షా ఏఐ అత్యవసర సమాచారం. రాబోయే 45 నిమిషాల్లో మీ వార్డులో భారీ వర్షపాతం మరియు వరద ముప్పు ఉంది. లోతట్టు ప్రాంతాల ప్రజలు వెంటనే షేక్‌పేట్ ప్రభుత్వ రిలీఫ్ క్యాంపుకు చేరుకోండి. మూసీ నది పరీవాహక ప్రాంతాలను నివారించండి. సహాయం కోసం 1070 డయల్ చేయండి.',
+    phoneticTranslation:
+      'Warning! VARSHAAI emergency dispatch. Severe rainfall and flash flood expected in your ward within 45 minutes. Evacuate to Shaikpet Relief Complex immediately. Dial 1070 for assistance.',
+  },
+  hi: {
+    lang: 'hi-IN',
+    name: 'Hindi (हिन्दी)',
+    title: 'हिन्दी स्वचालित आपदा कॉल',
+    badge: 'National Voice Protocol: NDMA / DDMA Hindi',
+    script:
+      'सावधान! वर्षा एआई आपदा चेतावनी। अगले 45 मिनट में आपके क्षेत्र में अत्यधिक भारी बारिश और जलभराव का खतरा है। कृपया तुरंत शकरपुर राहत शिविर की ओर जाएं। जलभराव वाले मिंटो ब्रिज और यमुना तटबंधों से दूर रहें। आपातकालीन नंबर 1070 पर कॉल करें।',
+    phoneticTranslation:
+      'Warning! VARSHAAI disaster alert. Severe waterlogging expected within 45 minutes. Please proceed to Shakarpur Relief Center immediately. Avoid underpasses. Dial 1070.',
+  },
+  en: {
+    lang: 'en-IN',
+    name: 'English',
+    title: 'Official English Telecom Broadcast',
+    badge: 'National Emergency Broadcast System (NEBS)',
+    script:
+      'Attention! This is an official VARSHAAI early warning voice broadcast. Severe flood inundation detected in your urban basin within the next 45 minutes. Citizens are advised to evacuate low-lying ground floors and proceed to the designated high-ground relief shelter immediately. For rescue, call toll-free 1070 or 112.',
+    phoneticTranslation:
+      'NDMA & State Disaster Management Authority authorized automated audio dispatch.',
+  },
+}
 
 const DISPATCH_METROS = {
   chennai: {
@@ -159,6 +209,13 @@ function AlertCenter() {
   const [linkCopied, setLinkCopied] = useState(false)
   const [alertTextCopied, setAlertTextCopied] = useState(false)
 
+  // VERNACULAR VOICE & IVR STATES
+  const [activeVoiceLang, setActiveVoiceLang] = useState('ta')
+  const [isPlayingVoice, setIsPlayingVoice] = useState(false)
+  const [ivrCallOpen, setIvrCallOpen] = useState(false)
+  const [ivrCallState, setIvrCallState] = useState('ringing') // 'ringing' or 'connected'
+  const [ivrCallDuration, setIvrCallDuration] = useState(0)
+
   async function loadRisk(selectedMode = mode) {
     setError('')
     try {
@@ -268,6 +325,8 @@ function AlertCenter() {
   async function handleDispatchToHandset() {
     setDispatching(true)
     const targetPhone = judgePhone.trim() || '+91-JUDGE-HANDSET'
+    const digitsOnly = judgePhone.replace(/[^0-9]/g, '')
+
     try {
       const response = await apiFetch('/api/alert/dispatch', {
         method: 'POST',
@@ -302,13 +361,26 @@ function AlertCenter() {
       })
     } finally {
       setDispatching(false)
+
       if (dispatchChannel === 'whatsapp') {
-        const digitsOnly = judgePhone.replace(/[^0-9]/g, '')
         const phoneParam = digitsOnly ? `&phone=${digitsOnly}` : ''
         window.open(
           `https://api.whatsapp.com/send?text=${encodeURIComponent(activeAlertText)}${phoneParam}`,
           '_blank'
         )
+      } else if (dispatchChannel === 'sms') {
+        // Native cellular SMS protocol: launches default Messages app on mobile or desktop
+        // Format: sms:+919876543210?&body=... (works on iOS, Android, macOS, Windows)
+        const recipient = digitsOnly ? (digitsOnly.startsWith('91') ? `+${digitsOnly}` : `+91${digitsOnly}`) : ''
+        const smsUrl = recipient
+          ? `sms:${recipient}?&body=${encodeURIComponent(activeAlertText)}`
+          : `sms:?&body=${encodeURIComponent(activeAlertText)}`
+
+        // Open in new window or redirect to SMS scheme
+        const win = window.open(smsUrl, '_blank')
+        if (!win) {
+          window.location.href = smsUrl
+        }
       }
     }
   }
@@ -332,6 +404,75 @@ function AlertCenter() {
       setLinkCopied(false)
     }
   }
+
+  // VERNACULAR VOICE SYNTHESIS & IVR SIMULATION
+  function stopVernacularVoice() {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+    setIsPlayingVoice(false)
+  }
+
+  function playVernacularVoice(langKey = activeVoiceLang) {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return
+
+    window.speechSynthesis.cancel()
+
+    if (isPlayingVoice && activeVoiceLang === langKey) {
+      stopVernacularVoice()
+      return
+    }
+
+    const scriptObj = VERNACULAR_SCRIPTS[langKey]
+    if (!scriptObj) return
+
+    setActiveVoiceLang(langKey)
+    const utterance = new SpeechSynthesisUtterance(scriptObj.script)
+    utterance.lang = scriptObj.lang
+    utterance.rate = 0.92
+    utterance.pitch = 1.0
+
+    const voices = window.speechSynthesis.getVoices()
+    const match = voices.find(
+      (v) => v.lang.startsWith(langKey) || v.lang.includes(scriptObj.lang)
+    )
+    if (match) utterance.voice = match
+
+    utterance.onstart = () => setIsPlayingVoice(true)
+    utterance.onend = () => setIsPlayingVoice(false)
+    utterance.onerror = () => setIsPlayingVoice(false)
+
+    window.speechSynthesis.speak(utterance)
+  }
+
+  function startIvrCall() {
+    setIvrCallOpen(true)
+    setIvrCallState('ringing')
+    setIvrCallDuration(0)
+    stopVernacularVoice()
+  }
+
+  function answerIvrCall() {
+    setIvrCallState('connected')
+    playVernacularVoice(activeVoiceLang)
+  }
+
+  function endIvrCall() {
+    stopVernacularVoice()
+    setIvrCallOpen(false)
+    setIvrCallState('ringing')
+    setIvrCallDuration(0)
+  }
+
+  useEffect(() => {
+    let timer
+    if (ivrCallOpen && ivrCallState === 'connected') {
+      timer = setInterval(() => {
+        setIvrCallDuration((d) => d + 1)
+      }, 1000)
+    }
+    return () => clearInterval(timer)
+  }, [ivrCallOpen, ivrCallState])
 
   const currentWeather = riskData?.current_weather
 
@@ -911,11 +1052,142 @@ function AlertCenter() {
         </div>
       </section>
 
-      {/* SECTION 4: PIPELINE FLOW */}
+      {/* SECTION 4: VERNACULAR VOICE & AUTOMATED IVR CALL DEMO */}
+      <section className="vernacular-voice-section">
+        <div className="section-heading">
+          <div>
+            <span>04 • INCLUSIVE DISASTER DISSEMINATION</span>
+            <h2>Vernacular Voice & Automated IVR Emergency Call Demo</h2>
+            <p>
+              Millions of citizens in vulnerable coastal settlements and urban slums cannot read English CAP/XML feeds.
+              VARSHAAI speaks native regional languages to deliver accessible life-saving warning calls.
+            </p>
+          </div>
+
+          <div className="voice-heading-actions">
+            <button className="simulate-ivr-btn" onClick={startIvrCall}>
+              <PhoneForwarded size={15} />
+              <span>Simulate Automated IVR Phone Call</span>
+            </button>
+          </div>
+        </div>
+
+        {/* REGIONAL LANGUAGE SELECTOR */}
+        <div className="vernacular-lang-tabs">
+          {Object.keys(VERNACULAR_SCRIPTS).map((lk) => {
+            const v = VERNACULAR_SCRIPTS[lk]
+            return (
+              <button
+                key={lk}
+                className={`vernacular-tab ${activeVoiceLang === lk ? 'active' : ''}`}
+                onClick={() => {
+                  stopVernacularVoice()
+                  setActiveVoiceLang(lk)
+                }}
+              >
+                <Languages size={14} />
+                <span>{v.name}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* VOICE PLAYBACK CARD */}
+        <div className="vernacular-card">
+          <div className="vernacular-card-header">
+            <div>
+              <span className="voice-badge">{VERNACULAR_SCRIPTS[activeVoiceLang].badge}</span>
+              <h3>{VERNACULAR_SCRIPTS[activeVoiceLang].title}</h3>
+            </div>
+
+            <button
+              className={`voice-play-trigger ${isPlayingVoice ? 'playing' : ''}`}
+              onClick={() => playVernacularVoice(activeVoiceLang)}
+            >
+              {isPlayingVoice ? <Square size={16} /> : <Play size={16} />}
+              <span>{isPlayingVoice ? 'Stop Audio Broadcast' : 'Play Vernacular Voice Broadcast'}</span>
+            </button>
+          </div>
+
+          <div className="vernacular-speech-box">
+            <div className="vernacular-script-text">
+              "{VERNACULAR_SCRIPTS[activeVoiceLang].script}"
+            </div>
+            <div className="vernacular-translation">
+              <strong>English Phonetic Translation:</strong> {VERNACULAR_SCRIPTS[activeVoiceLang].phoneticTranslation}
+            </div>
+          </div>
+
+          {/* AUDIO WAVEFORM VISUALIZER SIMULATION */}
+          <div className={`audio-waveform-bar ${isPlayingVoice ? 'active' : ''}`}>
+            <span /><span /><span /><span /><span /><span /><span /><span />
+            <span /><span /><span /><span /><span /><span /><span /><span />
+            <span /><span /><span /><span /><span /><span /><span /><span />
+          </div>
+        </div>
+
+        {/* INTERACTIVE IVR SMARTPHONE CALL OVERLAY (TABLE-JUDGING WOW FACTOR) */}
+        {ivrCallOpen && (
+          <div className="ivr-modal-overlay" onClick={endIvrCall}>
+            <div className="ivr-phone-chassis" onClick={(e) => e.stopPropagation()}>
+              <div className="phone-earpiece" />
+
+              <div className="ivr-screen">
+                <div className="ivr-top-bar">
+                  <span>DISASTER ALERT</span>
+                  <span>1070 DISPATCH</span>
+                </div>
+
+                <div className="ivr-caller-info">
+                  <div className="ivr-pulse-ring">
+                    <PhoneCall size={38} className="ivr-phone-icon" />
+                  </div>
+                  <h2>NDMA & TN-SDMA</h2>
+                  <p>Emergency Flash Flood Automated Broadcast</p>
+                  <span className="ivr-call-status">
+                    {ivrCallState === 'ringing'
+                      ? 'INCOMING EMERGENCY CALL...'
+                      : `CONNECTED • 00:${ivrCallDuration < 10 ? `0${ivrCallDuration}` : ivrCallDuration}`}
+                  </span>
+                </div>
+
+                {ivrCallState === 'connected' && (
+                  <div className="ivr-subtitles-box">
+                    <div className="subtitles-lang">{VERNACULAR_SCRIPTS[activeVoiceLang].name} Broadcast</div>
+                    <p>"{VERNACULAR_SCRIPTS[activeVoiceLang].script}"</p>
+                  </div>
+                )}
+
+                <div className="ivr-actions">
+                  {ivrCallState === 'ringing' ? (
+                    <>
+                      <button className="ivr-btn decline" onClick={endIvrCall}>
+                        <Phone size={20} />
+                        <span>Decline</span>
+                      </button>
+                      <button className="ivr-btn answer" onClick={answerIvrCall}>
+                        <PhoneCall size={20} />
+                        <span>Answer Call</span>
+                      </button>
+                    </>
+                  ) : (
+                    <button className="ivr-btn end-call" onClick={endIvrCall}>
+                      <Phone size={20} />
+                      <span>End Emergency Broadcast</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* SECTION 5: PIPELINE FLOW */}
       <section className="pipeline-section">
         <div className="section-heading">
           <div>
-            <span>04 • END-TO-END AUTOMATED PIPELINE</span>
+            <span>05 • END-TO-END AUTOMATED PIPELINE</span>
             <h2>From Atmospheric Ingestion to Public Alert</h2>
             <p>
               VARSHAAI harmonizes multi-source data and couples hydrology with AI nowcasting for transparent decision-support.
