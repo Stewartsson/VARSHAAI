@@ -21,15 +21,24 @@ import Validation from './components/Validation'
 import AlertCenter from './components/AlertCenter'
 import SourceDetail from './components/SourceDetail'
 import CityHub from './components/CityHub'
+import CitizenAlert from './components/CitizenAlert'
 
 
 function App() {
 
   // =========================================================
-  // ACTIVE PAGE
+  // ACTIVE PAGE (supports direct URL parameters from judge QR scan)
   // =========================================================
 
-  const [activePage, setActivePage] = useState('command')
+  const [activePage, setActivePage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search).get('page')
+      if (p === 'citizen-alert') return 'citizen-alert'
+      const hash = window.location.hash.replace('#', '')
+      if (hash === 'citizen-alert') return 'citizen-alert'
+    }
+    return 'command'
+  })
 
 
   // =========================================================
@@ -106,6 +115,23 @@ function App() {
   // =========================================================
   // APPLICATION
   // =========================================================
+
+  const isDirectMobileView =
+    typeof window !== 'undefined' &&
+    (new URLSearchParams(window.location.search).get('page') === 'citizen-alert' ||
+      window.location.hash === '#citizen-alert')
+
+  if (isDirectMobileView) {
+    return (
+      <div className="app-shell standalone-mobile">
+        <CitizenAlert
+          onBack={() => {
+            window.location.href = window.location.origin
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
 
@@ -206,6 +232,15 @@ function App() {
 
           {activePage === 'cities' && (
             <CityHub />
+          )}
+
+
+          {/* =================================================
+              CITIZEN ALERT & EVACUATION MOBILE TERMINAL
+              ================================================= */}
+
+          {activePage === 'citizen-alert' && (
+            <CitizenAlert onBack={() => setActivePage('alerts')} />
           )}
 
 
