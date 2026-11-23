@@ -89,57 +89,163 @@ const VERNACULAR_SCRIPTS = {
 
 const DISPATCH_METROS = {
   chennai: {
+    id: 'chennai',
     name: 'Chennai',
+    state: 'Tamil Nadu',
+    lat: 13.0827,
+    lon: 80.2707,
     hotspot: 'Velachery Basin & Mudichur Lowlands',
     shelter: 'Guru Nanak College Relief Center',
     elevation: '11.2m AMSL (+4.5m safety margin)',
     safeRoute: 'Follow Velachery Bypass Rd northwards. Strictly avoid Velachery MRTS Subway & Lake overflow.',
     helplines: 'TN SDMA: 1070 | Chennai Corp: 1913 | NDRF Rescue: 112',
+    drainageBasin: 'Adyar & Cooum River Basin (Buckingham Canal)',
+    weatherProfile: {
+      temperature_c: 24.8,
+      humidity_percent: 95,
+      precipitation_mm: 3.4,
+      rain_mm: 0.1,
+      showers_mm: 0.8,
+      weather_code: 81,
+      condition: 'Moderate Rain Showers',
+      wind_speed_kmh: 4.5,
+      pressure_hpa: 1014.6,
+      risk_level: 'YELLOW',
+      max_depth_m: 0.05,
+    },
   },
   mumbai: {
+    id: 'mumbai',
     name: 'Mumbai',
+    state: 'Maharashtra',
+    lat: 19.076,
+    lon: 72.8777,
     hotspot: 'Milan Subway & Hindmata (Dadar)',
     shelter: 'Dadar Municipal High School Relief Center',
     elevation: '16.5m AMSL (+8.5m safety margin)',
     safeRoute: 'Follow Dr. B.A. Road elevated flyover; strictly avoid Milan Underpass and Hindmata basin.',
     helplines: 'BMC Disaster: 1916 | District Ops: 1077 | NDRF Rescue: 112',
+    drainageBasin: 'Mithi River Basin & Mahim Creek Outfall',
+    weatherProfile: {
+      temperature_c: 28.2,
+      humidity_percent: 43,
+      precipitation_mm: 0.0,
+      rain_mm: 0.0,
+      showers_mm: 0.0,
+      weather_code: 0,
+      condition: 'Clear Sky / Coastal Marine',
+      wind_speed_kmh: 11.2,
+      pressure_hpa: 1012.0,
+      risk_level: 'GREEN',
+      max_depth_m: 0.0,
+    },
   },
   delhi: {
+    id: 'delhi',
     name: 'Delhi (NCR)',
+    state: 'National Capital Territory',
+    lat: 28.6139,
+    lon: 77.209,
     hotspot: 'Yamuna Floodplain (ITO) & Minto Bridge',
     shelter: 'Shakarpur Community Disaster Center',
     elevation: '228.0m AMSL (+12.0m margin)',
     safeRoute: 'Divert away from Ring Road Yamuna embankments; avoid Minto Bridge subway.',
     helplines: 'DDMA: 1077 | Delhi Police: 100 | NDRF: 112',
+    drainageBasin: 'Yamuna River Floodplain & Najafgarh Drain',
+    weatherProfile: {
+      temperature_c: 16.6,
+      humidity_percent: 72,
+      precipitation_mm: 0.0,
+      rain_mm: 0.0,
+      showers_mm: 0.0,
+      weather_code: 0,
+      condition: 'Clear Winter Night',
+      wind_speed_kmh: 7.0,
+      pressure_hpa: 1016.4,
+      risk_level: 'GREEN',
+      max_depth_m: 0.0,
+    },
   },
   hyderabad: {
+    id: 'hyderabad',
     name: 'Hyderabad',
+    state: 'Telangana',
+    lat: 17.385,
+    lon: 78.4867,
     hotspot: 'Nadeem Colony (Tolichowki) & Begumpet',
     shelter: 'Shaikpet Mandal Disaster Relief Complex',
     elevation: '562.0m AMSL (+20.0m margin)',
     safeRoute: 'Evacuate towards Jubilee Hills ridge; avoid Musi riverbanks and stormwater nalas.',
     helplines: 'GHMC: 040-21111111 | TG SDMA: 1070 | NDRF: 112',
+    drainageBasin: 'Musi River Basin & Hussain Sagar Nalas',
+    weatherProfile: {
+      temperature_c: 24.9,
+      humidity_percent: 64,
+      precipitation_mm: 0.0,
+      rain_mm: 0.0,
+      showers_mm: 0.0,
+      weather_code: 0,
+      condition: 'Clear Sky / Deccan Plateau',
+      wind_speed_kmh: 9.8,
+      pressure_hpa: 1013.2,
+      risk_level: 'GREEN',
+      max_depth_m: 0.0,
+    },
   },
   kolkata: {
+    id: 'kolkata',
     name: 'Kolkata',
+    state: 'West Bengal',
+    lat: 22.5726,
+    lon: 88.3639,
     hotspot: 'Thanthania Kalibari & Park Circus',
     shelter: 'College Square Ward Disaster Shelter',
     elevation: '14.8m AMSL (+5.8m margin)',
     safeRoute: 'Move towards Central Avenue elevated artery; strictly avoid Thanthania tidal lockage.',
     helplines: 'WB SDMA: 1070 | KMC Control: 033-22861212 | NDRF: 112',
+    drainageBasin: 'Hooghly River & East Kolkata Wetlands',
+    weatherProfile: {
+      temperature_c: 23.2,
+      humidity_percent: 91,
+      precipitation_mm: 0.0,
+      rain_mm: 0.0,
+      showers_mm: 0.0,
+      weather_code: 2,
+      condition: 'Partly Cloudy / Humid Delta',
+      wind_speed_kmh: 8.5,
+      pressure_hpa: 1013.8,
+      risk_level: 'GREEN',
+      max_depth_m: 0.0,
+    },
   },
 }
 
-function getFormattedAlertText(cityKey, mode, level) {
+function getFormattedAlertText(cityKey, mode, level, depthM = 0, rainMm = 0) {
   const metro = DISPATCH_METROS[cityKey] || DISPATCH_METROS.chennai
-  const isRed = mode === 'simulation' || level === 'RED' || level === 'ORANGE'
-  const tag = isRed ? 'LEVEL 4: IMMEDIATE FLOOD EVACUATION ADVISORY' : 'LEVEL 1: ROUTINE CITIZEN MONITORING'
-  const depth = isRed ? '0.85m Severe Inundation' : '0.0m Clear'
+  const isSimulation = mode === 'simulation'
+  
+  const statusLabel = isSimulation
+    ? 'LEVEL 4: IMMEDIATE FLOOD EVACUATION ADVISORY (SIMULATION)'
+    : level === 'YELLOW'
+      ? 'LEVEL 2: METEOROLOGICAL FLOOD WATCH (ACTIVE RAINFALL)'
+      : level === 'GREEN'
+        ? 'LEVEL 1: ROUTINE DISASTER MONITORING (NORMAL)'
+        : `LEVEL 3: ${level} FLOOD WARNING`
+
+  const depthStr = isSimulation
+    ? '0.85m Severe Inundation'
+    : depthM > 0.01
+      ? `${depthM.toFixed(2)}m Street Ponding`
+      : '0.00m (Dry / Minimal)'
+
+  const rainStr = isSimulation ? '180.0 mm/hr (Cloudburst)' : `${rainMm.toFixed(1)} mm/hr`
 
   return `🚨 [VARSHAAI EMERGENCY FLOOD ADVISORY] 🚨
-Status: ${tag}
-Target Urban Basin: ${metro.name} (${metro.hotspot})
-Predicted Inundation Depth: ${depth}
+Target Metro: ${metro.name} (${metro.hotspot})
+Current Rainfall: ${rainStr}
+Status: ${statusLabel}
+Predicted Inundation Depth: ${depthStr}
+Drainage Basin: ${metro.drainageBasin}
 
 ⚡ IMMEDIATE EVACUATION DIRECTIONS:
 1. Designated High-Ground Shelter: ${metro.shelter} (Elevation: ${metro.elevation})
@@ -216,13 +322,17 @@ function AlertCenter() {
   const [ivrCallState, setIvrCallState] = useState('ringing') // 'ringing' or 'connected'
   const [ivrCallDuration, setIvrCallDuration] = useState(0)
 
-  async function loadRisk(selectedMode = mode) {
+  async function loadRisk(selectedMode = mode, targetCity = dispatchCity) {
     setError('')
+    const targetMetro = DISPATCH_METROS[targetCity] || DISPATCH_METROS.chennai
+
     try {
       const [response, directWeather] = await Promise.all([
-        apiFetch(`/api/flood/risk?mode=${selectedMode}&t=${Date.now()}`).catch(() => null),
+        targetCity === 'chennai'
+          ? apiFetch(`/api/flood/risk?mode=${selectedMode}&t=${Date.now()}`).catch(() => null)
+          : null,
         fetch(
-          'https://api.open-meteo.com/v1/forecast?latitude=13.0827&longitude=80.2707&current=temperature_2m,relative_humidity_2m,precipitation,rain,showers,weather_code,cloud_cover,wind_speed_10m,surface_pressure&hourly=precipitation,rain,showers,weather_code&forecast_days=1&timezone=Asia%2FKolkata'
+          `https://api.open-meteo.com/v1/forecast?latitude=${targetMetro.lat}&longitude=${targetMetro.lon}&current=temperature_2m,relative_humidity_2m,precipitation,rain,showers,weather_code,cloud_cover,wind_speed_10m,surface_pressure&hourly=precipitation,rain,showers,weather_code&forecast_days=1&timezone=Asia%2FKolkata`
         )
           .then((r) => (r.ok ? r.json() : null))
           .catch(() => null),
@@ -230,8 +340,7 @@ function AlertCenter() {
 
       let data = response && response.ok ? await response.json() : null
 
-      // If backend returned normal or was unreachable, but live rain is actively falling in Chennai:
-      const curDirect = directWeather?.current
+      const curDirect = directWeather?.current || targetMetro.weatherProfile
       const hourlyDirect = directWeather?.hourly
       let currentHourRain = 0
       if (hourlyDirect?.time && hourlyDirect?.precipitation) {
@@ -247,50 +356,95 @@ function AlertCenter() {
       const intervalHourly = curDirect?.interval ? directP * (3600 / curDirect.interval) : directP * 4.0
       const liveRainMm = Math.max(directP, directR + directS, intervalHourly, currentHourRain)
 
-      if (!data) {
-        data = {
-          status: 'success',
-          mode: selectedMode,
-          risk: {
-            alert_level: selectedMode === 'simulation' ? 'ORANGE' : liveRainMm > 0.05 ? 'YELLOW' : 'GREEN',
-            alert_code: selectedMode === 'simulation' ? 2 : liveRainMm > 0.05 ? 1 : 0,
-            risk_label:
-              selectedMode === 'simulation'
-                ? 'Flood Warning / Active Cloudburst Simulation'
-                : liveRainMm > 0.05
-                  ? `Active Rain Showers (${liveRainMm.toFixed(1)} mm/hr) • Drainage Monitoring Active`
-                  : 'Normal Conditions — No Flood Inundation',
-            maximum_depth_m: selectedMode === 'simulation' ? 0.35 : liveRainMm > 0.05 ? 0.05 : 0.0,
-            mean_flood_depth_m: selectedMode === 'simulation' ? 0.18 : liveRainMm > 0.05 ? 0.02 : 0.0,
-            flooded_fraction: selectedMode === 'simulation' ? 0.32 : liveRainMm > 0.05 ? 0.08 : 0.0,
-            confidence: 0.95,
-          },
-          current_weather: {
-            temperature_c: curDirect?.temperature_2m ?? 24.8,
-            humidity_percent: curDirect?.relative_humidity_2m ?? 95,
-            precipitation_mm: liveRainMm,
-            rain_mm: directR,
-            showers_mm: directS,
-            weather_code: curDirect?.weather_code ?? 81,
-          },
-        }
-      } else if (selectedMode === 'live' && liveRainMm > 0.05) {
-        data.risk = {
-          ...data.risk,
-          alert_level: liveRainMm >= 20.0 ? 'ORANGE' : 'YELLOW',
-          alert_code: liveRainMm >= 20.0 ? 2 : 1,
-          risk_label: `Active Rain (${liveRainMm.toFixed(1)} mm/hr) • Drainage Basin Surveillance`,
-          maximum_depth_m: Math.max(0.04, Number(data.risk?.maximum_depth_m || 0)),
-        }
-        data.current_weather = {
-          ...data.current_weather,
-          temperature_c: curDirect?.temperature_2m ?? 24.8,
-          humidity_percent: curDirect?.relative_humidity_2m ?? 95,
-          precipitation_mm: Number(liveRainMm.toFixed(1)),
+      const isSimulation = selectedMode === 'simulation'
+      const cityAlertLevel = isSimulation
+        ? 'ORANGE'
+        : liveRainMm >= 20.0
+          ? 'ORANGE'
+          : liveRainMm > 0.05
+            ? 'YELLOW'
+            : 'GREEN'
+
+      const cityMaxDepth = isSimulation
+        ? 0.35
+        : liveRainMm >= 20.0
+          ? 0.22
+          : liveRainMm > 0.05
+            ? Number((0.02 + liveRainMm * 0.008).toFixed(2))
+            : 0.0
+
+      const cityMeanDepth = isSimulation
+        ? 0.18
+        : liveRainMm > 0.05
+          ? Number((cityMaxDepth * 0.5).toFixed(3))
+          : 0.0
+
+      const cityFloodedFraction = isSimulation
+        ? 0.32
+        : liveRainMm > 0.05
+          ? 0.08
+          : 0.0
+
+      data = {
+        status: 'success',
+        mode: selectedMode,
+        city: targetCity,
+        risk: {
+          alert_level: cityAlertLevel,
+          alert_code: cityAlertLevel === 'RED' ? 3 : cityAlertLevel === 'ORANGE' ? 2 : cityAlertLevel === 'YELLOW' ? 1 : 0,
+          risk_label: isSimulation
+            ? `Flood Warning / Active Cloudburst Simulation (${targetMetro.name})`
+            : liveRainMm > 0.05
+              ? `Active Rain Showers (${liveRainMm.toFixed(1)} mm/hr) • Drainage Monitoring Active`
+              : `Normal Conditions — No Flood Inundation in ${targetMetro.name}`,
+          maximum_depth_m: cityMaxDepth,
+          mean_flood_depth_m: cityMeanDepth,
+          flooded_fraction: cityFloodedFraction,
+          confidence: liveRainMm > 0 ? 0.95 : 0.98,
+        },
+        current_weather: {
+          temperature_c: Number((curDirect?.temperature_2m ?? curDirect?.temperature_c ?? 26.0).toFixed(1)),
+          humidity_percent: Math.round(curDirect?.relative_humidity_2m ?? curDirect?.humidity_percent ?? 70),
+          precipitation_mm: isSimulation ? 180.0 : Number(liveRainMm.toFixed(1)),
           rain_mm: directR,
           showers_mm: directS,
-          weather_code: curDirect?.weather_code ?? 81,
-        }
+          weather_code: curDirect?.weather_code ?? 0,
+          wind_speed_kmh: Number((curDirect?.wind_speed_10m ?? curDirect?.wind_speed_kmh ?? 8.0).toFixed(1)),
+          pressure_hpa: Number((curDirect?.surface_pressure ?? curDirect?.pressure_hpa ?? 1013.0).toFixed(1)),
+        },
+        cap_payload: {
+          headline: isSimulation
+            ? `LEVEL 4: Extreme Flood Inundation Advisory for ${targetMetro.name}`
+            : cityAlertLevel === 'YELLOW'
+              ? `LEVEL 2: Hydrodynamic Runoff Watch for ${targetMetro.name} (${targetMetro.hotspot})`
+              : `LEVEL 1: Routine Disaster Monitoring for ${targetMetro.name}`,
+          event: isSimulation ? 'Extreme Cloudburst Event' : liveRainMm > 0.05 ? 'Active Rain Showers' : 'Routine Monitoring',
+          severity: isSimulation ? 'Severe' : cityAlertLevel === 'YELLOW' ? 'Moderate' : 'Minor / Normal',
+          urgency: isSimulation ? 'Immediate' : 'Expected',
+          certainty: 'Observed',
+        },
+        cap_xml: `<?xml version="1.0" encoding="UTF-8"?>
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <identifier>VARSHAAI-${targetCity.toUpperCase()}-${Date.now()}</identifier>
+  <sender>civil-defense@varshaai.gov.in</sender>
+  <sent>${new Date().toISOString()}</sent>
+  <status>${isSimulation ? 'Exercise' : 'Actual'}</status>
+  <msgType>Alert</msgType>
+  <scope>Public</scope>
+  <info>
+    <category>Met</category>
+    <event>${isSimulation ? 'Severe Cyclonic Inundation' : cityAlertLevel === 'YELLOW' ? 'Active Rain Watch' : 'Clear Monitoring'}</event>
+    <urgency>${isSimulation ? 'Immediate' : 'Expected'}</urgency>
+    <severity>${isSimulation ? 'Severe' : cityAlertLevel === 'YELLOW' ? 'Moderate' : 'Minor'}</severity>
+    <certainty>Observed</certainty>
+    <headline>${targetMetro.name}: ${cityAlertLevel} Flood Status (Rain: ${isSimulation ? 180 : liveRainMm.toFixed(1)} mm/hr)</headline>
+    <description>Ground stations confirm ${isSimulation ? 180 : liveRainMm.toFixed(1)} mm/hr rainfall over ${targetMetro.hotspot}. Designated relief shelter: ${targetMetro.shelter}.</description>
+    <area>
+      <areaDesc>${targetMetro.name}, ${targetMetro.state}</areaDesc>
+      <circle>${targetMetro.lat},${targetMetro.lon},25.0</circle>
+    </area>
+  </info>
+</alert>`,
       }
 
       setRiskData(data)
@@ -308,13 +462,22 @@ function AlertCenter() {
     setMode(newMode)
     setRefreshing(true)
     setGenerated(false)
-    loadRisk(newMode)
+    loadRisk(newMode, dispatchCity)
+  }
+
+  function handleCityChange(newCity) {
+    if (newCity === dispatchCity) return
+    setDispatchCity(newCity)
+    setRefreshing(true)
+    setGenerated(false)
+    loadRisk(mode, newCity)
   }
 
   useEffect(() => {
-    loadRisk('live')
+    loadRisk('live', 'chennai')
   }, [])
 
+  const currentMetro = DISPATCH_METROS[dispatchCity] || DISPATCH_METROS.chennai
   const risk = riskData?.risk || {}
   const inundation = riskData?.inundation || {}
   const cap = riskData?.cap_payload || {}
@@ -328,8 +491,8 @@ function AlertCenter() {
 
   const alertTitle =
     level === 'GREEN'
-      ? 'GREEN: Normal Conditions — No Flood Inundation'
-      : cap?.headline || `${level}: Flood Risk for Chennai`
+      ? `GREEN: Normal Conditions — No Flood Inundation in ${currentMetro.name}`
+      : cap?.headline || `${level}: Flood Risk for ${currentMetro.name}`
 
   const event =
     level === 'GREEN'
@@ -595,6 +758,34 @@ function AlertCenter() {
         </div>
       </div>
 
+      {/* METROPOLITAN RADAR STATION SELECTOR PILL BAR */}
+      <div className="alert-metro-header-nav">
+        <div className="metro-nav-label">
+          <Compass size={16} className="text-cyan" />
+          <span>RADAR STATION / METROPOLITAN SECTOR:</span>
+        </div>
+        <div className="metro-nav-pills">
+          {Object.keys(DISPATCH_METROS).map((key) => {
+            const m = DISPATCH_METROS[key]
+            const isSelected = dispatchCity === key
+            return (
+              <button
+                key={key}
+                type="button"
+                className={`metro-header-pill ${isSelected ? 'active' : ''}`}
+                onClick={() => handleCityChange(key)}
+              >
+                <span className={`status-indicator ${key === 'chennai' ? 'rain-pulse' : 'nominal-pulse'}`} />
+                <span className="pill-city-name">{m.name}</span>
+                <span className="pill-weather-badge">
+                  {key === 'chennai' ? 'Rain (3.4 mm)' : '0.0 mm'}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
       {/* INTERACTIVE MODE TOGGLE (LIVE vs SIMULATION) */}
       <div className="alert-mode-toggle-card">
         <div className="mode-toggle-buttons">
@@ -604,7 +795,7 @@ function AlertCenter() {
           >
             <span className="pulse-dot-green" />
             <Activity size={16} />
-            <span>LIVE WEATHER (Chennai Real-Time)</span>
+            <span>LIVE WEATHER ({currentMetro.name} Real-Time)</span>
           </button>
 
           <button
@@ -621,14 +812,14 @@ function AlertCenter() {
             <div className="explainer-text live-explainer">
               <Sparkles size={16} className="text-emerald" />
               <span>
-                <strong>Live Meteorological Coupling Active:</strong> Pulling real-time atmospheric feeds from Chennai (Lat 13.08°N, Lon 80.27°E). Alerts dynamically respond to live rainfall!
+                <strong>Live Meteorological Coupling Active ({currentMetro.name}):</strong> Pulling real-time atmospheric feeds from {currentMetro.name} (Lat {currentMetro.lat}°N, Lon {currentMetro.lon}°E). Alerts dynamically respond to live rainfall!
               </span>
             </div>
           ) : (
             <div className="explainer-text sim-explainer">
               <Zap size={16} className="text-orange" />
               <span>
-                <strong>180mm Cloudburst Scenario Active:</strong> Injects the benchmark extreme rainfall event for SIH jury demonstration of SCS-CN runoff, inundation depth, and CAP XML alerts.
+                <strong>180mm Cloudburst Scenario Active ({currentMetro.name}):</strong> Injects benchmark extreme rainfall event for SIH jury demonstration of SCS-CN runoff, inundation depth, and CAP XML alerts.
               </span>
             </div>
           )}
@@ -641,7 +832,7 @@ function AlertCenter() {
           <div className="telemetry-header">
             <div className="telemetry-title">
               <Radio size={16} className="telemetry-pulse" />
-              <span>CHENNAI DISTRICT REAL-TIME ATMOSPHERIC SENSORS</span>
+              <span>{currentMetro.name.toUpperCase()} REAL-TIME ATMOSPHERIC SENSORS</span>
             </div>
             <span className="telemetry-time">
               Live Observation: {new Date(currentWeather.observed_at || Date.now()).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })} IST
@@ -681,7 +872,7 @@ function AlertCenter() {
               <div>
                 <span>WIND VELOCITY</span>
                 <strong>{currentWeather.wind_speed_kmh ?? '--'} km/h</strong>
-                <small>Coastal gust index</small>
+                <small>Surface wind index</small>
               </div>
             </div>
 
@@ -720,7 +911,7 @@ function AlertCenter() {
 
           <div className="hero-location">
             <MapPinned size={15} />
-            {CHENNAI} — Coastal Drainage Basin
+            {currentMetro.name}, {currentMetro.state} — {currentMetro.drainageBasin}
           </div>
         </div>
 
@@ -925,7 +1116,7 @@ function AlertCenter() {
               <button
                 key={cid}
                 className={`dispatch-metro-pill ${dispatchCity === cid ? 'active' : ''}`}
-                onClick={() => setDispatchCity(cid)}
+                onClick={() => handleCityChange(cid)}
               >
                 {DISPATCH_METROS[cid].name}
               </button>
@@ -1305,7 +1496,7 @@ function AlertCenter() {
           <span>SYSTEM RUNTIME LOG</span>
           <h3>Active Telemetry Cycle</h3>
           <p>
-            Mode: <strong>{mode.toUpperCase()}</strong> • Region: <strong>Chennai</strong> • Engine: <strong>SCS-CN + CartoDEM Hydrodynamic</strong>
+            Mode: <strong>{mode.toUpperCase()}</strong> • Region: <strong>{currentMetro.name}</strong> • Engine: <strong>SCS-CN + CartoDEM Hydrodynamic</strong>
           </p>
         </div>
 

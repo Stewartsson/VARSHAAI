@@ -546,6 +546,296 @@
   font-size: 9px;
 }
 
+/* MODE TOGGLE BANNER */
+.inundation-mode-toggle-card {
+  margin-bottom: 22px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #091e2b 0%, #061622 100%);
+  border: 1px solid #1e4559;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mode-toggle-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mode-toggle-btn {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: 1px solid #1b4256;
+  background: #0b2230;
+  color: #8bb2c5;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mode-toggle-btn:hover {
+  background: #0f2d3f;
+  border-color: #2a617e;
+  color: #d8edf7;
+  transform: translateY(-1px);
+}
+
+.mode-toggle-btn.active-live {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+  border-color: #10b981;
+  color: #ecfdf5;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+}
+
+.mode-toggle-btn.active-sim {
+  background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+  border-color: #f97316;
+  color: #fff7ed;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.35);
+}
+
+.pulse-dot-green {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulse-dot 1.4s infinite;
+}
+
+.mode-explainer {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.explainer-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.live-explainer {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #a7f3d0;
+}
+
+.sim-explainer {
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  color: #fed7aa;
+}
+
+/* LIVE TELEMETRY BAR */
+.live-telemetry-banner {
+  margin-bottom: 22px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: #081925;
+  border: 1px solid #183e54;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.telemetry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #143548;
+}
+
+.telemetry-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.telemetry-pulse {
+  color: #38bdf8;
+  animation: pulse-dot 1.8s infinite;
+}
+
+.telemetry-time {
+  font-size: 11px;
+  color: #79a6bc;
+  font-family: monospace;
+}
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.telemetry-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #0c2333;
+  border: 1px solid #1b455e;
+}
+
+.telemetry-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.rain-accent { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+.temp-accent { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+.humidity-accent { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.wind-accent { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+.pressure-accent { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+
+.telemetry-card span {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #648da1;
+  text-transform: uppercase;
+}
+
+.telemetry-card strong {
+  display: block;
+  font-size: 15px;
+  color: #f0f9ff;
+  font-weight: 800;
+  margin: 1px 0;
+}
+
+.telemetry-card small {
+  font-size: 10px;
+  color: #8dafc0;
+}
+
+/* DYNAMIC 24-HOUR HYDROGRAPH SECTION */
+.inundation-hydrograph-section {
+  margin-bottom: 24px;
+  padding: 22px;
+  border-radius: 14px;
+  background: #091e2b;
+  border: 1px solid #183e54;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hydrograph-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hydro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #0c2838;
+  border: 1px solid #1e4b65;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a0c7db;
+}
+
+.hydrograph-chart-card {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #061622;
+  border: 1px solid #15374b;
+}
+
+.hydrograph-legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  color: #92b7ca;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legend-swatch.bar-rain { background: #38bdf8; }
+.legend-swatch.area-runoff { background: #10b981; }
+.legend-swatch.line-depth { background: #f59e0b; border-radius: 50%; }
+.legend-swatch.ref-drain { background: #ef4444; height: 2px; }
+
+.hydrograph-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #143548;
+}
+
+.hydro-stat {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #091f2c;
+  border: 1px solid #1b455d;
+}
+
+.hydro-stat span {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #5c889e;
+  text-transform: uppercase;
+}
+
+.hydro-stat strong {
+  display: block;
+  font-size: 16px;
+  color: #e0f2fe;
+  font-weight: 800;
+  margin: 3px 0 2px;
+}
+
+.hydro-stat small {
+  font-size: 10px;
+  color: #8daec0;
+}
+
 @media (max-width: 1100px) {
   .metric-grid {
     grid-template-columns: repeat(2, 1fr);

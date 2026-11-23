@@ -664,6 +664,97 @@
   box-shadow: 0 0 12px rgba(249, 115, 22, 0.25);
 }
 
+/* METROPOLITAN RADAR STATION SELECTOR PILL BAR */
+.alert-metro-header-nav {
+  margin-bottom: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #081622;
+  border: 1px solid #1a3c50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.metro-nav-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7ab2cc;
+  text-transform: uppercase;
+}
+
+.metro-nav-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.metro-header-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0b2131;
+  border: 1px solid #1b425b;
+  color: #a0c4d8;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.metro-header-pill:hover {
+  background: #113045;
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.metro-header-pill.active {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+}
+
+.metro-header-pill .status-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.metro-header-pill .status-indicator.rain-pulse {
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: pulse-dot 1.4s infinite;
+}
+
+.metro-header-pill .status-indicator.nominal-pulse {
+  background: #10b981;
+}
+
+.metro-header-pill .pill-weather-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  color: #d1fae5;
+  font-family: monospace;
+}
+
+.metro-header-pill.active .pill-weather-badge {
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+}
+
 /* INTERACTIVE MODE TOGGLE */
 .alert-mode-toggle-card {
   margin-bottom: 22px;
