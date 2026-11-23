@@ -234,6 +234,9 @@ async def get_city_detail(city_id: str) -> dict[str, Any]:
     hourly = weather.get("hourly", {})
 
     current_p = float(current.get("precipitation") or 0.0)
+    current_r = float(current.get("rain") or 0.0)
+    current_s = float(current.get("showers") or 0.0)
+    eff_val = float(current.get("effective_rainfall_mm") or 0.0)
     hourly_p = hourly.get("precipitation", [])
     hourly_time = hourly.get("time", [])
     hourly_temp = hourly.get("temperature_2m", [])
@@ -247,7 +250,7 @@ async def get_city_detail(city_id: str) -> dict[str, Any]:
         })
 
     max_rain_48h = max([t["precipitation_mm"] for t in timeline]) if timeline else 0.0
-    effective_rain = max(current_p, max_rain_48h)
+    effective_rain = round(max(eff_val, current_p, current_r + current_s, max_rain_48h), 2)
     risk_eval = _calculate_city_risk(effective_rain)
 
     return {
@@ -256,8 +259,10 @@ async def get_city_detail(city_id: str) -> dict[str, Any]:
         "current_weather": {
             "temperature_c": current.get("temperature_2m"),
             "humidity_percent": current.get("relative_humidity_2m"),
-            "precipitation_mm": current_p,
+            "precipitation_mm": round(max(eff_val, current_p, current_r + current_s), 2),
             "rain_mm": current.get("rain", 0.0),
+            "showers_mm": current.get("showers", 0.0),
+            "weather_code": current.get("weather_code"),
             "wind_speed_kmh": current.get("wind_speed_10m"),
             "pressure_hpa": current.get("surface_pressure"),
             "observed_at": current.get("time"),

@@ -460,7 +460,7 @@ const FALLBACK_DETAILS = {
 async function fetchLiveOpenMeteo(lat, lon) {
   try {
     const res = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,surface_pressure,wind_speed_10m&hourly=precipitation,temperature_2m&forecast_days=2`
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,rain,showers,weather_code,cloud_cover,surface_pressure,wind_speed_10m&hourly=precipitation,rain,showers,weather_code,temperature_2m&forecast_days=2&timezone=Asia%2FKolkata`
     )
     if (!res.ok) return null
     const data = await res.json()
@@ -473,8 +473,29 @@ async function fetchLiveOpenMeteo(lat, lon) {
       temperature_c: hourly.temperature_2m?.[idx] ?? 28.0,
     }))
 
+    // Calculate effective live rainfall from precipitation, showers, rain, and current hour forecast
+    const p = Number(cur.precipitation || 0)
+    const r = Number(cur.rain || 0)
+    const s = Number(cur.showers || 0)
+    const intervalHourly = cur.interval ? p * (3600 / cur.interval) : p * 4.0
+
+    let currentHourRain = 0
+    if (hourly.time && hourly.precipitation) {
+      const nowStr = (cur.time || new Date().toISOString()).slice(0, 13)
+      const idx = hourly.time.findIndex((t) => t.startsWith(nowStr))
+      if (idx !== -1 && typeof hourly.precipitation[idx] === 'number') {
+        currentHourRain = hourly.precipitation[idx]
+      }
+    }
+
+    const effectivePrecip = Number(Math.max(p, r + s, intervalHourly, currentHourRain).toFixed(1))
+
     return {
-      precipitation_mm: Number((cur.precipitation ?? 0.0).toFixed(1)),
+      precipitation_mm: effectivePrecip,
+      rain_mm: Number(r.toFixed(1)),
+      showers_mm: Number(s.toFixed(1)),
+      weather_code: cur.weather_code,
+      cloud_cover: cur.cloud_cover ?? 90,
       temperature_c: Number((cur.temperature_2m ?? 28.0).toFixed(1)),
       humidity_percent: Math.round(cur.relative_humidity_2m ?? 70),
       wind_speed_kmh: Number((cur.wind_speed_10m ?? 10.0).toFixed(1)),

@@ -1191,10 +1191,13 @@ async def flood_risk(mode: str = "live"):
         current = weather.get("current", {})
         hourly = weather.get("hourly", {})
 
+        eff_rain_field = float(current.get("effective_rainfall_mm") or 0.0)
         current_p = float(current.get("precipitation") or 0.0)
+        current_r = float(current.get("rain") or 0.0)
+        current_s = float(current.get("showers") or 0.0)
         hourly_p = hourly.get("precipitation", [])
         next_3h_p = max([float(x or 0.0) for x in hourly_p[:3]]) if hourly_p else 0.0
-        effective_rain = max(current_p, next_3h_p)
+        effective_rain = max(eff_rain_field, current_p, current_r + current_s, next_3h_p)
 
         res = _live_flood_calculation(effective_rain)
         res["current_weather"] = {
@@ -1202,8 +1205,10 @@ async def flood_risk(mode: str = "live"):
             "humidity_percent": current.get("relative_humidity_2m"),
             "wind_speed_kmh": current.get("wind_speed_10m"),
             "pressure_hpa": current.get("surface_pressure"),
-            "precipitation_mm": current_p,
+            "precipitation_mm": effective_rain,
             "rain_mm": current.get("rain"),
+            "showers_mm": current.get("showers"),
+            "weather_code": current.get("weather_code"),
             "observed_at": current.get("time"),
         }
         return res
