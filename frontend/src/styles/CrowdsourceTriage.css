@@ -57,6 +57,19 @@
   font-size: 13px;
 }
 
+.radar-live-indicator-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+
 .open-report-qr-btn {
   display: inline-flex;
   align-items: center;

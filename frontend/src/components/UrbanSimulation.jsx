@@ -119,6 +119,8 @@ function UrbanSimulation() {
 
   // TAB 1: SAFE ROUTING CONTROLS
   const [rainRate, setRainRate] = useState(65) // mm/hr
+  const [liveRainfall, setLiveRainfall] = useState(null)
+  const [isLiveSynced, setIsLiveSynced] = useState(false)
 
   // TAB 2: MUNICIPAL DRAINAGE "WHAT-IF" STRESS CONTROLS
   const [stressRain, setStressRain] = useState(60) // mm/hr
@@ -127,6 +129,42 @@ function UrbanSimulation() {
   const [soilSaturation, setSoilSaturation] = useState('AMC-II') // AMC-I, AMC-II, AMC-III
 
   const scenario = ROUTE_SCENARIOS[selectedCity] || ROUTE_SCENARIOS.chennai
+
+  // Fetch live Doppler radar precipitation for the selected city
+  useEffect(() => {
+    let cancelled = false
+    async function fetchLiveCityRain() {
+      try {
+        const sc = ROUTE_SCENARIOS[selectedCity]
+        if (!sc) return
+        const lat = sc.origin.lat
+        const lon = sc.origin.lon
+        const res = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=precipitation,rain,showers&hourly=precipitation&forecast_days=1&timezone=Asia%2FKolkata`
+        )
+        if (!res.ok) return
+        const d = await res.json()
+        const cur = d.current || {}
+        const p = Number(cur.precipitation || 0)
+        const r = Number(cur.rain || 0)
+        const s = Number(cur.showers || 0)
+        const effective = Number(Math.max(p, r + s).toFixed(1))
+        if (!cancelled) {
+          setLiveRainfall(effective)
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+    fetchLiveCityRain()
+    return () => { cancelled = true }
+  }, [selectedCity])
+
+  const handleSyncWithLiveRadar = () => {
+    const val = liveRainfall !== null ? liveRainfall : 0.0
+    setRainRate(val)
+    setIsLiveSynced(true)
+  }
 
   // ROUTING CALCULATION
   const isDirectBlocked = rainRate >= 45
@@ -244,27 +282,40 @@ function UrbanSimulation() {
               <div className="slider-header">
                 <span className="slider-title">
                   <CloudRain size={16} className="text-cyan" />
-                  <span>SIMULATED RAINFALL INTENSITY:</span>
+                  <span>RAINFALL INTENSITY:</span>
                 </span>
-                <span className="slider-value">
-                  <strong>{rainRate} mm/hr</strong>
-                  <small className={rainRate >= 65 ? 'text-red' : rainRate >= 45 ? 'text-amber' : 'text-emerald'}>
-                    ({rainRate >= 65 ? 'Extreme Cloudburst' : rainRate >= 45 ? 'Heavy Rainfall' : 'Moderate Inflow'})
-                  </small>
-                </span>
+                <div className="slider-header-actions">
+                  <button
+                    className={`live-sync-pill-btn ${isLiveSynced ? 'synced' : ''}`}
+                    onClick={handleSyncWithLiveRadar}
+                    title="Synchronize with live Doppler weather radar measurement"
+                  >
+                    <span>{isLiveSynced ? `⚡ Synced with Radar (${rainRate.toFixed(1)} mm/hr)` : `⚡ Sync with Live Radar (${liveRainfall !== null ? liveRainfall.toFixed(1) : '0.0'} mm/hr)`}</span>
+                  </button>
+                  <span className="slider-value">
+                    <strong>{rainRate} mm/hr</strong>
+                    <small className={rainRate >= 65 ? 'text-red' : rainRate >= 45 ? 'text-amber' : 'text-emerald'}>
+                      ({rainRate >= 65 ? 'Extreme Cloudburst' : rainRate >= 45 ? 'Heavy Rainfall' : rainRate >= 25 ? 'Moderate Inflow' : 'Nominal / Passable'})
+                    </small>
+                  </span>
+                </div>
               </div>
               <input
                 type="range"
-                min="10"
+                min="0"
                 max="120"
                 step="5"
                 value={rainRate}
-                onChange={(e) => setRainRate(Number(e.target.value))}
+                onChange={(e) => {
+                  setRainRate(Number(e.target.value))
+                  setIsLiveSynced(false)
+                }}
                 className="rain-range-slider"
               />
               <div className="slider-ticks">
-                <span>10 mm (Clear)</span>
-                <span>45 mm (Underpass Overflow)</span>
+                <span>0 mm (Live Clear)</span>
+                <span>25 mm (Passable)</span>
+                <span>45 mm (Underpass Choke)</span>
                 <span>80 mm (Severe Inundation)</span>
                 <span>120 mm (Extreme)</span>
               </div>

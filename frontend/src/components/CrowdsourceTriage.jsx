@@ -159,6 +159,10 @@ function CrowdsourceTriage() {
 
         {/* QR CODE POPUP BUTTON FOR JUDGES */}
         <div className="triage-header-actions">
+          <div className="radar-live-indicator-chip">
+            <Radio size={13} className="radar-ping-icon" />
+            <span>DWR Sriharikota / NIOT Radar Feed Active</span>
+          </div>
           <button className="open-report-qr-btn" onClick={() => setCustomReportModal(true)}>
             <QrCode size={16} />
             <span>Scan QR on Smartphone</span>

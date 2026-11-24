@@ -83,6 +83,127 @@
   letter-spacing: 0.8px;
 }
 
+/* INTERACTIVE MODE SWITCH PILLS */
+.citizen-mode-switch {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 3px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  gap: 4px;
+}
+
+.mode-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mode-toggle-btn:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mode-toggle-btn.active.live {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}
+
+.mode-toggle-btn.active.sim {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.6);
+  color: #f87171;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+}
+
+/* RADAR STATION TELEMETRY BANNER */
+.radar-station-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(13, 27, 42, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  color: #cbd5e1;
+}
+
+.radar-station-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.radar-ping-icon {
+  color: #38bdf8;
+  animation: radar-pulse 2s infinite ease-out;
+}
+
+.radar-station-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sync-pill {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+}
+
+.pill-green {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.pill-yellow {
+  background: rgba(234, 179, 8, 0.15);
+  color: #facc15;
+  border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+.pill-orange {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.5);
+}
+
+.pill-red {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+.sync-time {
+  color: #64748b;
+  font-size: 10px;
+}
+
+.hero-yellow {
+  background: linear-gradient(145deg, #241c09 0%, #3e320f 100%);
+  border: 1px solid #eab308;
+  box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
+}
+
 .tag-red {
   background: rgba(239, 68, 68, 0.2);
   color: #f87171;
