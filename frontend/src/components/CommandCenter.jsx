@@ -262,28 +262,28 @@ function CommandCenter() {
     floodedPixels = Math.max(4, rawFloodedPixels)
     alertLevel = rawAlertLevel === 'GREEN' ? 'ORANGE' : rawAlertLevel
     riskLabel = 'Flood Warning / Active Cloudburst Simulation (180mm)'
-  } else if (liveRainfall > 0.05) {
-    if (liveRainfall < 5.0) {
-      maximumDepth = Number((0.02 + liveRainfall * 0.008).toFixed(2))
+  } else if (liveRainfall >= 2.5) {
+    if (liveRainfall < 15.0) {
+      maximumDepth = Number((0.02 + (liveRainfall - 2.5) * 0.008).toFixed(2))
       meanDepth = Number((maximumDepth * 0.5).toFixed(2))
-      floodedFraction = 0.06
+      floodedFraction = 0.05
       floodedPixels = 1
       alertLevel = 'YELLOW'
-      riskLabel = `Active Rain (${liveRainfall} mm/hr) • Drainage Monitoring Active`
-    } else if (liveRainfall < 20.0) {
-      maximumDepth = Number((0.06 + (liveRainfall - 5.0) * 0.012).toFixed(2))
+      riskLabel = `Active Shower (${liveRainfall} mm/hr) • Storm Drainage Active`
+    } else if (liveRainfall < 35.0) {
+      maximumDepth = Number((0.08 + (liveRainfall - 15.0) * 0.012).toFixed(2))
       meanDepth = Number((maximumDepth * 0.6).toFixed(2))
       floodedFraction = 0.15
       floodedPixels = 2
-      alertLevel = 'YELLOW'
-      riskLabel = `Significant Rainfall (${liveRainfall} mm/hr) • Runoff Accumulating`
+      alertLevel = 'ORANGE'
+      riskLabel = `Heavy Rainfall Alert (${liveRainfall} mm/hr) • Underpass Runoff Accumulating`
     } else {
       maximumDepth = Math.max(0.20, rawMaxDepth)
       meanDepth = Math.max(0.10, rawMeanDepth)
       floodedFraction = Math.max(0.35, rawFloodedFraction)
       floodedPixels = Math.max(6, rawFloodedPixels)
-      alertLevel = liveRainfall >= 64.5 ? 'RED' : 'ORANGE'
-      riskLabel = `Heavy Rainfall Warning (${liveRainfall} mm/hr) • Flash Flood Screening`
+      alertLevel = 'RED'
+      riskLabel = `Severe Cloudburst Warning (${liveRainfall} mm/hr) • Flash Flood Inundation`
     }
   } else {
     maximumDepth = 0.0
@@ -291,7 +291,9 @@ function CommandCenter() {
     floodedFraction = 0.0
     floodedPixels = 0
     alertLevel = 'GREEN'
-    riskLabel = 'Normal / Clear Weather (Zero Inundation)'
+    riskLabel = liveRainfall > 0.0
+      ? `Light Drizzle (${liveRainfall} mm/hr) • Storm Drains Clear (Nominal)`
+      : 'Clear Conditions & Dry Streets (Zero Inundation)'
   }
 
   const totalPixels = Number(risk?.total_valid_pixels ?? 16)

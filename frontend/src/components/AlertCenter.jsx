@@ -101,17 +101,17 @@ const DISPATCH_METROS = {
     helplines: 'TN SDMA: 1070 | Chennai Corp: 1913 | NDRF Rescue: 112',
     drainageBasin: 'Adyar & Cooum River Basin (Buckingham Canal)',
     weatherProfile: {
-      temperature_c: 24.8,
-      humidity_percent: 95,
-      precipitation_mm: 3.4,
-      rain_mm: 0.1,
-      showers_mm: 0.8,
-      weather_code: 81,
-      condition: 'Moderate Rain Showers',
-      wind_speed_kmh: 4.5,
-      pressure_hpa: 1014.6,
-      risk_level: 'YELLOW',
-      max_depth_m: 0.05,
+      temperature_c: 26.2,
+      humidity_percent: 88,
+      precipitation_mm: 0.0,
+      rain_mm: 0.0,
+      showers_mm: 0.0,
+      weather_code: 1,
+      condition: 'Partly Cloudy',
+      wind_speed_kmh: 7.2,
+      pressure_hpa: 1014.9,
+      risk_level: 'GREEN',
+      max_depth_m: 0.0,
     },
   },
   mumbai: {
@@ -359,30 +359,37 @@ function AlertCenter() {
       const isSimulation = selectedMode === 'simulation'
       const cityAlertLevel = isSimulation
         ? 'ORANGE'
-        : liveRainMm >= 20.0
-          ? 'ORANGE'
-          : liveRainMm > 0.05
-            ? 'YELLOW'
-            : 'GREEN'
+        : liveRainMm >= 35.0
+          ? 'RED'
+          : liveRainMm >= 15.0
+            ? 'ORANGE'
+            : liveRainMm >= 2.5
+              ? 'YELLOW'
+              : 'GREEN'
 
       const cityMaxDepth = isSimulation
         ? 0.35
-        : liveRainMm >= 20.0
-          ? 0.22
-          : liveRainMm > 0.05
-            ? Number((0.02 + liveRainMm * 0.008).toFixed(2))
-            : 0.0
+        : liveRainMm >= 35.0
+          ? 0.45
+          : liveRainMm >= 15.0
+            ? 0.22
+            : liveRainMm >= 2.5
+              ? Number((0.02 + (liveRainMm - 2.5) * 0.008).toFixed(2))
+              : 0.0
 
       const cityMeanDepth = isSimulation
         ? 0.18
-        : liveRainMm > 0.05
+        : liveRainMm >= 2.5
           ? Number((cityMaxDepth * 0.5).toFixed(3))
           : 0.0
 
       const cityFloodedFraction = isSimulation
         ? 0.32
-        : liveRainMm > 0.05
-          ? 0.08
+        : liveRainMm >= 15.0
+          ? 0.15
+          : liveRainMm >= 2.5
+            ? 0.05
+            : 0.0
           : 0.0
 
       data = {

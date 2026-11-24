@@ -194,12 +194,12 @@ function Inundation() {
 
         if (mode === 'simulation') {
           cellDepthM = Number(((Q / 1000.0) * elevFactor * 2.2).toFixed(3))
-        } else if (rainInput > 0.05) {
-          // In live rain (e.g. 3.4 mm/hr), sinks like Velachery collect water ponding of ~0.04-0.06m
+        } else if (rainInput >= 2.5) {
+          // In significant rain (e.g. >= 2.5 mm/hr), sinks like Velachery collect runoff
           cellDepthM = elev < 5.0
-            ? Number((0.02 + rainInput * 0.01 * elevFactor).toFixed(3))
+            ? Number((0.02 + (rainInput - 2.5) * 0.01 * elevFactor).toFixed(3))
             : elev < 8.0
-              ? Number((0.01 + rainInput * 0.005).toFixed(3))
+              ? Number((0.01 + (rainInput - 2.5) * 0.005).toFixed(3))
               : 0.0
         } else {
           cellDepthM = 0.0
@@ -235,17 +235,21 @@ function Inundation() {
 
   const riskLevel = mode === 'simulation'
     ? 'ORANGE'
-    : rainInput >= 20.0
-      ? 'ORANGE'
-      : rainInput > 0.05
-        ? 'YELLOW'
-        : 'GREEN'
+    : rainInput >= 35.0
+      ? 'RED'
+      : rainInput >= 15.0
+        ? 'ORANGE'
+        : rainInput >= 2.5
+          ? 'YELLOW'
+          : 'GREEN'
 
   const riskLabel = mode === 'simulation'
     ? 'Severe Inundation / 180mm Cloudburst Scenario'
-    : rainInput > 0.05
+    : rainInput >= 2.5
       ? `Active Rain Showers (${rainInput.toFixed(1)} mm/hr) • Drainage Monitoring Active`
-      : 'Normal Conditions — Dry Streets / Zero Inundation'
+      : rainInput > 0.0
+        ? `Light Drizzle (${rainInput.toFixed(1)} mm/hr) • Natural Drainage Nominal (Zero Inundation)`
+        : 'Normal Conditions — Dry Streets / Zero Inundation'
 
   const confidence = rainInput > 0 ? 0.96 : 0.99
 

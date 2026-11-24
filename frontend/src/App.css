@@ -247,19 +247,10 @@
   box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35) !important;
 }
 
-/* Global Cards, Panels & Metric Boxes */
+/* Global Panels & Containers (explicit target classes only) */
 .card,
-[class*="-card"]:not(.map-legend):not(.sat-map-legend-card),
-[class*="-panel"],
-[class*="-box"]:not(.status-dot):not(.live-dot),
-[class*="-metric"]:not(.metric-icon),
-[class*="-hero"]:not(.hero-left):not(.hero-action),
 .source-card,
 .kpi-card,
-.city-card,
-.alert-hero,
-.alert-metric,
-.inundation-metric,
 .model-status,
 .harmonization-source,
 .common-grid {
@@ -274,12 +265,8 @@
 
 /* Hover Lift & Luminescence */
 .card:hover,
-[class*="-card"]:not(.map-legend):not(.sat-map-legend-card):hover,
 .source-card:hover,
-.kpi-card:hover,
-.city-card:hover,
-.alert-metric:hover,
-.inundation-metric:hover {
+.kpi-card:hover {
   transform: translateY(-4px) !important;
   border-color: rgba(167, 139, 250, 0.5) !important;
   box-shadow: 0 18px 40px -8px rgba(124, 58, 237, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;

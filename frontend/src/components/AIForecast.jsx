@@ -197,8 +197,8 @@ async function fetchDirect72hForecast() {
 
       const depthM = mlRain > 20.0
         ? Number((0.15 + (mlRain - 20.0) * 0.015).toFixed(3))
-        : mlRain > 0.05
-          ? Number((0.02 + mlRain * 0.008).toFixed(3))
+        : mlRain >= 2.5
+          ? Number((0.02 + (mlRain - 2.5) * 0.008).toFixed(3))
           : 0.0
 
       if (mlRain > peakRain) peakRain = mlRain
@@ -208,7 +208,7 @@ async function fetchDirect72hForecast() {
         ? 'RED'
         : depthM >= 0.3
           ? 'ORANGE'
-          : depthM >= 0.02
+          : depthM >= 0.05
             ? 'YELLOW'
             : 'GREEN'
 
@@ -246,8 +246,8 @@ async function fetchDirect72hForecast() {
         final_cumulative_rainfall_mm: cumulativeRain,
       },
       final_risk: {
-        alert_level: peakDepth >= 0.3 ? 'ORANGE' : peakDepth >= 0.02 ? 'YELLOW' : 'GREEN',
-        risk_label: peakDepth >= 0.02 ? 'Active Rain Showers' : 'Normal Conditions',
+        alert_level: peakDepth >= 0.3 ? 'ORANGE' : peakDepth >= 0.05 ? 'YELLOW' : 'GREEN',
+        risk_label: peakDepth >= 0.05 ? 'Active Rain Showers' : 'Normal Conditions',
       },
       integration: {
         scs_cn: true,

@@ -249,9 +249,9 @@ function MapView({ mode = 'live', rainfall = 0.0 }) {
         <Polygon
           positions={floodArea}
           pathOptions={{
-            color: isSimulation ? '#f43f5e' : '#a855f7',
-            fillColor: isSimulation ? '#f43f5e' : '#8b5cf6',
-            fillOpacity: isSimulation ? 0.35 : 0.12,
+            color: isSimulation ? '#f43f5e' : '#10b981',
+            fillColor: isSimulation ? '#f43f5e' : '#10b981',
+            fillOpacity: isSimulation ? 0.35 : 0.08,
             weight: 2,
             dashArray: isSimulation ? null : '5, 8',
           }}

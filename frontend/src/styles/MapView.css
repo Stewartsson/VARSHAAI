@@ -361,6 +361,38 @@
   margin-top: 2px;
 }
 
+.popup-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.popup-stats > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.popup-stats .lbl {
+  color: #a5b4fc;
+  font-size: 10px;
+}
+
+.popup-stats .val {
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.popup-stats .val.safe {
+  color: #34d399;
+}
+
+.popup-stats .val.danger {
+  color: #f43f5e;
+}
+
 /* =========================
    BOTTOM LEGEND
    ========================= */
