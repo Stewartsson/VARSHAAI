@@ -3,11 +3,13 @@ import {
   Activity,
   Server,
   Cpu,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react'
 
 import '../styles/Header.css'
 
-function Header() {
+function Header({ activePage, onNavigateBack, onNavigateForward }) {
   return (
     <header className="top-header">
 
@@ -24,6 +26,27 @@ function Header() {
           <div className="brand-subtitle">
             AI DISASTER INTELLIGENCE
           </div>
+        </div>
+
+        {/* IN-APP HISTORY NAV (BACK & FORWARD) */}
+        <div className="header-nav-controls">
+          <button
+            type="button"
+            className="header-nav-btn"
+            title="Back to previous page"
+            onClick={onNavigateBack}
+          >
+            <ArrowLeft size={14} />
+            <span className="nav-btn-text">Back</span>
+          </button>
+          <button
+            type="button"
+            className="header-nav-btn icon-only"
+            title="Forward to next page"
+            onClick={onNavigateForward}
+          >
+            <ArrowRight size={14} />
+          </button>
         </div>
       </div>
 

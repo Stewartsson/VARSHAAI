@@ -64,6 +64,46 @@
   color: #6f8da5;
 }
 
+/* IN-APP HISTORY NAV CONTROLS */
+.header-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+}
+
+.header-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 8px;
+  background: #0b2230;
+  border: 1px solid #1c4b63;
+  color: #90c2da;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-nav-btn.icon-only {
+  padding: 6px 8px;
+}
+
+.header-nav-btn:hover {
+  background: #12344a;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+  transform: translateY(-1px);
+}
+
+.header-nav-btn:active {
+  transform: translateY(0);
+}
+
 
 /* CENTER */
 

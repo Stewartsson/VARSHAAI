@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import {
   LayoutDashboard,
@@ -30,21 +30,90 @@ import CrowdsourceTriage from './components/CrowdsourceTriage'
 import LiveSatelliteMaps from './components/LiveSatelliteMaps'
 
 
+function getInitialPage() {
+  if (typeof window !== 'undefined') {
+    const p = new URLSearchParams(window.location.search).get('page')
+    if (p) return p
+    const hash = window.location.hash.replace('#', '')
+    if (hash) return hash
+  }
+  return 'command'
+}
+
+
 function App() {
 
   // =========================================================
-  // ACTIVE PAGE (supports direct URL parameters from judge QR scan)
+  // ACTIVE PAGE & BROWSER HISTORY SYNCHRONIZATION
   // =========================================================
 
-  const [activePage, setActivePage] = useState(() => {
+  const [activePage, setActivePage] = useState(getInitialPage)
+
+  // Navigate to page and create a browser history entry (so Back/Forward work seamlessly)
+  const navigateToPage = (newPage, replace = false) => {
+    if (!newPage) return
+    if (newPage === activePage) return
+
+    setActivePage(newPage)
+
     if (typeof window !== 'undefined') {
-      const p = new URLSearchParams(window.location.search).get('page')
-      if (p === 'citizen-alert') return 'citizen-alert'
-      const hash = window.location.hash.replace('#', '')
-      if (hash === 'citizen-alert') return 'citizen-alert'
+      const url = new URL(window.location.href)
+      url.searchParams.set('page', newPage)
+      url.hash = ''
+
+      if (replace) {
+        window.history.replaceState({ page: newPage }, '', url.toString())
+      } else {
+        // Only push if history state isn't already this page
+        if (window.history.state?.page !== newPage) {
+          window.history.pushState({ page: newPage }, '', url.toString())
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-    return 'command'
-  })
+  }
+
+  // Listen to browser Back and Forward button events (popstate)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    // Initialize root history state
+    const initial = getInitialPage()
+    const url = new URL(window.location.href)
+    url.searchParams.set('page', initial)
+    window.history.replaceState({ page: initial }, '', url.toString())
+
+    const handlePopState = (event) => {
+      const targetPage =
+        event.state?.page ||
+        new URLSearchParams(window.location.search).get('page') ||
+        window.location.hash.replace('#', '') ||
+        'command'
+
+      setActivePage(targetPage)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  const handleNavigateBack = () => {
+    if (typeof window !== 'undefined') {
+      if (window.history.length > 1) {
+        window.history.back()
+      } else {
+        navigateToPage('command')
+      }
+    }
+  }
+
+  const handleNavigateForward = () => {
+    if (typeof window !== 'undefined') {
+      window.history.forward()
+    }
+  }
 
 
   // =========================================================
@@ -120,7 +189,7 @@ function App() {
 
   const handleSourceSelect = (sourceType) => {
 
-    setActivePage(`source-${sourceType}`)
+    navigateToPage(`source-${sourceType}`)
 
   }
 
@@ -131,7 +200,7 @@ function App() {
 
   const handleSourceBack = () => {
 
-    setActivePage('data')
+    handleNavigateBack()
 
   }
 
@@ -150,7 +219,11 @@ function App() {
       <div className="app-shell standalone-mobile">
         <CitizenAlert
           onBack={() => {
-            window.location.href = window.location.origin
+            if (typeof window !== 'undefined' && window.history.length > 1) {
+              window.history.back()
+            } else {
+              window.location.href = window.location.origin
+            }
           }}
         />
       </div>
@@ -166,7 +239,11 @@ function App() {
           HEADER
           ===================================================== */}
 
-      <Header />
+      <Header
+        activePage={activePage}
+        onNavigateBack={handleNavigateBack}
+        onNavigateForward={handleNavigateForward}
+      />
 
 
       {/* =====================================================
@@ -183,7 +260,7 @@ function App() {
         <Sidebar
           navigationItems={navigationItems}
           activePage={activePage}
-          setActivePage={setActivePage}
+          setActivePage={navigateToPage}
         />
 
 
@@ -291,7 +368,7 @@ function App() {
               ================================================= */}
 
           {activePage === 'citizen-alert' && (
-            <CitizenAlert onBack={() => setActivePage('alerts')} />
+            <CitizenAlert onBack={handleNavigateBack} />
           )}
 
 
