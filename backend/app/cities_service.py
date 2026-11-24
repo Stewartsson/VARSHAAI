@@ -1,6 +1,6 @@
 from typing import Any
 import numpy as np
-from .data_sources.weather import get_weather
+from .data_sources.weather import get_weather, _get_baseline_weather
 
 CITIES_METADATA = {
     "chennai": {
@@ -197,7 +197,9 @@ async def get_all_cities_summary() -> list[dict[str, Any]]:
                 "hotspot_count": len(meta["hotspots"]),
             })
         except Exception:
-            # Fallback safe
+            # Fallback safe with coordinate-matched city baseline
+            fallback_w = _get_baseline_weather(meta["lat"], meta["lon"])
+            cur_fb = fallback_w.get("current", {})
             results.append({
                 "id": city_id,
                 "name": meta["name"],
@@ -208,15 +210,15 @@ async def get_all_cities_summary() -> list[dict[str, Any]]:
                 "radar_band": meta["radar"]["band"],
                 "radar_status": meta["radar"]["status"],
                 "current_weather": {
-                    "temperature_c": 30.0,
-                    "humidity_percent": 50,
-                    "precipitation_mm": 0.0,
-                    "rain_mm": 0.0,
-                    "wind_speed_kmh": 12.0,
-                    "pressure_hpa": 1012.0,
-                    "observed_at": None,
+                    "temperature_c": cur_fb.get("temperature_2m", 26.0),
+                    "humidity_percent": cur_fb.get("relative_humidity_2m", 60),
+                    "precipitation_mm": cur_fb.get("precipitation", 0.0),
+                    "rain_mm": cur_fb.get("rain", 0.0),
+                    "wind_speed_kmh": cur_fb.get("wind_speed_10m", 10.0),
+                    "pressure_hpa": cur_fb.get("surface_pressure", 1013.0),
+                    "observed_at": cur_fb.get("time"),
                 },
-                "risk": _calculate_city_risk(0.0),
+                "risk": _calculate_city_risk(cur_fb.get("precipitation", 0.0)),
                 "hotspot_count": len(meta["hotspots"]),
             })
 

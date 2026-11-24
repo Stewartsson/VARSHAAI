@@ -477,7 +477,7 @@ async function fetchLiveOpenMeteo(lat, lon) {
     const p = Number(cur.precipitation || 0)
     const r = Number(cur.rain || 0)
     const s = Number(cur.showers || 0)
-    const intervalHourly = cur.interval ? p * (3600 / cur.interval) : p * 4.0
+    const intervalHourly = cur.interval && p > 0 ? p * (3600 / cur.interval) : p
 
     let currentHourRain = 0
     if (hourly.time && hourly.precipitation) {
@@ -517,26 +517,26 @@ function CityHub() {
   const [refreshing, setRefreshing] = useState(false)
   const [error, setError] = useState('')
 
-  // Load summary list of all 5 cities (tries backend API first, then falls back to resilient live data)
+  // Load summary list of all 5 cities (always enriches with direct real-time browser Open-Meteo telemetry)
   async function loadCities() {
+    let baseList = FALLBACK_CITIES
     try {
       setError('')
       const response = await apiFetch(`/api/cities?t=${Date.now()}`)
       if (response.ok) {
         const data = await response.json()
-        if (data.cities && data.cities.length > 0) {
-          setCities(data.cities)
-          return
+        if (data && Array.isArray(data.cities) && data.cities.length > 0) {
+          baseList = data.cities
         }
       }
     } catch (err) {
-      console.warn('Backend /api/cities not ready yet, using client live telemetry fallback.')
+      console.warn('Backend /api/cities not available, using fallback metro definitions.')
     }
 
-    // Client live telemetry fallback for all 5 cities
+    // Always fetch direct, live, parallel telemetry for each city from Open-Meteo via browser
     try {
-      const updatedCities = await Promise.all(
-        FALLBACK_CITIES.map(async (c) => {
+      const liveUpdated = await Promise.all(
+        baseList.map(async (c) => {
           const live = await fetchLiveOpenMeteo(c.lat, c.lon)
           if (!live) return c
           const p = live.precipitation_mm
@@ -544,16 +544,18 @@ function CityHub() {
           return {
             ...c,
             current_weather: {
-              ...c.current_weather,
+              ...(c.current_weather || {}),
               precipitation_mm: live.precipitation_mm,
+              rain_mm: live.rain_mm,
+              showers_mm: live.showers_mm,
               temperature_c: live.temperature_c,
               humidity_percent: live.humidity_percent,
               wind_speed_kmh: live.wind_speed_kmh,
               surface_pressure_hpa: live.surface_pressure_hpa,
-              source: live.source,
+              source: 'Open-Meteo Direct Telemetry (Live)',
             },
             risk: {
-              ...c.risk,
+              ...(c.risk || {}),
               level: riskLevel,
               label:
                 riskLevel === 'GREEN'
@@ -563,9 +565,9 @@ function CityHub() {
           }
         })
       )
-      setCities(updatedCities)
+      setCities(liveUpdated)
     } catch (e) {
-      setCities(FALLBACK_CITIES)
+      setCities(baseList)
     } finally {
       setLoadingList(false)
     }
@@ -573,30 +575,35 @@ function CityHub() {
 
   // Load in-depth detail for selected city
   async function loadCityDetail(cityId) {
+    let baseDetail = FALLBACK_DETAILS[cityId] || FALLBACK_DETAILS['chennai']
     try {
       setLoadingDetail(true)
       const response = await apiFetch(`/api/cities/${cityId}?t=${Date.now()}`)
       if (response.ok) {
         const data = await response.json()
-        setCityDetail(data)
-        return
+        if (data && data.city) {
+          baseDetail = data
+        }
       }
     } catch (err) {
-      console.warn(`Backend /api/cities/${cityId} not ready yet, using direct live telemetry.`)
+      console.warn(`Backend /api/cities/${cityId} not available, using client telemetry.`)
     }
 
-    // Direct live Open-Meteo telemetry fallback
-    const fallback = FALLBACK_DETAILS[cityId] || FALLBACK_DETAILS['chennai']
+    // Direct live Open-Meteo telemetry overlay
     try {
-      const live = await fetchLiveOpenMeteo(fallback.city.lat, fallback.city.lon)
+      const lat = baseDetail.city?.lat ?? 13.0827
+      const lon = baseDetail.city?.lon ?? 80.2707
+      const live = await fetchLiveOpenMeteo(lat, lon)
       if (live) {
         const p = live.precipitation_mm
         const riskLevel = p >= 64.5 ? 'ORANGE' : p >= 15.5 ? 'YELLOW' : 'GREEN'
         setCityDetail({
-          ...fallback,
+          ...baseDetail,
           current_weather: {
-            ...fallback.current_weather,
+            ...(baseDetail.current_weather || {}),
             precipitation_mm: live.precipitation_mm,
+            rain_mm: live.rain_mm,
+            showers_mm: live.showers_mm,
             temperature_c: live.temperature_c,
             humidity_percent: live.humidity_percent,
             wind_speed_kmh: live.wind_speed_kmh,
@@ -604,20 +611,20 @@ function CityHub() {
             source: live.source,
           },
           risk: {
-            ...fallback.risk,
+            ...(baseDetail.risk || {}),
             level: riskLevel,
             label:
               riskLevel === 'GREEN'
                 ? 'Normal / No Significant Flood Risk'
                 : `${riskLevel} Alert / Active Rainfall`,
           },
-          timeline_48h: live.timeline && live.timeline.length > 0 ? live.timeline : fallback.timeline_48h,
+          timeline_48h: live.timeline && live.timeline.length > 0 ? live.timeline : (baseDetail.timeline_48h || []),
         })
       } else {
-        setCityDetail(fallback)
+        setCityDetail(baseDetail)
       }
     } catch (e) {
-      setCityDetail(fallback)
+      setCityDetail(baseDetail)
     } finally {
       setLoadingDetail(false)
       setRefreshing(false)
