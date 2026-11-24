@@ -390,7 +390,6 @@ function AlertCenter() {
           : liveRainMm >= 2.5
             ? 0.05
             : 0.0
-          : 0.0
 
       data = {
         status: 'success',
@@ -401,7 +400,7 @@ function AlertCenter() {
           alert_code: cityAlertLevel === 'RED' ? 3 : cityAlertLevel === 'ORANGE' ? 2 : cityAlertLevel === 'YELLOW' ? 1 : 0,
           risk_label: isSimulation
             ? `Flood Warning / Active Cloudburst Simulation (${targetMetro.name})`
-            : liveRainMm > 0.05
+            : liveRainMm >= 2.5
               ? `Active Rain Showers (${liveRainMm.toFixed(1)} mm/hr) • Drainage Monitoring Active`
               : `Normal Conditions — No Flood Inundation in ${targetMetro.name}`,
           maximum_depth_m: cityMaxDepth,
