@@ -1,20 +1,18 @@
 /* =========================================================
-   VARSHAAI MAP
+   VARSHAAI MAP - COSMIC VIOLET CYBER RADAR SYSTEM
    ========================================================= */
 
-.map-wrapper {
+.map-wrapper.cosmic-map-theme {
   position: relative;
-
   width: 100%;
   height: 100%;
-
-  min-height: 480px;
-
+  min-height: 520px;
   overflow: hidden;
-
-  border-radius: 10px;
+  border-radius: 16px;
+  background: #090518;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  box-shadow: 0 16px 40px -10px rgba(5, 2, 20, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-
 
 /* =========================
    LEAFLET MAP
@@ -23,262 +21,470 @@
 .varshaai-map {
   width: 100%;
   height: 100%;
-
-  min-height: 480px;
-
-  background: #0b1824;
+  min-height: 520px;
+  background: #0b071e !important;
 }
-
 
 /* =========================
-   MAP TILES
+   MAP TILE FILTERS
    ========================= */
 
-.varshaai-map .leaflet-tile {
+/* 1. Cosmic Doppler Radar Tile Filter:
+   Inverts light map into deep royal violet obsidian cyber radar */
+.cosmic-radar-tiles .leaflet-tile {
   filter:
-    brightness(0.72)
-    saturate(0.72)
-    contrast(1.05);
+    brightness(0.68)
+    invert(1)
+    contrast(2.4)
+    hue-rotate(242deg)
+    saturate(2.2);
 }
 
+/* 2. Satellite Tile Styling */
+.satellite-tiles .leaflet-tile {
+  filter:
+    brightness(0.85)
+    contrast(1.15)
+    saturate(1.2);
+}
+
+/* 3. Cyber Dark Tile Styling */
+.cyber-dark-tiles .leaflet-tile {
+  filter:
+    brightness(0.6)
+    invert(1)
+    contrast(1.8)
+    hue-rotate(190deg)
+    saturate(0.6);
+}
+
+/* =========================
+   TOP GLASS TOOLBAR
+   ========================= */
+
+.map-glass-toolbar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.map-brand-chip {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: rgba(19, 12, 44, 0.82);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(5, 2, 20, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #ede9fe;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.radar-pulse-icon {
+  color: #a78bfa;
+  animation: radarIconPulse 2s ease-in-out infinite;
+}
+
+@keyframes radarIconPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 0 6px #8b5cf6); }
+}
+
+.map-brand-chip .live-tag {
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #34d399;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.map-layer-pills {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 9999px;
+  background: rgba(19, 12, 44, 0.85);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(5, 2, 20, 0.6);
+}
+
+.map-layer-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #a5b4fc;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.map-layer-pill:hover {
+  color: #ffffff;
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.map-layer-pill.active {
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  color: #ffffff;
+  border-color: rgba(196, 181, 253, 0.5);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.5);
+}
+
+/* =========================
+   RADAR SWEEP OVERLAY
+   ========================= */
+
+.radar-sweep-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 450;
+  overflow: hidden;
+}
+
+.radar-sweep-beam {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  margin-top: -300px;
+  margin-left: -300px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(139, 92, 246, 0.22) 0deg,
+    rgba(99, 102, 241, 0.08) 35deg,
+    transparent 65deg,
+    transparent 360deg
+  );
+  animation: radarSpin 5s linear infinite;
+  transform-origin: center center;
+  mix-blend-mode: screen;
+}
+
+@keyframes radarSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.radar-crosshair-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.25) 50%, transparent);
+}
+
+.radar-crosshair-v {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.25) 50%, transparent);
+}
 
 /* =========================
    ZOOM BUTTONS
    ========================= */
 
 .varshaai-map .leaflet-control-zoom {
-  border: 1px solid #263d4f !important;
-
-  border-radius: 7px !important;
-
+  border: 1px solid rgba(139, 92, 246, 0.35) !important;
+  border-radius: 10px !important;
   overflow: hidden;
-
-  box-shadow: none !important;
+  box-shadow: 0 8px 20px rgba(5, 2, 20, 0.7) !important;
+  backdrop-filter: blur(12px);
 }
 
 .varshaai-map .leaflet-control-zoom a {
-  width: 32px !important;
-
-  height: 32px !important;
-
-  line-height: 32px !important;
-
-  background: #0a1a28 !important;
-
-  color: #9bb1c1 !important;
-
-  border-bottom: 1px solid #263d4f !important;
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  background: rgba(19, 12, 44, 0.92) !important;
+  color: #c4b5fd !important;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.25) !important;
+  transition: all 0.2s ease;
 }
 
 .varshaai-map .leaflet-control-zoom a:hover {
-  background: #122b3d !important;
-
+  background: #7c3aed !important;
   color: #ffffff !important;
 }
 
-
 /* =========================
-   POPUP
+   POPUPS
    ========================= */
 
 .varshaai-map .leaflet-popup-content-wrapper {
-  background: #0b1b29;
-
-  color: #d9e8f1;
-
-  border: 1px solid #294356;
-
-  border-radius: 8px;
-
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  background: rgba(19, 12, 44, 0.95);
+  color: #f1f5f9;
+  border: 1px solid rgba(139, 92, 246, 0.38);
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 16px 36px rgba(5, 2, 20, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  padding: 0;
 }
 
 .varshaai-map .leaflet-popup-tip {
-  background: #0b1b29;
+  background: rgba(19, 12, 44, 0.95);
+  border: 1px solid rgba(139, 92, 246, 0.38);
 }
 
 .varshaai-map .leaflet-popup-content {
-  margin: 13px 15px;
+  margin: 14px 16px;
+  line-height: 1.4;
 }
 
 .varshaai-map .leaflet-popup-close-button {
-  color: #718a9d !important;
+  color: #a78bfa !important;
+  top: 8px !important;
+  right: 8px !important;
 }
 
-
-/* =========================
-   POPUP CONTENT
-   ========================= */
-
-.map-popup {
-  min-width: 160px;
-
+.map-popup.glass-popup {
+  min-width: 200px;
   display: flex;
-
   flex-direction: column;
-
-  gap: 6px;
+  gap: 8px;
 }
 
-.map-popup strong {
-  margin-bottom: 3px;
-
-  font-size: 12px;
-
-  color: #ffffff;
+.popup-badge {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #a78bfa;
 }
 
-.map-popup span {
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.station-type {
   font-size: 10px;
-
-  color: #91a8b8;
+  color: #94a3b8;
+  font-weight: 600;
 }
 
+.risk-pill {
+  padding: 2px 7px;
+  border-radius: 9999px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.risk-pill.high {
+  background: rgba(244, 63, 94, 0.2);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.risk-pill.moderate {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.risk-pill.clear,
+.risk-pill.low {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.map-popup.glass-popup strong {
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.popup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.popup-stat-box {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 9px;
+  color: #a5b4fc;
+}
+
+.stat-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 2px;
+}
 
 /* =========================
-   LEGEND
+   BOTTOM LEGEND
    ========================= */
 
-.map-legend {
+.map-legend.glass-legend {
   position: absolute;
-
-  left: 15px;
-
-  bottom: 15px;
-
+  left: 16px;
+  bottom: 16px;
   z-index: 500;
-
-  min-width: 125px;
-
-  padding: 12px;
-
-  background: rgba(7, 18, 31, 0.93);
-
-  border: 1px solid #294052;
-
-  border-radius: 8px;
-
-  backdrop-filter: blur(8px);
+  padding: 10px 14px;
+  background: rgba(19, 12, 44, 0.88);
+  border: 1px solid rgba(139, 92, 246, 0.32);
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 25px rgba(5, 2, 20, 0.65);
 }
 
 .legend-title {
-  margin-bottom: 9px;
+  margin-bottom: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #c4b5fd;
+}
 
-  font-size: 8px;
-
-  font-weight: 700;
-
-  letter-spacing: 1.2px;
-
-  color: #71899c;
+.legend-items-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .legend-item {
   display: flex;
-
   align-items: center;
-
-  gap: 7px;
-
-  margin-top: 7px;
-
-  font-size: 9px;
-
-  color: #a4b8c6;
+  gap: 6px;
+  font-size: 10px;
+  color: #cbd5e1;
+  font-weight: 600;
 }
 
 .legend-dot {
   width: 8px;
-
   height: 8px;
-
   border-radius: 50%;
 }
 
 .legend-dot.low {
-  background: #55d49a;
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
 }
 
 .legend-dot.moderate {
-  background: #e5b94c;
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.7);
 }
 
 .legend-dot.high {
-  background: #ff6257;
+  background: #f43f5e;
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.8);
 }
-
 
 /* =========================
-   LIVE LAYER STATUS
+   STATUS PILL
    ========================= */
 
-.map-layer-status {
+.map-layer-status.glass-status-pill {
   position: absolute;
-
-  right: 15px;
-
-  top: 15px;
-
+  right: 16px;
+  bottom: 16px;
   z-index: 500;
-
   display: flex;
-
   align-items: center;
-
-  gap: 7px;
-
-  padding: 7px 10px;
-
-  background: rgba(7, 18, 31, 0.92);
-
-  border: 1px solid #294052;
-
-  border-radius: 6px;
-
-  color: #70d7a7;
-
-  font-size: 8px;
-
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(19, 12, 44, 0.88);
+  border: 1px solid rgba(139, 92, 246, 0.32);
+  border-radius: 9999px;
+  color: #d8b4fe;
+  font-size: 10px;
   font-weight: 700;
-
-  letter-spacing: 0.8px;
-
-  backdrop-filter: blur(8px);
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 25px rgba(5, 2, 20, 0.65);
 }
 
-.map-layer-status span {
-  width: 6px;
-
-  height: 6px;
-
+.beacon-dot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-
-  background: #55d49a;
-
-  box-shadow:
-    0 0 7px rgba(85, 212, 154, 0.7);
+  background: #a855f7;
+  box-shadow: 0 0 10px #c084fc;
+  animation: beaconPulse 1.8s infinite;
 }
 
+@keyframes beaconPulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #c084fc; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
 
 /* =========================
    MOBILE
    ========================= */
 
 @media (max-width: 700px) {
-
-  .map-wrapper,
+  .map-wrapper.cosmic-map-theme,
   .varshaai-map {
-    min-height: 380px;
+    min-height: 400px;
   }
 
-  .map-legend {
-    left: 10px;
-    bottom: 10px;
+  .map-glass-toolbar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .map-layer-status {
-    right: 10px;
-    top: 10px;
+  .legend-items-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
+  .map-layer-status.glass-status-pill {
+    display: none;
+  }
 }

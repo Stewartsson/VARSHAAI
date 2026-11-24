@@ -6,16 +6,45 @@
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
+    Roboto,
     sans-serif;
 
   color: #ffffff;
+  background-color: #090518;
 
-  background: #07121f;
+  /* Cosmic Royal Violet Glass Design Tokens */
+  --bg-deep-obsidian: #090518;
+  --bg-cosmic-indigo: #130932;
+  --bg-royal-purple: #1f104d;
+  --surface-glass-card: rgba(22, 13, 50, 0.68);
+  --surface-glass-hover: rgba(35, 20, 78, 0.82);
+  --surface-glass-active: rgba(45, 26, 102, 0.9);
+
+  --border-glass-dim: rgba(139, 92, 246, 0.2);
+  --border-glass-bright: rgba(167, 139, 250, 0.45);
+  --border-glass-highlight: rgba(255, 255, 255, 0.12);
+
+  --brand-violet-600: #7c3aed;
+  --brand-violet-500: #8b5cf6;
+  --brand-violet-400: #a78bfa;
+  --brand-violet-300: #c4b5fd;
+  --brand-violet-100: #ede9fe;
+
+  --neon-cyan: #38bdf8;
+  --neon-emerald: #10b981;
+  --neon-rose: #f43f5e;
+  --neon-amber: #f59e0b;
+
+  --text-primary: #ffffff;
+  --text-secondary: #c4b5fd;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+
+  --glow-violet-sm: 0 0 15px rgba(124, 58, 237, 0.35);
+  --glow-violet-lg: 0 0 35px rgba(124, 58, 237, 0.55);
 
   font-synthesis: none;
-
   text-rendering: optimizeLegibility;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -26,18 +55,18 @@
 
 html {
   min-width: 320px;
-
   min-height: 100%;
-
-  background: #07121f;
+  background: #090518;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-
   min-width: 320px;
-
   min-height: 100vh;
+  background: #090518;
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
 button,
@@ -49,24 +78,30 @@ textarea {
 
 button {
   border: 0;
+  background: transparent;
+  cursor: pointer;
 }
+
+/* =========================================================
+   LUXURY COSMIC SCROLLBAR
+   ========================================================= */
 
 ::-webkit-scrollbar {
   width: 7px;
-
   height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07121f;
+  background: #090518;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #20384a;
-
-  border-radius: 10px;
+  background: #3b2075;
+  border-radius: 9999px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2c4b60;
+  background: #633bb8;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.6);
 }

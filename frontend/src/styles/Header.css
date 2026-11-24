@@ -1,216 +1,187 @@
+/* =========================================================
+   VARSHAAI - TOP HEADER (COSMIC ROYAL VIOLET THEME)
+   ========================================================= */
+
 .top-header {
   height: 76px;
   width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding: 0 26px;
-
-  background: #081522;
-
-  border-bottom: 1px solid #1c3042;
-
+  padding: 0 28px;
+  background: rgba(13, 7, 33, 0.82);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.22);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 10px 30px -5px rgba(5, 2, 20, 0.6), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
-
 /* BRAND */
-
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 12px;
-
-  min-width: 245px;
+  gap: 14px;
+  min-width: 250px;
 }
 
 .brand-icon {
-  width: 42px;
-  height: 42px;
-
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.35), rgba(99, 102, 241, 0.25));
+  color: #c4b5fd;
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
 
-  border-radius: 10px;
-
-  background: #0e2b3c;
-
-  color: #5dd6ff;
-
-  border: 1px solid #1c5066;
+.brand-icon:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.55);
 }
 
 .brand-name {
-  font-size: 20px;
-  font-weight: 800;
-
-  letter-spacing: 2px;
-
-  color: #f2f8fc;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 2.2px;
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(139, 92, 246, 0.4);
 }
 
 .brand-subtitle {
   margin-top: 2px;
-
   font-size: 9px;
-
-  letter-spacing: 1.4px;
-
-  color: #6f8da5;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #a78bfa;
 }
 
 /* IN-APP HISTORY NAV CONTROLS */
 .header-nav-controls {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-left: 12px;
+  gap: 8px;
+  margin-left: 14px;
 }
 
 .header-nav-btn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 11px;
-  border-radius: 8px;
-  background: #0b2230;
-  border: 1px solid #1c4b63;
-  color: #90c2da;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: rgba(30, 18, 68, 0.65);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #ede9fe;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.2s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(5, 2, 20, 0.4);
 }
 
 .header-nav-btn.icon-only {
-  padding: 6px 8px;
+  padding: 7px 10px;
 }
 
 .header-nav-btn:hover {
-  background: #12344a;
-  border-color: #38bdf8;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(99, 102, 241, 0.3));
+  border-color: rgba(196, 181, 253, 0.6);
   color: #ffffff;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4);
+  transform: translateY(-2px);
 }
 
 .header-nav-btn:active {
   transform: translateY(0);
 }
 
-
-/* CENTER */
-
+/* CENTER TITLE */
 .header-center {
   text-align: center;
 }
 
 .system-title {
   font-size: 12px;
-
-  font-weight: 700;
-
-  letter-spacing: 1.5px;
-
-  color: #b7c9d8;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  color: #ede9fe;
+  text-transform: uppercase;
 }
 
 .system-subtitle {
   margin-top: 4px;
-
   font-size: 9px;
-
-  letter-spacing: 1.4px;
-
-  color: #557287;
+  letter-spacing: 1.5px;
+  color: #a78bfa;
+  font-weight: 600;
 }
 
-
-/* STATUS */
-
+/* STATUS & TELEMETRY */
 .header-status {
-  min-width: 330px;
-
+  min-width: 340px;
   display: flex;
   justify-content: flex-end;
-
   align-items: center;
-
-  gap: 22px;
+  gap: 24px;
 }
 
 .status-item {
   display: flex;
-
   align-items: center;
-
-  gap: 7px;
-
-  color: #658096;
+  gap: 8px;
+  color: #a5b4fc;
 }
 
 .status-item span {
   display: block;
-
   font-size: 8px;
-
-  letter-spacing: 1px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #94a3b8;
 }
 
 .status-item strong {
   display: block;
-
   margin-top: 2px;
-
   font-size: 9px;
-
-  color: #65d5a0;
-
-  letter-spacing: 0.8px;
+  color: #34d399;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .live-indicator {
   display: flex;
-
   align-items: center;
-
-  gap: 6px;
-
-  padding: 7px 10px;
-
-  border-radius: 6px;
-
-  background: #0c2925;
-
-  border: 1px solid #1b5147;
-
-  color: #64d7a3;
-
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
   font-size: 9px;
-
-  font-weight: 700;
-
-  letter-spacing: 1px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
 }
 
-
 /* RESPONSIVE */
-
 @media (max-width: 1000px) {
   .header-center {
     display: none;
   }
-
   .header-status {
     min-width: auto;
   }
-
   .status-item {
     display: none;
   }
@@ -218,13 +189,11 @@
 
 @media (max-width: 600px) {
   .top-header {
-    padding: 0 15px;
+    padding: 0 16px;
   }
-
   .brand-section {
     min-width: auto;
   }
-
   .brand-subtitle {
     display: none;
   }
